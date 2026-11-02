@@ -1,0 +1,93 @@
+% ESTRUCTURA DEL PROYECTO
+%   main.tex                 Preámbulo (paquetes, portada, metadatos) y ensamblado
+%   referencias.bib          Fuentes en formato BibTeX (biblatex-apa)
+%   imagenes/                Logo institucional y demás figuras (Logo_UD.png)
+%   secciones/               Contenido, un archivo por sección:
+%     introduccion.tex
+%     seccion1.tex
+%     seccion2.tex
+%     seccion3.tex
+%     seccion4.tex
+%     seccion5.tex
+%     seccion6.tex
+%     conclusiones.tex
+%
+% -----------------------------------------------------------------------
+\documentclass[stu, 12pt, letterpaper, donotrepeattitle, floatsintext]{apa7}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{csquotes}
+\usepackage{newtxtext,newtxmath}
+\usepackage{graphicx}
+\graphicspath{{imagenes/}}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{makecell}
+\usepackage{tabularx}
+\usepackage{setspace}
+\usepackage[style=apa, backend=biber]{biblatex}
+\DeclareLanguageMapping{spanish}{spanish-apa}
+\addbibresource{referencias.bib}
+\hypersetup{hidelinks}
+\usepackage{pdflscape}
+\usepackage{xcolor}
+\usepackage{colortbl}
+
+
+\newcolumntype{Y}{>{\raggedright\arraybackslash}X}
+
+% Ajuste menor: "s. f." con espacio (biblatex-apa lo deja como "s.f.").
+\DefineBibliographyStrings{spanish}{%
+	nodate = {s.~f\adddot},
+}
+
+\AtBeginDocument{%
+	\renewcommand{\keywordname}{Palabras clave}%
+	\renewcommand{\notelabel}{Nota}%
+	\renewcommand{\tablename}{Tabla}% babel-spanish lo deja como "Cuadro"
+}
+
+\shorttitle{Fase 2 del Proyecto Final}
+\title{%
+	\includegraphics[width=1.9in]{Logo_UD.png}\\[0.6cm]
+	Actividad de Aprendizaje No.~2.1: Fase 2 del Proyecto Final%
+}
+\authorsnames{Nicolás Guevara Herrán (20211180026), Jhojan Stiven Aragón Ramírez (20221020060), Daniel Orlando Villescas Mora (20221020065)}
+\authorsaffiliations{{Maestría en Gestión y Seguridad de la Información, Facultad de Tecnología\\Universidad Distrital Francisco José de Caldas}}
+\course{Arquitectura de Seguridad}
+\professor{Camilo Enrique Rocha Calderon}
+\duedate{22 de septiembre de 2026\\Bogotá, D.C.} % TODO: completar la fecha de entrega
+
+\begin{document}
+\maketitle
+% Índice
+\tableofcontents
+\newpage
+
+% Introducción
+\input{secciones/introduccion}
+
+% 1. Visión, Principios y Alcance de la Arquitectura
+\input{secciones/seccion1}
+% 2. Contexto de Negocio, Objetivos y Cumplimiento
+\input{secciones/seccion2}
+% 3. Evaluación del Estado Actual y Análisis de Brechas
+\input{secciones/seccion3}
+% 4. Modelo de Amenazas, Activos y Evaluación de Riesgos
+\input{secciones/seccion4}
+% 5. Arquitectura de Transición y Hoja de Ruta
+\input{secciones/seccion5}
+% 6. Métricas
+\input{secciones/seccion6}
+
+% Conclusiones
+\input{secciones/conclusiones}
+% La lista de referencias se genera automáticamente con las entradas
+% que se citen en el texto (\parencite / \textcite) desde referencias.bib.
+% Si aún no hay citas, esta sección no imprime nada (aviso "Empty bibliography").
+\printbibliography
+
+\end{document}
