@@ -1,1 +1,470 @@
 \section{Modelo de Amenazas, Activos y Evaluación de Riesgos}
+
+El modelo de amenazas y riesgos del Centro de Control Integrado (CCI) parte de los activos
+críticos identificados durante la primera fase del proyecto y mantiene la trazabilidad con los
+riesgos, políticas de seguridad, mecanismos de protección y capacidades arquitectónicas
+desarrolladas posteriormente mediante SABSA, O-ESA y ArchiMate.
+
+El análisis se concentra en los tres activos que soportan directamente el proceso de gestión y
+despacho de flota: la telemetría de flota, la bitácora de decisiones del CCI y el Sistema de
+Despacho. Sobre estos activos se mantienen los cuatro riesgos priorizados desde la primera fase:
+manipulación o suplantación de la telemetría (R1), alteración o eliminación de la bitácora
+operativa (R2), acceso no autorizado al Sistema de Despacho (R3) e indisponibilidad del
+Sistema de Despacho (R4).
+
+En esta sección se consolida la criticidad de los activos, caracteriza la superficie de ataque
+mediante la taxonomía \textit{Data--Method--Channel} utilizada en O-ESA, recupera la
+valoración de riesgo definida previamente y relaciona cada riesgo con los dominios de seguridad
+y capacidades técnicas requeridas para alcanzar el estado objetivo de la arquitectura.
+
+
+\subsection{Inventario y Criticidad de Activos}
+
+La identificación de activos realizada en la primera fase determinó tres elementos de criticidad
+alta para la operación del CCI. Su valoración considera las propiedades de confidencialidad,
+integridad y disponibilidad de la información, de acuerdo con el impacto que una afectación de
+cada propiedad tendría sobre la regulación de la flota.
+
+La Tabla~\ref{tab:activos_criticos_blueprint} resume esta clasificación.
+
+\begin{table}[H]
+	\centering
+	\caption{Inventario y criticidad de los activos priorizados del CCI}
+	\label{tab:activos_criticos_blueprint}
+	
+	\small
+	\setlength{\tabcolsep}{4pt}
+	\renewcommand{\arraystretch}{1.15}
+	
+	\begin{tabularx}{\textwidth}{
+			>{\raggedright\arraybackslash}p{1.5cm}
+			>{\raggedright\arraybackslash}X
+			>{\centering\arraybackslash}p{2.0cm}
+			>{\centering\arraybackslash}p{1.6cm}
+			>{\centering\arraybackslash}p{2.0cm}
+			>{\centering\arraybackslash}p{1.6cm}}
+		
+		\toprule
+		
+		\textbf{ID} &
+		\textbf{Activo} &
+		\shortstack{\textbf{Confiden-}\\\textbf{cialidad}} &
+		\textbf{Integridad} &
+		\shortstack{\textbf{Disponibi-}\\\textbf{lidad}} &
+		\textbf{Criticidad} \\
+		
+		\midrule
+		
+		CCI-001 &
+		Telemetría de flota &
+		Media &
+		Alta &
+		Alta &
+		Alta \\
+		
+		CCI-002 &
+		Bitácora de decisiones del CCI &
+		Media &
+		Alta &
+		Media &
+		Alta \\
+		
+		CCI-003 &
+		Sistema de Despacho &
+		Media &
+		Alta &
+		Alta &
+		Alta \\
+		
+		\bottomrule
+		
+	\end{tabularx}
+	
+	\vspace{2pt}
+	
+	\begin{minipage}{0.96\textwidth}
+		\footnotesize
+		\textit{Nota.} Elaboración propia con base en la identificación y valoración de activos
+		realizada en la primera fase del proyecto.
+	\end{minipage}
+\end{table}
+
+La telemetría de flota constituye la fuente de información utilizada para conocer la
+posición, velocidad y estado operacional de los vehículos. Su integridad y disponibilidad son
+especialmente relevantes debido a que los datos GPS/AVL alimentan el análisis operacional y
+las decisiones posteriores de regulación.
+
+La bitácora de decisiones del CCI conserva la evidencia de las acciones realizadas
+durante la operación, incluyendo responsables, marcas de tiempo, instrucciones emitidas y
+resultados. Su principal necesidad de protección se concentra en la integridad, ya que una
+alteración o eliminación de registros afectaría la trazabilidad y la capacidad de auditoría.
+
+Por su parte, el Sistema de Despacho es el principal activo de software mediante el cual se ejecutan las decisiones de regulación, de tal forma que tanto su integridad como su disponibilidad son
+críticas, donde una modificación no autorizada puede alterar las instrucciones operacionales, mientras
+que su indisponibilidad puede impedir la aplicación de medidas ante retrasos, congestiones,
+bloqueos u otras novedades de la operación.
+
+
+\subsection{Caracterización de la Superficie de Ataque}
+
+Para caracterizar la superficie de ataque se mantiene la estructura empleada en el análisis
+O-ESA, diferenciando tres dimensiones: Data, Method y Channel. La primera corresponde a la información o elementos que pueden verse comprometidos, mientras que por Method, con este se representa el mecanismo o técnica mediante la cual puede materializarse la amenaza, y, por último, Channel identifica el canal físico o lógico a través del cual ocurre la interacción.
+
+Esta descomposición permite evitar una visión aislada de cada amenaza y relacionarla con los
+puntos concretos de la arquitectura donde deben implementarse los mecanismos de protección.
+
+\begin{table}[H]
+	\centering
+	\caption{Caracterización de la superficie de ataque de los riesgos priorizados}
+	\label{tab:superficie_ataque}
+	\scriptsize
+	\begin{tabularx}{\textwidth}{
+			>{\raggedright\arraybackslash}p{1.15cm}
+			>{\raggedright\arraybackslash}p{2.7cm}
+			>{\raggedright\arraybackslash}X
+			>{\raggedright\arraybackslash}X
+			>{\raggedright\arraybackslash}X}
+		\toprule
+		\textbf{Riesgo} &
+		\textbf{Activo principal} &
+		\textbf{Data} &
+		\textbf{Method} &
+		\textbf{Channel} \\
+		\midrule
+		
+		R1 &
+		Telemetría de flota &
+		Coordenadas GPS/AVL, velocidad, posición y estado operacional de los vehículos. &
+		\textit{Spoofing}, manipulación o suplantación de mensajes de telemetría. &
+		Comunicación 4G/5G vehículo--CCI y canal de ingestión hacia el bus de eventos. \\
+		
+		\addlinespace
+		
+		R2 &
+		Bitácora de decisiones del CCI &
+		Registros de decisiones, responsables, marcas de tiempo, instrucciones ejecutadas y resultados. &
+		Modificación, borrado o truncamiento de registros y abuso de privilegios. &
+		Sistema de Despacho, base de datos y mecanismos administrativos de almacenamiento. \\
+		
+		\addlinespace
+		
+		R3 &
+		Sistema de Despacho &
+		Identidades, credenciales, perfiles, roles y órdenes de despacho. &
+		Robo o uso compartido de credenciales, abuso de privilegios y escalamiento de permisos. &
+		Consolas del CCI, infraestructura SSO y aplicaciones que conforman el Sistema de Despacho. \\
+		
+		\addlinespace
+		
+		R4 &
+		Sistema de Despacho e infraestructura tecnológica &
+		Estado y disponibilidad del servicio, sesiones y flujo operacional. &
+		Falla técnica, denegación de servicio, saturación o indisponibilidad de un componente crítico. &
+		Infraestructura local, enlaces de telecomunicaciones, red del CCI y servicios desplegados en la nube. \\
+		
+		\bottomrule
+	\end{tabularx}
+	
+	\begin{minipage}{0.96\textwidth}
+		\footnotesize
+		\textit{Nota.} Elaboración propia a partir de la matriz de trazabilidad de riesgos,
+		superficie de ataque y servicios de seguridad desarrollada mediante O-ESA.
+	\end{minipage}
+\end{table}
+
+En R1, la superficie de ataque se encuentra principalmente en la frontera entre un
+entorno móvil no confiable y los sistemas internos del CCI. La información se origina en las
+unidades ITS instaladas en los vehículos y posteriormente atraviesa las redes móviles y la
+pasarela de ingestión antes de incorporarse a los sistemas que soportan la regulación de flota.
+Por esto es que la arquitectura objetivo requiere validar tanto la identidad del dispositivo como
+la autenticidad, integridad y coherencia física de cada mensaje antes de incorporarlo a la fuente
+autoritativa de datos.
+
+Para R2, la superficie de ataque se concentra en los mecanismos mediante los cuales se
+generan, almacenan y administran los registros operacionales. El riesgo no depende solamente
+de un ataque externo, sino también del abuso de privilegios o de modificaciones posteriores
+sobre los registros. En consecuencia, la protección debe garantizar que la evidencia sea
+capturada automáticamente, que no dependa de la voluntad del operador y que pueda
+demostrarse cualquier alteración posterior.
+
+En R3, los principales puntos de exposición corresponden a las identidades,
+credenciales, roles y permisos utilizados para interactuar con las consolas y con el Sistema de Despacho, y, el riesgo se materializa cuando una identidad no autorizada logra ejecutar acciones
+de regulación o cuando un usuario legítimo dispone de privilegios superiores a los necesarios
+para su función.
+
+Finalmente, R4 presenta una superficie de ataque distribuida entre la infraestructura
+local, las comunicaciones y los servicios tecnológicos de los cuales depende el despacho.
+Además de ataques de denegación de servicio, deben contemplarse fallas de infraestructura,
+saturación y pérdida de componentes críticos, debido a que cualquiera de estos eventos puede
+afectar la disponibilidad de la operación.
+
+
+\subsection{Evaluación de Riesgos Residuales}
+
+La valoración desarrollada durante la primera fase permitió establecer el nivel inherente de los
+riesgos asociados a los activos críticos del CCI. Posteriormente, el Anexo B consolidó los
+controles definidos para su tratamiento y calculó la valoración residual resultante después de
+considerar su efecto sobre la probabilidad o el impacto.
+
+Para mantener la trazabilidad con el resto del Blueprint, en esta sección se conserva la
+numeración de riesgos utilizada a lo largo del proyecto: R1 para la manipulación de telemetría,
+R2 para la alteración de la bitácora de decisiones, R3 para el acceso no autorizado al Sistema
+de Despacho y R4 para la indisponibilidad del Sistema de Despacho.
+
+Debe señalarse que la matriz del Anexo B utiliza una numeración diferente. En ella, la
+indisponibilidad aparece como R1, la manipulación de telemetría como R2, el riesgo sobre la
+integridad y no repudio de la bitácora como R3 y el acceso no autorizado al Sistema de
+Despacho como R4. Por esta razón, los valores residuales se trasladan al Blueprint según la
+descripción y el activo asociado a cada riesgo, y no únicamente según el identificador numérico.
+
+La Tabla~\ref{tab:correspondencia_riesgos} presenta esta correspondencia.
+
+\begin{table}[H]
+	\centering
+	\caption{Correspondencia entre los riesgos del Blueprint y el Anexo B}
+	\label{tab:correspondencia_riesgos}
+	\small
+	\setlength{\tabcolsep}{5pt}
+	\renewcommand{\arraystretch}{1.15}
+	
+	\begin{tabularx}{\textwidth}{
+			>{\centering\arraybackslash}p{1.6cm}
+			>{\raggedright\arraybackslash}X
+			>{\centering\arraybackslash}p{2.0cm}}
+		
+		\toprule
+		\textbf{ID Blueprint} &
+		\textbf{Riesgo} &
+		\textbf{ID Anexo B} \\
+		\midrule
+		
+		R1 &
+		Manipulación o suplantación de la telemetría de flota &
+		R2 \\
+		
+		R2 &
+		Alteración de la bitácora de decisiones del CCI &
+		R3 \\
+		
+		R3 &
+		Acceso no autorizado al Sistema de Despacho &
+		R4 \\
+		
+		R4 &
+		Indisponibilidad del Sistema de Despacho &
+		R1 \\
+		
+		\bottomrule
+	\end{tabularx}
+	
+	\begin{minipage}{0.96\textwidth}
+		\footnotesize
+		\textit{Nota.} Se conserva la identificación utilizada en el Blueprint y se establece su
+		correspondencia con la matriz de riesgos del Anexo B.
+	\end{minipage}
+\end{table}
+
+
+\subsubsection{Controles aplicados}
+
+Los controles registrados en el Anexo B se orientan al tratamiento de los cuatro riesgos
+priorizados y tienen como estrategia común la reducción del riesgo.
+
+Para R1, asociado a la manipulación o suplantación de telemetría, se plantean controles de validación criptográfica, integridad y monitoreo continuo sobre los componentes ITS para detectar alteraciones en las señales recibidas desde la flota. Para R2, enfocado en la integridad y trazabilidad de la bitácora de decisiones, se fortalecen los accesos privilegiados mediante MFA, segregación de funciones y registros de auditoría que permitan garantizar el no repudio.
+
+Para R3, relacionado con el acceso no autorizado al Sistema de Despacho, se implementan perfiles RBAC diferenciados, MFA en las consolas del CCI, auditoría de las órdenes emitidas y mecanismos de alertamiento ante actividades no autorizadas. Finalmente, para R4, correspondiente a la indisponibilidad, se propone un plan de recuperación ante desastres acompañado de mecanismos de redundancia, un sitio alterno de contingencia y pruebas periódicas de recuperación.
+
+
+\subsubsection{Valoración residual}
+
+La aplicación de los controles modifica la exposición de los riesgos de manera diferente. En
+los riesgos R1, R2 y R3, los controles preventivos reducen la probabilidad residual desde el
+nivel Muy Alto hasta el nivel Medio, correspondiente al 50\,\%. El impacto residual permanece
+en el nivel Mayor, con un valor del 80\,\%.
+
+En R4, asociado a la disponibilidad, el control definido tiene carácter principalmente
+correctivo. Por esta razón, la probabilidad residual permanece en Muy Alta (100\,\%), mientras
+que el impacto se reduce al 65\,\%, conservándose dentro de la categoría Mayor.
+
+La severidad residual presentada en la Tabla~\ref{tab:riesgo_residual_blueprint} corresponde
+al producto entre la probabilidad residual y el impacto residual. De acuerdo con la matriz del
+Anexo B, los cuatro riesgos permanecen en una zona de riesgo final Alta, por lo cual
+la estrategia de tratamiento definida para todos ellos continúa siendo Reducir.
+
+\begin{table}[H]
+	\centering
+	\caption{Consolidación del riesgo residual de los riesgos priorizados}
+	\label{tab:riesgo_residual_blueprint}
+	\small
+	\setlength{\tabcolsep}{3.5pt}
+	\renewcommand{\arraystretch}{1.2}
+	
+	\begin{tabularx}{\textwidth}{
+			>{\centering\arraybackslash}p{0.8cm}
+			>{\raggedright\arraybackslash}X
+			>{\centering\arraybackslash}p{1.8cm}
+			>{\centering\arraybackslash}p{1.8cm}
+			>{\centering\arraybackslash}p{1.55cm}
+			>{\centering\arraybackslash}p{1.4cm}
+			>{\centering\arraybackslash}p{1.5cm}}
+		
+		\toprule
+		\textbf{ID} &
+		\textbf{Riesgo} &
+		\shortstack{\textbf{Prob.}\\\textbf{residual}} &
+		\shortstack{\textbf{Impacto}\\\textbf{residual}} &
+		\shortstack{\textbf{Severidad}\\\textbf{residual}} &
+		\shortstack{\textbf{Nivel}\\\textbf{residual}} &
+		\textbf{Tratamiento} \\
+		\midrule
+		
+		R1 &
+		Manipulación o suplantación de telemetría &
+		Media (50\,\%) &
+		Mayor (80\,\%) &
+		40\,\% &
+		Alto &
+		Reducir \\
+		
+		R2 &
+		Alteración de la bitácora de decisiones &
+		Media (50\,\%) &
+		Mayor (80\,\%) &
+		40\,\% &
+		Alto &
+		Reducir \\
+		
+		R3 &
+		Acceso no autorizado al Sistema de Despacho &
+		Media (50\,\%) &
+		Mayor (80\,\%) &
+		40\,\% &
+		Alto &
+		Reducir \\
+		
+		R4 &
+		Indisponibilidad del Sistema de Despacho &
+		Muy Alta (100\,\%) &
+		Mayor (65\,\%) &
+		65\,\% &
+		Alto &
+		Reducir \\
+		
+		\bottomrule
+	\end{tabularx}
+	
+	\begin{minipage}{0.96\textwidth}
+		\footnotesize
+		\textit{Nota.} Elaboración propia con base en la valoración residual consignada en el
+		Anexo B. Los identificadores se presentan según la nomenclatura utilizada en el Blueprint;
+		la correspondencia con los identificadores del Anexo B se presenta en la
+		Tabla~\ref{tab:correspondencia_riesgos}.
+	\end{minipage}
+\end{table}
+
+Los resultados muestran que los controles definidos reducen de manera importante la
+probabilidad de materialización de los riesgos asociados a telemetría, trazabilidad y control
+de acceso. Sin embargo, ninguno de los cuatro riesgos desciende todavía a una zona inferior a
+Alta.
+
+Particularmente, R4 conserva una probabilidad Muy Alta debido a que la exposición del Sistema
+de Despacho y de la infraestructura del CCI es permanente. En este caso, la estrategia de
+continuidad no elimina la posibilidad de que ocurra una falla, sino que busca limitar sus
+consecuencias mediante mecanismos de redundancia, contingencia y recuperación.
+
+En consecuencia, los cuatro riesgos requieren mantener una estrategia de reducción y
+seguimiento continuo. La permanencia del nivel residual Alto también justifica las capacidades
+de seguridad planteadas en la arquitectura objetivo y su incorporación en los estados de
+transición y en la hoja de ruta desarrollada posteriormente.
+
+
+\subsection{Matriz de Dominios de Seguridad}
+
+A partir de los riesgos priorizados, el análisis de brechas y las capacidades modeladas en
+ArchiMate, se consolidan cuatro dominios principales de intervención. Estos dominios no se
+definen a partir de productos específicos, sino de los requerimientos técnicos y de control que
+debe satisfacer la arquitectura objetivo. Las tecnologías se presentan posteriormente como
+mecanismos de implementación de dichos requerimientos.
+
+\begin{table}[H]
+	\centering
+	\caption{Matriz de dominios de seguridad para la arquitectura objetivo del CCI}
+	\label{tab:matriz_dominios_seguridad}
+	\scriptsize
+	\begin{tabularx}{\textwidth}{
+			>{\raggedright\arraybackslash}p{2.35cm}
+			>{\raggedright\arraybackslash}p{1.15cm}
+			>{\raggedright\arraybackslash}X
+			>{\raggedright\arraybackslash}X}
+		\toprule
+		\textbf{Dominio de seguridad} &
+		\textbf{Riesgo} &
+		\textbf{Requerimientos técnicos y de control} &
+		\textbf{Componentes / tecnologías de implementación} \\
+		\midrule
+		
+		Gestión de identidad y acceso &
+		R3 &
+		Toda interacción con funciones críticas del Sistema de Despacho debe asociarse a una identidad
+		individual. Se requiere autenticación multifactor obligatoria, autorización basada en roles,
+		mínimo privilegio, segregación de funciones y evaluación centralizada de políticas antes de
+		permitir acciones de regulación. &
+		Active Directory y ADFS para identidad federada y SSO; MFA; perfiles RBAC; repositorio de
+		políticas; motor PDP; PEP integrados en consolas, aplicaciones e interfaces; monitoreo de
+		eventos de autenticación y autorización. \\
+		
+		\addlinespace
+		
+		Seguridad e integridad de telemetría &
+		R1 &
+		Cada unidad ITS debe disponer de una identidad verificable y cada trama debe demostrar
+		autenticidad e integridad antes de incorporarse al flujo operacional. Además, deben aplicarse
+		validaciones automáticas de plausibilidad y cuarentena para mensajes inválidos o anómalos. &
+		Certificados X.509 y/o mecanismos HMAC; autenticación mutua; protección criptográfica de
+		comunicaciones; pasarela de validación; reglas de plausibilidad; bus de eventos/RabbitMQ;
+		Oracle Spatial como repositorio geoespacial autoritativo. \\
+		
+		\addlinespace
+		
+		Trazabilidad, auditoría e inmutabilidad &
+		R2 &
+		Todas las decisiones críticas deben registrarse automáticamente y conservar la relación entre
+		evento de origen, responsable, instrucción, marca de tiempo y resultado. Los registros deben
+		protegerse contra modificación o eliminación y deben existir verificaciones periódicas de su
+		integridad. &
+		Bitácora centralizada; almacenamiento WORM o de solo adición; sellado y encadenamiento de
+		hashes; sincronización temporal mediante NTP; FortiAnalyzer/FortiSIEM para correlación y
+		alertamiento; procedimientos de cadena de custodia digital. \\
+		
+		\addlinespace
+		
+		Disponibilidad, resiliencia y continuidad &
+		R4 &
+		La arquitectura debe eliminar puntos únicos de falla, separar dominios de confianza, disponer
+		de redundancia para los componentes críticos y garantizar mecanismos de recuperación y
+		conmutación que permitan restablecer la operación dentro de los objetivos de continuidad
+		establecidos. &
+		Infraestructura local del CCI y Google Cloud Platform; clústeres y firewalls Fortinet;
+		segmentación de red; balanceadores de carga; replicación de servicios y datos; failover
+		automatizado; monitoreo de disponibilidad; DRP y BCP. \\
+		
+		\bottomrule
+	\end{tabularx}
+	
+	\begin{minipage}{0.96\textwidth}
+		\footnotesize
+		\textit{Nota.} Elaboración propia a partir del análisis de brechas, las capacidades modeladas
+		en ArchiMate y la arquitectura tecnológica de seguridad definida mediante O-ESA.
+	\end{minipage}
+\end{table}
+
+La matriz permite mantener una relación directa entre los riesgos identificados y las capacidades
+que deben incorporarse a la arquitectura objetivo. En este sentido, los componentes tecnológicos
+no constituyen por sí mismos la arquitectura de seguridad; son los mecanismos mediante los
+cuales se implementan requerimientos previamente derivados del riesgo y de las necesidades
+operacionales del CCI.
+
+Esta trazabilidad también facilita la transición hacia la siguiente sección del Blueprint. Los
+dominios de identidad y acceso, seguridad de telemetría, trazabilidad de decisiones y continuidad
+operativa corresponden a las principales capacidades que deben evolucionar desde el estado
+actual hacia los estados de transición definidos en la arquitectura de migración.

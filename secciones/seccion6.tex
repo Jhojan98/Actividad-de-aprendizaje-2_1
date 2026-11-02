@@ -1,1 +1,199 @@
 \section{Métricas}
+
+La medición de la arquitectura de seguridad permite verificar que los controles y capacidades
+definidos en las secciones anteriores produzcan los resultados esperados sobre la operación del CCI. Para ello se retoma el perfil de atributos de negocio
+desarrollado mediante SABSA, en el cual cada requerimiento de seguridad se encuentra asociado
+con indicadores de desempeño (\textit{Key Performance Indicators}, KPI) e indicadores de
+riesgo (\textit{Key Risk Indicators}, KRI).
+
+Los KPI representan las metas de desempeño que debe alcanzar la arquitectura y permiten
+evaluar la efectividad de los controles implementados. Los KRI funcionan como mecanismos de
+alerta temprana y establecen umbrales amarillo y rojo que facilitan identificar desviaciones antes
+de que estas generen un nivel de exposición no aceptable.
+
+Esta estructura permite relacionar directamente las métricas con los riesgos R1 a R4, así como
+con los dominios de seguridad, servicios O-ESA y capacidades arquitectónicas implementadas
+durante las diferentes fases de la hoja de ruta.
+
+
+\subsection{Indicadores y Métricas de Desempeño (KPI / KRI)}
+
+La Tabla~\ref{tab:kpi_kri_1} y la Tabla~\ref{tab:kpi_kri_2} consolidan los indicadores
+definidos para evaluar la integridad y oportunidad de la telemetría, el control de acceso,
+la trazabilidad de las decisiones, la disponibilidad y recuperación del servicio, el monitoreo
+de seguridad, la protección de datos personales y el cumplimiento normativo.
+
+
+\begin{table}[H]
+	\centering
+	\caption{Indicadores KPI y KRI de la arquitectura de seguridad del CCI (BA1--BA6)}
+	\label{tab:kpi_kri_1}
+	
+	\begingroup
+	\scriptsize
+	\setstretch{1}
+	\setlength{\tabcolsep}{3pt}
+	\renewcommand{\arraystretch}{1.12}
+	
+	\begin{tabularx}{\textwidth}{
+			>{\centering\arraybackslash}p{0.8cm}
+			>{\raggedright\arraybackslash}p{2.0cm}
+			>{\centering\arraybackslash}p{1.4cm}
+			Y
+			Y}
+		
+		\toprule
+		\textbf{ID} &
+		\textbf{Atributo} &
+		\textbf{Riesgo} &
+		\textbf{KPI (meta)} &
+		\textbf{KRI (amarillo / rojo)} \\
+		\midrule
+		
+		BA1 &
+		Integridad asegurada &
+		R1 &
+		Al menos 99,5\% de los mensajes GPS/AVL con autenticidad e integridad verificadas. &
+		Registros rechazados o anómalos por cada 100.000: amarillo $>$ 50; rojo $>$ 200. \\
+		
+		\addlinespace[2pt]
+		
+		BA2 &
+		Exacta y actual &
+		R1 &
+		Latencia de posición p95 $\leq$ 30 s. &
+		Buses sin reporte vigente por más de 2 min: amarillo $>$ 2\%; rojo $>$ 5\%. \\
+		
+		\addlinespace[2pt]
+		
+		BA3 &
+		Autenticada y autorizada &
+		R3 &
+		100\% de cuentas de consolas críticas con MFA y 100\% de revisiones trimestrales
+		de permisos ejecutadas. &
+		Accesos fuera de perfil u horario por 1.000 sesiones: amarillo $>$ 1; rojo $>$ 5. \\
+		
+		\addlinespace[2pt]
+		
+		BA4 &
+		Segregación de funciones &
+		R2, R3 &
+		Cero usuarios con roles incompatibles. &
+		Excepciones de segregación abiertas: amarillo $\geq$ 1; rojo $\geq$ 3. \\
+		
+		\addlinespace[2pt]
+		
+		BA5 &
+		Trazable y responsable &
+		R2 &
+		Al menos 99,9\% de decisiones con registro completo. &
+		Decisiones sin registro completo por 1.000: amarillo $>$ 1; rojo $>$ 5. \\
+		
+		\addlinespace[2pt]
+		
+		BA6 &
+		Auditable y no repudiable &
+		R2 &
+		100\% de verificaciones periódicas de integridad del repositorio WORM aprobadas. &
+		Intentos de modificar o borrar registros: amarillo = 1 bloqueado; rojo = cualquier
+		alteración efectiva. \\
+		
+		\bottomrule
+	\end{tabularx}
+	
+	\endgroup
+\end{table}
+
+
+\begin{table}[H]
+	\centering
+	\caption{Indicadores KPI y KRI de la arquitectura de seguridad del CCI (BA7--BA11)}
+	\label{tab:kpi_kri_2}
+	
+	\begingroup
+	\scriptsize
+	\setstretch{1}
+	\setlength{\tabcolsep}{3pt}
+	\renewcommand{\arraystretch}{1.12}
+	
+	\begin{tabularx}{\textwidth}{
+			>{\centering\arraybackslash}p{0.8cm}
+			>{\raggedright\arraybackslash}p{2.0cm}
+			>{\centering\arraybackslash}p{1.4cm}
+			Y
+			Y}
+		
+		\toprule
+		\textbf{ID} &
+		\textbf{Atributo} &
+		\textbf{Riesgo} &
+		\textbf{KPI (meta)} &
+		\textbf{KRI (amarillo / rojo)} \\
+		\midrule
+		
+		BA7 &
+		Disponible &
+		R4 &
+		Disponibilidad mensual $\geq$ 99,9\%. &
+		Minutos de indisponibilidad en el mes: amarillo $>$ 20; rojo $>$ 43. \\
+		
+		\addlinespace[2pt]
+		
+		BA8 &
+		Continua y recuperable &
+		R4 &
+		RTO $\leq$ 15 min y 100\% de pruebas semestrales de conmutación exitosas. &
+		Días desde la última prueba exitosa: amarillo $>$ 150; rojo $>$ 180. \\
+		
+		\addlinespace[2pt]
+		
+		BA9 &
+		Detectable y monitoreada &
+		R1--R4 &
+		Tiempo medio de detección $\leq$ 5 min en eventos críticos y al menos 95\% de
+		activos críticos reportando al SIEM. &
+		Alertas críticas sin atender por más de 15 min: amarillo $\geq$ 1; rojo $\geq$ 5. \\
+		
+		\addlinespace[2pt]
+		
+		BA10 &
+		Confidencial y privada &
+		Transversal &
+		100\% de indicadores y tableros sin datos personales identificables innecesarios. &
+		Accesos a datos personales sin justificación: amarillo $\geq$ 1; rojo $\geq$ 3. \\
+		
+		\addlinespace[2pt]
+		
+		BA11 &
+		Cumplimiento &
+		Transversal &
+		Al menos 90\% de controles aplicables con evidencia vigente. &
+		Hallazgos de auditoría vencidos: amarillo $\geq$ 1; rojo $\geq$ 3. \\
+		
+		\bottomrule
+	\end{tabularx}
+	
+	\endgroup
+\end{table}
+
+
+Los indicadores permiten evaluar diferentes dimensiones de la arquitectura. BA1 y BA2
+verifican la confiabilidad y oportunidad de la telemetría utilizada por el Sistema de Despacho;
+BA3 y BA4 evalúan la efectividad del gobierno de identidades y la segregación de funciones;
+BA5 y BA6 miden la trazabilidad, integridad y capacidad probatoria de la bitácora; mientras que
+BA7 y BA8 permiten comprobar la disponibilidad y capacidad de recuperación del CCI.
+
+De manera transversal, BA9 evalúa la capacidad de detección y monitoreo de eventos sobre los
+activos críticos, mientras que BA10 y BA11 permiten verificar respectivamente la protección de
+datos personales y el cumplimiento de los controles normativos aplicables.
+
+El seguimiento de estos indicadores debe integrarse con los mecanismos de monitoreo y
+auditoría definidos en la arquitectura objetivo. Los KRI que alcancen el nivel amarillo deben
+generar una revisión preventiva del control asociado, mientras que un umbral rojo requiere
+escalamiento y tratamiento prioritario por parte de los responsables de seguridad y operación.
+
+Finalmente, las métricas deben utilizarse como insumo para revisar periódicamente el riesgo
+residual de R1 a R4. De esta forma, la arquitectura no se considera efectiva únicamente por la
+implementación de los mecanismos técnicos definidos en la hoja de ruta, sino por su capacidad
+demostrable para mantener la integridad de los datos, limitar accesos no autorizados, preservar
+la trazabilidad y sostener la disponibilidad de los servicios críticos del CCI.
