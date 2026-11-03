@@ -1,1 +1,375 @@
 \section{Contexto de Negocio, Objetivos y Cumplimiento}
+
+TransMilenio S.A. es una empresa industrial y comercial del Estado del orden distrital, adscrita a la Alcaldía Mayor de Bogotá, que gestiona el transporte público masivo de la ciudad en sus componentes Troncal, TransMiZonal y TransMiCable. Desde marzo de 2026 el CCI supervisa en un mismo sitio más de 10.500 buses, procesa más de 40 millones de registros de datos al día y opera desde 209 puestos (Alcaldía Mayor de Bogotá, 2026; TRANSMILENIO S.A., 2026). Esta sección relaciona ese contexto con los objetivos de la organización, la normativa aplicable y el nivel de riesgo que la entidad está dispuesta a asumir.
+
+% ---------------------------------------------------------------------
+\subsection{Alineación con Objetivos Organizacionales y Tecnológicos}
+
+La alineación muestra cómo cada decisión de seguridad habilita una meta misional del negocio y qué capacidad tecnológica requiere. Su propósito es que cada control se justifique por el objetivo que protege y no solo como una buena práctica.
+
+Los objetivos que orientan la arquitectura son los objetivos estratégicos del caso y un objetivo tecnológico del Plan Estratégico de Tecnologías de la Información (PETI):
+
+\begin{itemize}
+  \item \textbf{OE1.} Garantizar una movilidad urbana sostenible, segura y de calidad para los habitantes de Bogotá.
+  \item \textbf{OE2.} Integrar y modernizar la operación del sistema mediante tecnología, consolidando el CCI como centro único de control.
+  \item \textbf{OE3.} Reducir los tiempos de espera y la variabilidad del servicio mediante regulación de flota en tiempo real.
+  \item \textbf{OT1.} Reflejar correctamente las actuaciones de la institución y de sus terceros, según el PETI (TRANSMILENIO S.A., 2020).
+\end{itemize}
+
+La Tabla~\ref{tab:alineacion} muestra, para cada objetivo, la decisión de seguridad que lo habilita, expresada como curso de acción y requerimientos del modelo ArchiMate, la capacidad tecnológica que esa decisión exige y el objetivo de seguridad (\textit{goal}) con su resultado esperado (\textit{outcome}).
+
+\begin{table}[H]
+	\caption{Alineación de las decisiones de seguridad con los objetivos organizacionales y tecnológicos}
+	\label{tab:alineacion}
+	\centering
+	\footnotesize
+	\renewcommand{\arraystretch}{1.15}
+	\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.11\textwidth} Y Y Y@{}}
+		\toprule
+		\textbf{Objetivo} & \textbf{Decisión de seguridad (curso de acción y requerimientos)} & \textbf{Capacidad tecnológica requerida} & \textbf{\textit{Goal} y \textit{outcome}} \\
+		\midrule
+		\textbf{OE3, OE2}
+		& \textit{Fortalecer integridad y fuentes autoritativas de telemetría}: validación criptográfica de la señal GPS/AVL; fuente autoritativa y metadatos comunes de flota.
+		& Telemetría autenticada desde el ITS a bordo, plataforma de streaming de eventos y base geoespacial como fuente única de posición y estado de la flota.
+		& Integridad de datos geoespaciales: 100\% de las señales GPS/AVL con autenticidad verificada antes de usarse.
+		\\
+		\midrule
+		\textbf{OE3, OE1}
+		& \textit{Implementar contingencia y redundancia integral del CCI} y \textit{Consolidar monitoreo y protección transversal de seguridad}: arquitectura redundante del CCI; plan de contingencia del CCI; monitoreo centralizado con FortiSIEM/FortiAnalyzer.
+		& Componentes locales de baja latencia con respaldo en Google Cloud Platform, balanceadores de carga, procedimientos de operación en modo degradado y detección temprana de fallas y ataques.
+		& Disponibilidad y resiliencia operativa: uptime $\geq$ 99.9\% del Sistema de Despacho en horas pico.
+		\\
+		\midrule
+		\textbf{OE2}
+		& \textit{Fortalecer control de acceso con RBAC y MFA}: RBAC con perfiles diferenciados (AD + ADFS); MFA en consolas y cuentas del CCI.
+		& SSO centralizado con perfiles para operador de monitoreo, supervisor de despacho y soporte TIC en todas las consolas del CCI.
+		& Control de acceso robusto y protección de datos: cero accesos no autorizados al Sistema de Despacho.
+		\\
+		\midrule
+		\textbf{OE1, OT1}
+		& \textit{Formalizar trazabilidad y auditoría de decisiones operativas}: registro de decisiones en almacenamiento WORM.
+		& Bitácora automática que registra el dato o evento de origen, el responsable, la instrucción emitida y el resultado, sobre almacenamiento inmutable.
+		& Trazabilidad de instrucciones: 100\% de las decisiones de despacho registradas sin alteraciones.
+		\\
+		\midrule
+		\textbf{OE1, OE2}
+		& \textit{Fortalecer cumplimiento y protección de datos personales del CCI}: inventario de activos, interfaces, roles y permisos; cifrado de comunicaciones y datos personales.
+		& Inventario de activos según el formato del MSPI, cifrado de la información en tránsito y minimización de datos personales en los tableros operativos.
+		& Alineación del CCI con normativa legal de datos personales: cero hallazgos críticos en auditorías de datos personales.
+		\\
+		\bottomrule
+	\end{tabularx}
+
+	\vspace{0.4em}
+	\parbox{\textwidth}{\footnotesize \textit{Nota.} Elaboración propia con base en los objetivos estratégicos del caso, TRANSMILENIO S.A. (2020, 2026) y las vistas ArchiMate del modelo.}
+\end{table}
+
+La tabla sigue la misma cadena de los modelos ArchiMate. Cada objetivo organizacional se protege con un objetivo de seguridad, este se mide con un resultado esperado y se realiza mediante principios y requerimientos concretos. Los requerimientos, a su vez, se asocian en la vista integrada con los servicios Monitoreo de Flota en Tiempo Real, Notificación de Novedades Operacionales y Notificación de Instrucciones de Regulación, de modo que cada control queda ubicado en el servicio de negocio que protege. El orden de implementación sigue la Fase F: primero las fuentes autoritativas, el control de acceso por roles y la trazabilidad básica; después la integración y el tablero unificado; y al final la redundancia integral y la auditoría transversal de decisiones.
+
+% ---------------------------------------------------------------------
+\subsection{Requerimientos de Cumplimiento y Normativa (\textit{Compliance \& Regulatory})}
+
+Este ítem cataloga los marcos legales, regulatorios y estándares que son obligatorios o de referencia para el alcance, indica qué exige cada uno y cómo responde la arquitectura. Permite demostrar ante una auditoría que cada control tiene un soporte normativo.
+
+El CCI procesa datos de geolocalización, video de cámaras a bordo, datos personales de usuarios y conductores e información operativa crítica. Por ese tipo de información y por su condición de entidad pública, le aplican los marcos de las Tablas~\ref{tab:normativa} y~\ref{tab:normativa-2}.
+
+\begin{table}[H]
+	\caption{Marcos legales, regulatorios y estándares aplicables al alcance (parte 1 de 2)}
+	\label{tab:normativa}
+	\centering
+	\footnotesize
+	\renewcommand{\arraystretch}{1.15}
+	\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.19\textwidth} Y Y Y@{}}
+		\toprule
+		\textbf{Marco} & \textbf{Carácter} & \textbf{Exigencia aplicable al CCI} & \textbf{Respuesta de la arquitectura} \\
+		\midrule
+		\textbf{Ley Estatutaria 1581 de 2012 (Congreso de Colombia, 2012)}
+		& Ley, obligatoria
+		& Tratar los datos personales de conductores y usuarios (identificación asociada al vehículo, geolocalización e imágenes de cámaras a bordo) según los principios de finalidad, acceso y circulación restringida, seguridad y confidencialidad.
+		& RBAC, cifrado de comunicaciones y datos personales, minimización de datos personales en los tableros y clasificación de la información del ITS.
+		\\
+		\midrule
+		\textbf{Decreto 1074 de 2015 (Ministerio de Comercio, Industria y Turismo, 2015)}
+		& Decreto reglamentario, obligatorio
+		& Contar con política de tratamiento, autorización de los titulares, aviso de privacidad, procedimiento de consultas y reclamos, e inscripción de las bases de datos en el Registro Nacional de Bases de Datos.
+		& Política de Tratamiento y Protección de Datos Personales (v6) e identificación, en el inventario de activos, de las bases con datos personales.
+		\\
+		\midrule
+		\textbf{Resolución MinTIC 500 de 2021, MSPI (Ministerio de Tecnologías de la Información y las Comunicaciones, 2021)}
+		& Resolución, obligatoria para entidades públicas
+		& Adoptar el Modelo de Seguridad y Privacidad de la Información: inventario y clasificación de activos, gestión de riesgos de seguridad de la información, plan de tratamiento y gestión de incidentes.
+		& Inventario de activos (Anexo A), matriz de riesgos y controles (Anexo B), MFA, RBAC y registro de decisiones.
+		\\
+		\midrule
+		\textbf{Decreto 338 de 2022 (Presidencia de la República de Colombia, 2022)}
+		& Decreto, obligatorio
+		& Fortalecer la gobernanza de la seguridad digital, identificar y proteger las infraestructuras críticas cibernéticas y los servicios esenciales, gestionar sus riesgos y responder a los incidentes de seguridad digital.
+		& Tratamiento del CCI como infraestructura crítica de movilidad: arquitectura redundante, plan de contingencia, monitoreo con FortiSIEM y segmentación de red.
+		\\
+		\midrule
+		\textbf{Ley 1712 de 2014 (Congreso de Colombia, 2014a)}
+		& Ley, obligatoria
+		& Determinar qué información es pública, clasificada o reservada, y publicar la información al ciudadano sin exponer la que tiene reserva.
+		& Clasificación de la información del CCI y publicación de novedades al usuario sin datos personales ni detalles de la infraestructura.
+		\\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+	\caption{Marcos legales, regulatorios y estándares aplicables al alcance (parte 2 de 2)}
+	\label{tab:normativa-2}
+	\centering
+	\footnotesize
+	\renewcommand{\arraystretch}{1.15}
+	\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.19\textwidth} Y Y Y@{}}
+		\toprule
+		\textbf{Marco} & \textbf{Carácter} & \textbf{Exigencia aplicable al CCI} & \textbf{Respuesta de la arquitectura} \\
+		\midrule
+		\textbf{ISO/IEC 27001:2022 (International Organization for Standardization \& International Electrotechnical Commission, 2022a)}
+		& Estándar internacional, de referencia
+		& Sistema de gestión de seguridad de la información y controles del Anexo A. El MSPI toma esta norma como referencia.
+		& Base de los controles asociados a cada requerimiento (Tabla~\ref{tab:trazabilidad-normativa}).
+		\\
+		\midrule
+		\textbf{ISO/IEC 27005:2022 (International Organization for Standardization \& International Electrotechnical Commission, 2022b)}
+		& Estándar internacional, de referencia
+		& Orientación para identificar, analizar, evaluar y tratar los riesgos de seguridad de la información.
+		& Identificación de R1 a R4 a partir de activos, amenazas y debilidades.
+		\\
+		\midrule
+		\textbf{Guía para la Gestión Integral del Riesgo en Entidades Públicas, v7 (Departamento Administrativo de la Función Pública, 2025)}
+		& Guía metodológica para entidades públicas
+		& Escalas de probabilidad e impacto, matriz de calor, diseño de controles, riesgo residual y definición del apetito de riesgo.
+		& Valoración del riesgo inherente y criterios de apetito del numeral 2.3.
+		\\
+		\midrule
+		\textbf{PESI v2 (TRANSMILENIO S.A., 2025a), Políticas de Seguridad y Privacidad de la Información (v7) y Política de Tratamiento y Protección de Datos Personales (v6)}
+		& Políticas internas, obligatorias
+		& Lineamientos institucionales de control de acceso, autenticación, continuidad y protección de datos personales.
+		& MFA, RBAC, arquitectura redundante y cifrado de comunicaciones y datos personales.
+		\\
+		\midrule
+		\textbf{PETI v2 (TRANSMILENIO S.A., 2020)}
+		& Plan institucional, obligatorio
+		& Reflejar correctamente las actuaciones de la institución y de sus terceros.
+		& Registro de decisiones en almacenamiento WORM.
+		\\
+		\bottomrule
+	\end{tabularx}
+
+	\vspace{0.4em}
+	\parbox{\textwidth}{\footnotesize \textit{Nota.} Elaboración propia con base en las regulaciones del caso de negocio 1 y las referencias citadas.}
+\end{table}
+
+La Tabla~\ref{tab:trazabilidad-normativa} relaciona cada requerimiento de seguridad de la \textit{Goal Realization View} con la norma que lo exige o respalda y con el control del Anexo A de ISO/IEC 27001:2022 que le corresponde.
+
+\begin{table}[H]
+	\caption{Trazabilidad entre requerimientos de seguridad y normativa}
+	\label{tab:trazabilidad-normativa}
+	\centering
+	\footnotesize
+	\renewcommand{\arraystretch}{1.15}
+	\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.33\textwidth} Y Y@{}}
+		\toprule
+		\textbf{Requerimiento} & \textbf{Respaldo normativo} & \textbf{Control ISO/IEC 27001:2022 (Anexo A)} \\
+		\midrule
+		\textbf{Inventario de activos, interfaces, roles y permisos}
+		& Res. MinTIC 500 de 2021 (MSPI)
+		& 5.9 Inventario de activos
+		\\
+		\midrule
+		\textbf{MFA en consolas y cuentas del CCI}
+		& Res. MinTIC 500 de 2021; PESI v2
+		& 8.5 Autenticación segura
+		\\
+		\midrule
+		\textbf{RBAC con perfiles diferenciados (AD + ADFS)}
+		& Ley 1581 de 2012 (acceso y circulación restringida); Res. MinTIC 500 de 2021
+		& 5.15 Control de acceso; 5.18 Derechos de acceso; 8.2 Derechos de acceso privilegiado
+		\\
+		\midrule
+		\textbf{Cifrado de comunicaciones y datos personales}
+		& Ley 1581 de 2012 (seguridad); Política de Tratamiento de Datos Personales v6
+		& 8.24 Uso de criptografía; 5.34 Privacidad y protección de datos personales
+		\\
+		\midrule
+		\textbf{Registro de decisiones en almacenamiento WORM}
+		& PETI v2; Res. MinTIC 500 de 2021
+		& 8.15 Registro de eventos; 5.33 Protección de registros
+		\\
+		\midrule
+		\textbf{Monitoreo centralizado con FortiSIEM/FortiAnalyzer}
+		& Decreto 338 de 2022; Res. MinTIC 500 de 2021
+		& 8.16 Actividades de monitoreo
+		\\
+		\midrule
+		\textbf{Fuente autoritativa y metadatos comunes de flota}
+		& Principio de arquitectura de la Fase Preliminar; sin exigencia normativa directa
+		& No aplica
+		\\
+		\midrule
+		\textbf{Validación criptográfica de la señal GPS/AVL}
+		& Decreto 338 de 2022 (protección de infraestructura crítica)
+		& 8.24 Uso de criptografía
+		\\
+		\midrule
+		\textbf{Arquitectura redundante del CCI}
+		& Decreto 338 de 2022
+		& 8.14 Redundancia de las instalaciones de procesamiento
+		\\
+		\midrule
+		\textbf{Plan de contingencia del CCI}
+		& Decreto 338 de 2022; Res. MinTIC 500 de 2021
+		& 5.29 Seguridad durante una interrupción; 5.30 Preparación de las TIC para la continuidad
+		\\
+		\bottomrule
+	\end{tabularx}
+
+	\vspace{0.4em}
+	\parbox{\textwidth}{\footnotesize \textit{Nota.} Elaboración propia con base en International Organization for Standardization y International Electrotechnical Commission (2022a) y la normativa de las Tablas~\ref{tab:normativa} y~\ref{tab:normativa-2}.}
+\end{table}
+
+Las leyes, los decretos, la resolución y las políticas internas son de cumplimiento obligatorio. Las normas ISO/IEC son de referencia y se aplican por medio del MSPI. El resultado esperado ``Cero hallazgos críticos en auditorías de datos personales'' es la medida con la que se verifica este cumplimiento.
+
+% ---------------------------------------------------------------------
+\subsection{Tolerancia y Apetito de Riesgo (\textit{Risk Appetite})}
+
+El apetito de riesgo es el nivel de riesgo que la organización está dispuesta a aceptar para lograr sus objetivos. La tolerancia es la desviación máxima que admite sobre ese nivel, y la capacidad de riesgo es el nivel máximo que puede soportar sin comprometer sus objetivos (Departamento Administrativo de la Función Pública, 2025). Juntos fijan el umbral que decide qué riesgos se aceptan, cuáles requieren controles y en qué orden se tratan.
+
+La Guía del Departamento Administrativo de la Función Pública indica que cada entidad define estos niveles en su política de administración del riesgo. Los documentos del caso no incluyen el apetito formal de TransMilenio, por lo que este \textit{blueprint} propone los parámetros de la Tabla~\ref{tab:apetito} para el proceso del CCI. Los parámetros usan las zonas de la matriz de calor del riesgo inherente de la Fase 1 y la meta, fijada en esa valoración, de llevar los riesgos a niveles bajos o moderados.
+
+\begin{table}[H]
+	\caption{Apetito, tolerancia y capacidad de riesgo propuestos para el CCI}
+	\label{tab:apetito}
+	\centering
+	\footnotesize
+	\renewcommand{\arraystretch}{1.15}
+	\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.12\textwidth} Y Y Y@{}}
+		\toprule
+		\textbf{Zona de riesgo} & \textbf{Posición} & \textbf{Decisión de tratamiento} & \textbf{Seguimiento} \\
+		\midrule
+		\textbf{Bajo}
+		& Dentro del apetito
+		& Aceptar el riesgo y mantener los controles existentes.
+		& Revisión semestral de la arquitectura (Fase H).
+		\\
+		\midrule
+		\textbf{Moderado}
+		& Dentro de la tolerancia
+		& Aceptar de forma temporal, solo con un plan de tratamiento aprobado por el Comité de Arquitectura y un responsable asignado.
+		& Trimestral.
+		\\
+		\midrule
+		\textbf{Alto}
+		& Supera la tolerancia
+		& Reducir con controles. No se acepta como nivel de riesgo residual.
+		& Mensual, hasta llegar a Moderado o Bajo.
+		\\
+		\midrule
+		\textbf{Extremo}
+		& Supera la capacidad de riesgo
+		& Reducir o evitar de inmediato y escalar a la Gerencia General.
+		& Inmediato.
+		\\
+		\bottomrule
+	\end{tabularx}
+
+	\vspace{0.4em}
+	\parbox{\textwidth}{\footnotesize \textit{Nota.} Elaboración propia con base en Departamento Administrativo de la Función Pública (2025).}
+\end{table}
+
+La tolerancia también se expresa por propiedad de seguridad, con los mismos valores de los resultados esperados de la \textit{Goal Realization View} (Tabla~\ref{tab:tolerancia}).
+
+\begin{table}[H]
+	\caption{Tolerancia por propiedad de seguridad}
+	\label{tab:tolerancia}
+	\centering
+	\footnotesize
+	\renewcommand{\arraystretch}{1.15}
+	\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.22\textwidth} Y Y@{}}
+		\toprule
+		\textbf{Propiedad (riesgo)} & \textbf{Tolerancia} & \textbf{Justificación} \\
+		\midrule
+		\textbf{Integridad de la telemetría (R1)}
+		& Cero decisiones de despacho tomadas con señales GPS/AVL sin autenticidad verificada.
+		& Un dato falso no se detecta a simple vista y puede afectar la regulación de varios vehículos a la vez.
+		\\
+		\midrule
+		\textbf{Integridad de la bitácora (R2)}
+		& Cero registros alterados o eliminados; 100\% de las decisiones registradas.
+		& Sin registros íntegros no hay evidencia de las decisiones ni responsables verificables.
+		\\
+		\midrule
+		\textbf{Control de acceso al despacho (R3)}
+		& Cero accesos no autorizados; MFA en el 100\% de las consolas y cuentas del CCI que lo soporten.
+		& Una orden no autorizada cambia rutas, frecuencias u órdenes de despacho de la flota en vía.
+		\\
+		\midrule
+		\textbf{Disponibilidad del despacho (R4)}
+		& Indisponibilidad máxima del 0.1\% del tiempo en horas pico (uptime $\geq$ 99.9\%), como supuesto del modelo académico.
+		& Una falla de disponibilidad es visible y el plan de contingencia permite regular en modo degradado, por eso admite un margen mínimo.
+		\\
+		\midrule
+		\textbf{Cumplimiento normativo}
+		& Cero hallazgos críticos en auditorías de datos personales y del MSPI.
+		& Un hallazgo crítico expone a la entidad a sanciones de la Superintendencia de Industria y Comercio, autoridad de protección de datos personales.
+		\\
+		\bottomrule
+	\end{tabularx}
+
+	\vspace{0.4em}
+	\parbox{\textwidth}{\footnotesize \textit{Nota.} Elaboración propia con base en la Goal Realization View del modelo ArchiMate.}
+\end{table}
+
+La tolerancia es menor para la integridad y el control de acceso que para la disponibilidad. La manipulación de la telemetría y las órdenes no autorizadas pueden pasar desapercibidas y llevar a decisiones incorrectas, mientras que una caída del despacho se detecta de inmediato y cuenta con un procedimiento de contingencia.
+
+Con estos parámetros, los cuatro riesgos evaluados en la Fase 1 superan la tolerancia, porque todos tienen nivel inherente Alto (Tabla~\ref{tab:apetito-riesgos}).
+
+\begin{table}[H]
+	\caption{Posición de los riesgos inherentes frente al apetito de riesgo}
+	\label{tab:apetito-riesgos}
+	\centering
+	\footnotesize
+	\renewcommand{\arraystretch}{1.15}
+	\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.24\textwidth} Y Y Y Y@{}}
+		\toprule
+		\textbf{Riesgo} & \textbf{Nivel inherente} & \textbf{Posición} & \textbf{Residual objetivo} & \textbf{Prioridad} \\
+		\midrule
+		\textbf{R1. Manipulación de la telemetría de flota}
+		& Alto (80\%)
+		& Supera la tolerancia
+		& Moderado o inferior
+		& 1
+		\\
+		\midrule
+		\textbf{R3. Acceso no autorizado al Sistema de Despacho}
+		& Alto (80\%)
+		& Supera la tolerancia
+		& Moderado o inferior
+		& 1
+		\\
+		\midrule
+		\textbf{R4. Indisponibilidad del Sistema de Despacho}
+		& Alto (80\%)
+		& Supera la tolerancia
+		& Moderado o inferior
+		& 2
+		\\
+		\midrule
+		\textbf{R2. Alteración de la bitácora de decisiones}
+		& Alto (60\%)
+		& Supera la tolerancia
+		& Moderado o inferior
+		& 3
+		\\
+		\bottomrule
+	\end{tabularx}
+
+	\vspace{0.4em}
+	\parbox{\textwidth}{\footnotesize \textit{Nota.} Elaboración propia con base en la valoración del riesgo inherente de la Fase 1.}
+\end{table}
+
+Los controles se priorizan con tres criterios, en este orden: primero, los riesgos cuyo nivel supera la tolerancia; segundo, los de mayor severidad; y tercero, a igual severidad, la propiedad con tolerancia cero (integridad y control de acceso) antes que la disponibilidad. Por eso R1 y R3 tienen prioridad 1, R4 prioridad 2 y R2 prioridad 3. Mientras se implementa la redundancia integral de R4, prevista para la fase 3 de la migración, el plan de contingencia del CCI cubre el periodo intermedio. La prioridad 3 de R2 no impide aplicar antes sus controles de bajo costo, porque el registro automático de decisiones es un \textit{quick win} de la Fase E.
+
+La matriz de calor impone una condición adicional. Todas las celdas de impacto Mayor quedan en la zona Alta, sin importar la probabilidad. Por lo tanto, los controles preventivos, que reducen la probabilidad, no bastan para llevar R1, R3 y R4 a la tolerancia. También se necesitan controles que reduzcan el impacto, como la conmutación a la infraestructura redundante, la reversión de órdenes no autorizadas a partir de la bitácora y la operación con el plan de contingencia. En R2, de impacto Moderado, basta con bajar la probabilidad a Media o menos para llegar a la zona Moderada.

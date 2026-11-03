@@ -1,1 +1,290 @@
 \section{Visión, Principios y Alcance de la Arquitectura}
+Esta sección explica por qué se requieren cambios en la arquitectura de seguridad del proceso de gestión y despacho de flota desde el Centro de Control Integrado (CCI) de TransMilenio S.A. y qué necesidades debe responder. El documento corresponde a un \textit{blueprint} empresarial (Moyle \& Kelley, 2020), porque se enfoca en la infraestructura, las redes, las unidades de negocio y la gobernanza del CCI, y se construye con las fases del TOGAF ADM y los puntos de vista de ArchiMate desarrollados para el caso.
+
+% ---------------------------------------------------------------------
+\subsection{Carta y Declaración de Propósito (\textit{Charter / Goal Statement})}
+
+La carta de propósito expresa en una o dos oraciones la razón de ser del \textit{blueprint} y el valor estratégico que aporta a la organización. Sirve como criterio para comprobar que cada decisión de diseño posterior responde a ese propósito.
+
+\textbf{Declaración de propósito para el CCI.}
+
+\begin{quote}
+\textit{Este blueprint define la arquitectura de seguridad del proceso de gestión y despacho de flota desde el CCI de TransMilenio S.A., para que la supervisión y regulación de más de 10.500 buses se apoyen en telemetría auténtica, accesos controlados, decisiones trazables y una operación sin punto único de falla. Con ello protege los objetivos de movilidad segura y de calidad, de consolidación del CCI como centro único de control y de reducción de los tiempos de espera, en cumplimiento de la normativa colombiana de seguridad digital y protección de datos personales.}
+\end{quote}
+
+La declaración parte de la visión definida en la Fase A del análisis TOGAF: consolidar el CCI como un centro de control integrado, seguro y resiliente, capaz de regular la flota en tiempo real con información confiable. Su valor estratégico se explica por la concentración de la operación. Desde marzo de 2026, y por primera vez en 25 años, la totalidad del sistema (Troncal, TransMiZonal y TransMiCable) se gestiona desde un mismo sitio (TRANSMILENIO S.A., 2026). Esa concentración mejora la coordinación, pero también hace que un dato manipulado, un acceso indebido o una falla del CCI afecten la operación de toda la ciudad.
+
+\begin{description}
+  \item[Patrocinador:] Gerencia General de TransMilenio S.A.
+  \item[Responsable del dominio:] Subgerencia de Operaciones.
+  \item[Instancia de gobierno:] Comité de Arquitectura del proceso, con representación de Operaciones, Seguridad y TI, que revisa cada entrega antes de pasar a producción.
+  \item[Tipo de \textit{blueprint}:] Empresarial, construido con TOGAF ADM y ArchiMate.
+  \item[Activos críticos protegidos:] telemetría de flota (CCI-001), bitácora de decisiones del CCI (CCI-002) y Sistema de Despacho (CCI-003).
+\end{description}
+
+
+% ---------------------------------------------------------------------
+\subsection{Definición del Alcance (\textit{Scope Boundaries})}
+
+La definición del alcance fija las fronteras de la arquitectura. Indica qué procesos, sistemas, redes y componentes quedan incluidos (\textit{in-scope}) y cuáles quedan excluidos (\textit{out-of-scope}), con la justificación de cada decisión, para que el diseño y la evaluación de riesgos se concentren en lo que soporta el proceso.
+
+La frontera de esta arquitectura es el proceso de gestión y despacho de flota desde el CCI para los componentes Troncal, TransMiZonal y TransMiCable. El proceso comprende la recolección de datos en tiempo real, el análisis de la operación, la toma de decisión operativa y la comunicación y ejecución de las órdenes de regulación. En ArchiMate se modeló como el proceso \textit{Gestión de Irregularidad de Operación}. Las Tablas~\ref{tab:alcance-incluido} y~\ref{tab:alcance-incluido-2} presentan los elementos incluidos y la Tabla~\ref{tab:alcance-excluido} los excluidos.
+
+\begin{table}[H]
+	\caption{Elementos incluidos en el alcance (\textit{in-scope}) (parte 1 de 2)}
+	\label{tab:alcance-incluido}
+	\centering
+	\footnotesize
+	\renewcommand{\arraystretch}{1.15}
+	\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.44\textwidth} Y@{}}
+		\toprule
+		\textbf{Elemento incluido} & \textbf{Justificación} \\
+		\midrule
+		\textbf{Proceso de negocio.} Gestión y despacho de flota (\textit{Gestión de Irregularidad de Operación}): hallazgo de la irregularidad, recolección de datos de flota, análisis de la operación, toma de decisión operativa, comunicación y ejecución de la orden de regulación.
+		& Es el proceso clave de la Fase B. En sus pasos se materializan los riesgos R1 a R4.
+		\\
+		\midrule
+		\textbf{Servicios de negocio.} Monitoreo de Flota en Tiempo Real, Notificación de Novedades Operacionales y Notificación de Instrucciones de Regulación.
+		& Son los servicios que el proceso entrega a supervisores, operadores de flota y conductores. Sobre ellos se asocian los requerimientos de seguridad.
+		\\
+		\midrule
+		\textbf{Activos de información críticos.} Telemetría de flota (CCI-001), bitácora de decisiones del CCI (CCI-002) y Sistema de Despacho (CCI-003), junto con los objetos de negocio Novedad Operacional e Instrucción de Regulación.
+		& Los tres activos tienen criticidad Alta en la valoración de confidencialidad, integridad y disponibilidad (Anexo A).
+		\\
+		\midrule
+		\textbf{Aplicaciones.} Sistema de Despacho / Control de Flota (SIRCI/FMS) con sus módulos de monitoreo de flota, gestión de novedades y despacho y regulación; plataforma de analítica y tableros operativos; consola unificada del CCI.
+		& Soportan cada paso del proceso, desde la actualización del estado de la flota hasta la generación de instrucciones de regulación.
+		\\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+	\caption{Elementos incluidos en el alcance (\textit{in-scope}) (parte 2 de 2)}
+	\label{tab:alcance-incluido-2}
+	\centering
+	\footnotesize
+	\renewcommand{\arraystretch}{1.15}
+	\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.44\textwidth} Y@{}}
+		\toprule
+		\textbf{Elemento incluido} & \textbf{Justificación} \\
+		\midrule
+		\textbf{Sistema ITS a bordo y red vehículo--CCI.} GPS/AVL, cámaras y sensores de los buses, y la red de comunicaciones que transmite la telemetría al CCI.
+		& Es el origen de la telemetría. Sin su protección no se puede garantizar la integridad de la señal (R1).
+		\\
+		\midrule
+		\textbf{Integraciones.} Bus de eventos en tiempo real y APIs entre ITS a bordo, despacho, analítica, alertas e información al usuario.
+		& El análisis de la Fase 1 mostró que los riesgos más críticos se concentran en los puntos de integración entre subsistemas.
+		\\
+		\midrule
+		\textbf{Identidad y acceso.} SSO con Active Directory y ADFS, perfiles RBAC y MFA para las más de 200 personas que operan desde 209 puestos.
+		& Un acceso no autorizado al Sistema de Despacho (R3) permite cambiar rutas, frecuencias u órdenes de despacho.
+		\\
+		\midrule
+		\textbf{Infraestructura tecnológica del CCI.} Centro de datos local de baja latencia, servicios en Google Cloud Platform, Fortinet (firewalls, segmentación, FortiAnalyzer y FortiSIEM), Oracle Spatial/Locator con Esri ArcGIS, plataforma de streaming de eventos y almacenamiento WORM.
+		& Soporta la disponibilidad del despacho (R4) y la integridad de los registros de decisiones (R2).
+		\\
+		\midrule
+		\textbf{Interfaces con procesos externos.} Entrada de alertas desde la gestión de incidentes y emergencias, y salida de novedades hacia los canales de información al usuario.
+		& Son los eventos que disparan una acción de regulación o comunican su resultado, por lo que su contenido y su canal deben protegerse.
+		\\
+		\bottomrule
+	\end{tabularx}
+
+	\vspace{0.4em}
+	\parbox{\textwidth}{\footnotesize \textit{Nota.} Elaboración propia con base en el análisis TOGAF de la Fase 1 y TRANSMILENIO S.A. (2020, 2026).}
+\end{table}
+
+\begin{table}[H]
+	\caption{Elementos excluidos del alcance (\textit{out-of-scope})}
+	\label{tab:alcance-excluido}
+	\centering
+	\footnotesize
+	\renewcommand{\arraystretch}{1.15}
+	\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.44\textwidth} Y@{}}
+		\toprule
+		\textbf{Elemento excluido} & \textbf{Justificación} \\
+		\midrule
+		\textbf{Gestión de incidentes y emergencias:} video-analítica con inteligencia artificial, cadena de custodia de evidencia digital e intercambio de información con la Policía.
+		& Es un proceso externo con su propio caso de negocio (caso 2). Solo se incluye la interfaz por la que sus alertas llegan al CCI.
+		\\
+		\midrule
+		\textbf{Recaudo del SIRCI:} medios de pago, validadores y liquidación de ingresos.
+		& No interviene en la supervisión ni en la regulación de la flota.
+		\\
+		\midrule
+		\textbf{Sistemas internos de los operadores de flota:} gestión de mantenimiento, personal y nómina de los consorcios troncales y zonales.
+		& Los administran terceros. La arquitectura cubre su conexión con el CCI y las obligaciones de seguridad que se les trasladen.
+		\\
+		\midrule
+		\textbf{Canales digitales de atención al ciudadano:} desarrollo y operación de la aplicación móvil, el sitio web y las pantallas de las estaciones.
+		& El alcance llega hasta la publicación de la novedad. La seguridad propia de esas aplicaciones corresponde a un \textit{blueprint} de aplicación.
+		\\
+		\midrule
+		\textbf{Sistemas de control mecánico y electrónico del vehículo} (motor, frenos y red interna del bus).
+		& Corresponden a la seguridad funcional del vehículo y no a la seguridad de la información del proceso.
+		\\
+		\midrule
+		\textbf{Procesos administrativos y financieros de TransMilenio} (contratación, gestión financiera y talento humano).
+		& No soportan la regulación de la flota.
+		\\
+		\bottomrule
+	\end{tabularx}
+
+	\vspace{0.4em}
+	\parbox{\textwidth}{\footnotesize \textit{Nota.} Elaboración propia con base en el análisis TOGAF de la Fase 1.}
+\end{table}
+
+% ---------------------------------------------------------------------
+\subsection{Principios de Arquitectura de Seguridad (\textit{Architectural Principles})}
+
+Los principios de arquitectura de seguridad son reglas generales y no negociables que orientan las decisiones de diseño. Cada principio se documenta con un nombre, una declaración de la regla, la justificación de negocio que lo respalda y las implicaciones técnicas y operativas que genera.
+
+Los principios retoman los definidos en la Fase Preliminar del análisis TOGAF. Los tres primeros se modelaron en la \textit{Goal Realization View}, donde realizan los resultados esperados (\textit{outcomes}) del CCI. El cuarto se presenta en su dimensión de seguridad, porque las integraciones concentran los riesgos más críticos del proceso.
+
+\paragraph{Principio 1}
+\begin{description}
+  \item[Nombre:] Seguridad desde el diseño (\textit{Security by Design}).
+  \item[Declaración:] Todo componente que soporta el proceso de despacho incorpora control de acceso, cifrado, integridad y trazabilidad desde su concepción, y ningún usuario ni consola del CCI opera sin autenticarse de forma robusta.
+  \item[Justificación:] El CCI concentra en un solo sitio la regulación de toda la flota. Un control añadido después de la puesta en producción deja expuestos el acceso no autorizado al despacho (R3) y la alteración de la bitácora (R2). El principio está en línea con el MSPI, que incluye la seguridad en la adquisición, el desarrollo y el mantenimiento de los sistemas (Ministerio de Tecnologías de la Información y las Comunicaciones, 2021).
+  \item[Implicaciones:] \hfill
+  \begin{itemize}
+    \item RBAC con perfiles diferenciados (operador de monitoreo, supervisor de despacho y soporte TIC) sobre Active Directory y ADFS, y MFA en las consolas y cuentas del CCI.
+    \item Cifrado de las comunicaciones operativas y de los datos personales, y registro de cada decisión en almacenamiento WORM.
+    \item Monitoreo centralizado de accesos y eventos de seguridad con FortiSIEM y FortiAnalyzer.
+    \item Revisión de cada entrega por el Comité de Arquitectura y pruebas de penetración a las consolas antes de pasar a producción.
+    \item En la operación, la creación de cuentas requiere la aprobación del rol, y los operadores usan MFA al iniciar sesión en las consolas.
+  \end{itemize}
+  \item[Relación con el modelo:] realiza los \textit{outcomes} ``Cero hallazgos críticos en auditorías de datos personales'', ``Cero accesos no autorizados al Sistema de Despacho'' y ``100\% de las decisiones de despacho registradas sin alteraciones''.
+\end{description}
+
+\paragraph{Principio 2}
+\begin{description}
+  \item[Nombre:] Dato único y consistente.
+  \item[Declaración:] La posición, el estado y la programación de la flota tienen una sola fuente autoritativa, y ninguna decisión de despacho se toma con una señal GPS/AVL cuya autenticidad no se haya verificado.
+  \item[Justificación:] El CCI procesa más de 40 millones de registros de datos al día (TRANSMILENIO S.A., 2026). Si dos sistemas muestran posiciones distintas o si una señal fue suplantada (R1), el supervisor regula la flota con información falsa, lo que altera las frecuencias del servicio y los tiempos de espera.
+  \item[Implicaciones:] \hfill
+  \begin{itemize}
+    \item Definir la fuente autoritativa y los metadatos comunes de flota: código de bus, ruta, servicio, estación o parada y marca de tiempo.
+    \item Usar Oracle Spatial/Locator como fuente transaccional y Esri ArcGIS solo como capa de publicación y análisis.
+    \item Validar criptográficamente la señal GPS/AVL antes de que llegue al despacho y marcar como no confiable cualquier dato que no supere la validación.
+    \item Hacer que los tableros operativos consuman la fuente autoritativa y no copias locales de los datos.
+  \end{itemize}
+  \item[Relación con el modelo:] realiza los \textit{outcomes} ``100\% de las señales GPS/AVL con autenticidad verificada antes de usarse'' y ``100\% de las decisiones de despacho registradas sin alteraciones''.
+\end{description}
+
+\paragraph{Principio 3}
+\begin{description}
+  \item[Nombre:] Continuidad operativa.
+  \item[Declaración:] El CCI no es un punto único de falla. La supervisión y la regulación de la flota continúan ante la falla de un componente, de un enlace o del sitio principal.
+  \item[Justificación:] La operación es continua (8.760 horas al año) y la indisponibilidad del Sistema de Despacho (R4) tiene impacto Mayor, porque impide aplicar medidas frente a retrasos, congestión y otras novedades de la operación.
+  \item[Implicaciones:] \hfill
+  \begin{itemize}
+    \item Arquitectura redundante que combina componentes locales de baja latencia con servicios en Google Cloud Platform y balanceadores de carga.
+    \item Plan de contingencia del CCI con procedimientos de regulación en modo degradado, probados de forma periódica.
+    \item Meta de disponibilidad del Sistema de Despacho igual o superior al 99.9\% en horas pico, propuesta como supuesto del modelo académico.
+    \item Mayor costo de infraestructura y de pruebas, que se planifica en la fase 3 de la migración (Fase F).
+  \end{itemize}
+  \item[Relación con el modelo:] realiza el \textit{outcome} ``Uptime $\geq$ 99.9\% del Sistema de Despacho en horas pico''.
+\end{description}
+
+\paragraph{Principio 4}
+\begin{description}
+  \item[Nombre:] Integración segura por API o bus de eventos.
+  \item[Declaración:] Los sistemas del proceso intercambian información solo a través de APIs o del bus de eventos en tiempo real, con autenticación de cada sistema y canales cifrados. No se permiten integraciones punto a punto sin documentar.
+  \item[Justificación:] La Fase Preliminar adoptó este mecanismo como directriz de interoperabilidad. Las conclusiones de la Fase 1 muestran que una falla o manipulación en un subsistema (ITS a bordo, despacho, analítica o información al usuario) puede propagarse a toda la operación a través de esos puntos de integración.
+  \item[Implicaciones:] \hfill
+  \begin{itemize}
+    \item Mantener actualizado el inventario de interfaces, fuentes de datos, roles y permisos.
+    \item Autenticar cada sistema que publica o consume eventos y cifrar el canal de intercambio.
+    \item Segmentar la red con Fortinet para separar funciones críticas, sistemas operacionales, analítica y accesos externos.
+    \item Aplicar los metadatos comunes del principio 2 a todos los eventos del bus.
+  \end{itemize}
+  \item[Relación con el modelo:] no se modeló en la \textit{Goal Realization View} porque su propósito principal es la interoperabilidad. Se apoya en el requerimiento ``Inventario de activos, interfaces, roles y permisos''.
+\end{description}
+
+% ---------------------------------------------------------------------
+\subsection{Identificación de Interesados y Puntos de Vista (\textit{Stakeholders \& Viewpoints})}
+
+Este ítem identifica a los actores con interés en la arquitectura y los clasifica según su rol: beneficiarios del servicio, tomadores de decisiones y especialistas técnicos. Para cada uno indica su preocupación principal y los puntos de vista que le muestran la información que necesita.
+
+Los interesados provienen del mapa de la Fase A y son los mismos que se modelaron en la \textit{Stakeholder View}. Su preocupación principal corresponde a los impulsadores (\textit{drivers}) con los que se asociaron en esa vista, como se resume en las Tablas~\ref{tab:interesados} y~\ref{tab:interesados-2}.
+
+\begin{table}[H]
+	\caption{Interesados, preocupaciones y puntos de vista (parte 1 de 2)}
+	\label{tab:interesados}
+	\centering
+	\footnotesize
+	\renewcommand{\arraystretch}{1.15}
+	\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.14\textwidth} Y Y Y@{}}
+		\toprule
+		\textbf{Rol} & \textbf{Interesado} & \textbf{Preocupación principal (\textit{driver} asociado)} & \textbf{Puntos de vista} \\
+		\midrule
+		\textbf{Beneficiario}
+		& Usuarios del sistema
+		& Indisponibilidad del Sistema de Despacho: si no se puede regular la flota, aumentan los tiempos de espera y la variabilidad del servicio.
+		& \textit{Stakeholder View}, donde se representan sus intereses.
+		\\
+		\midrule
+		\textbf{Tomador de decisiones}
+		& Gerencia General (patrocinador)
+		& Cumplimiento normativo de seguridad y datos personales, e indisponibilidad del Sistema de Despacho. Aprueba la visión y recibe el informe de estado de la arquitectura (Fase H).
+		& \textit{Stakeholder View} y \textit{Goal Realization View}.
+		\\
+		\midrule
+		\textbf{Tomador de decisiones}
+		& Subgerencia de Operaciones
+		& Acceso no autorizado al Sistema de Despacho e indisponibilidad del Sistema de Despacho. Es la responsable principal del dominio operativo.
+		& \textit{Stakeholder View}, \textit{Goal Realization View} y vista integrada.
+		\\
+		\bottomrule
+	\end{tabularx}
+\end{table}
+
+\begin{table}[H]
+	\caption{Interesados, preocupaciones y puntos de vista (parte 2 de 2)}
+	\label{tab:interesados-2}
+	\centering
+	\footnotesize
+	\renewcommand{\arraystretch}{1.15}
+	\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.14\textwidth} Y Y Y@{}}
+		\toprule
+		\textbf{Rol} & \textbf{Interesado} & \textbf{Preocupación principal (\textit{driver} asociado)} & \textbf{Puntos de vista} \\
+		\midrule
+		\textbf{Especialista técnico (operación)}
+		& Direcciones Técnicas Troncal y Zonal
+		& Acceso no autorizado al Sistema de Despacho e indisponibilidad del Sistema de Despacho, porque regulan su componente desde el CCI.
+		& Vista integrada (servicios y proceso).
+		\\
+		\midrule
+		\textbf{Especialista técnico (TI)}
+		& Dirección TIC y áreas de analítica de datos
+		& Cumplimiento normativo, manipulación de la telemetría GPS/AVL y alteración de la bitácora de decisiones. Administra los sistemas, las identidades y los registros.
+		& \textit{Goal Realization View} y vista integrada (requerimientos y componentes de aplicación).
+		\\
+		\midrule
+		\textbf{Especialista técnico (operación)}
+		& Operadores de flota y conductores
+		& Manipulación de la telemetría GPS/AVL, porque la señal sale del ITS a bordo de sus buses y con base en ella reciben las órdenes de regulación.
+		& Vista integrada (servicio Notificación de Instrucciones de Regulación).
+		\\
+		\midrule
+		\textbf{Especialista técnico (seguridad física)}
+		& Dirección Técnica de Seguridad y organismos externos
+		& Cumplimiento normativo de seguridad y datos personales. Participan solo cuando una novedad afecta la operación.
+		& \textit{Stakeholder View} y vista integrada (servicio Notificación de Novedades Operacionales).
+		\\
+		\bottomrule
+	\end{tabularx}
+
+	\vspace{0.4em}
+	\parbox{\textwidth}{\footnotesize \textit{Nota.} Elaboración propia con base en el mapa de interesados de la Fase A y la Stakeholder View del modelo ArchiMate.}
+\end{table}
+
+Los puntos de vista desarrollados en ArchiMate responden a estas necesidades de la siguiente manera:
+
+\begin{itemize}
+  \item \textbf{\textit{Stakeholder View}:} relaciona los siete interesados con cinco impulsadores, cinco evaluaciones (\textit{assessments}) y cinco objetivos (\textit{goals}). Le muestra a la dirección por qué se requiere el cambio.
+  \item \textbf{\textit{Goal Realization View}:} descompone los cinco objetivos en resultados esperados medibles y los vincula con tres principios y diez requerimientos de seguridad. Le sirve a la dirección para acordar metas y a la Dirección TIC para saber qué debe implementar.
+  \item \textbf{Vista integrada de motivación, estrategia, negocio y aplicación:} conecta los requerimientos con los cursos de acción, los tres servicios de negocio, el proceso \textit{Gestión de Irregularidad de Operación}, sus objetos de negocio y el componente SIRCI/FMS. La usan la operación y TI para ubicar en qué paso del proceso y en qué aplicación se aplica cada control.
+\end{itemize}
