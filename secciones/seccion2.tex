@@ -1,6 +1,6 @@
 \section{Contexto de Negocio, Objetivos y Cumplimiento}
 
-TransMilenio S.A. es una empresa industrial y comercial del Estado del orden distrital, adscrita a la Alcaldía Mayor de Bogotá, que gestiona el transporte público masivo de la ciudad en sus componentes Troncal, TransMiZonal y TransMiCable. Desde marzo de 2026 el CCI supervisa en un mismo sitio más de 10.500 buses, procesa más de 40 millones de registros de datos al día y opera desde 209 puestos (Alcaldía Mayor de Bogotá, 2026; TRANSMILENIO S.A., 2026). Esta sección relaciona ese contexto con los objetivos de la organización, la normativa aplicable y el nivel de riesgo que la entidad está dispuesta a asumir.
+TransMilenio S.A. es una empresa industrial y comercial del Estado del orden distrital, adscrita a la Secretaría Distrital de Movilidad \parencite{transmilenio2025pesi}, que gestiona el transporte público masivo de la ciudad en sus componentes Troncal, TransMiZonal y TransMiCable. Desde marzo de 2026 el CCI supervisa en un mismo sitio más de 10.500 buses, procesa más de 40 millones de registros de datos al día y opera desde 209 puestos \parencite{alcaldia2026cci,transmilenio2026cci}. Esta sección relaciona ese contexto con los objetivos de la organización, la normativa aplicable y el nivel de riesgo que la entidad está dispuesta a asumir.
 
 % ---------------------------------------------------------------------
 \subsection{Alineación con Objetivos Organizacionales y Tecnológicos}
@@ -13,7 +13,7 @@ Los objetivos que orientan la arquitectura son los objetivos estratégicos del c
   \item \textbf{OE1.} Garantizar una movilidad urbana sostenible, segura y de calidad para los habitantes de Bogotá.
   \item \textbf{OE2.} Integrar y modernizar la operación del sistema mediante tecnología, consolidando el CCI como centro único de control.
   \item \textbf{OE3.} Reducir los tiempos de espera y la variabilidad del servicio mediante regulación de flota en tiempo real.
-  \item \textbf{OT1.} Reflejar correctamente las actuaciones de la institución y de sus terceros, según el PETI (TRANSMILENIO S.A., 2020).
+  \item \textbf{OT1.} Reflejar correctamente las actuaciones de la institución y de sus terceros, según el PETI \parencite{transmilenio2020peti}.
 \end{itemize}
 
 La Tabla~\ref{tab:alineacion} muestra, para cada objetivo, la decisión de seguridad que lo habilita, expresada como curso de acción y requerimientos del modelo ArchiMate, la capacidad tecnológica que esa decisión exige y el objetivo de seguridad (\textit{goal}) con su resultado esperado (\textit{outcome}).
@@ -61,17 +61,17 @@ La Tabla~\ref{tab:alineacion} muestra, para cada objetivo, la decisión de segur
 	\end{tabularx}
 
 	\vspace{0.4em}
-	\parbox{\textwidth}{\footnotesize \textit{Nota.} Elaboración propia con base en los objetivos estratégicos del caso, TRANSMILENIO S.A. (2020, 2026) y las vistas ArchiMate del modelo.}
+	\parbox{\textwidth}{\footnotesize \textit{Nota.} Elaboración propia con base en los objetivos estratégicos del caso y las vistas ArchiMate del modelo \parencite{transmilenio2020peti,transmilenio2026cci,modeloArchimateCCI2026}.}
 \end{table}
 
-La tabla sigue la misma cadena de los modelos ArchiMate. Cada objetivo organizacional se protege con un objetivo de seguridad, este se mide con un resultado esperado y se realiza mediante principios y requerimientos concretos. Los requerimientos, a su vez, se asocian en la vista integrada con los servicios Monitoreo de Flota en Tiempo Real, Notificación de Novedades Operacionales y Notificación de Instrucciones de Regulación, de modo que cada control queda ubicado en el servicio de negocio que protege. El orden de implementación sigue la Fase F: primero las fuentes autoritativas, el control de acceso por roles y la trazabilidad básica; después la integración y el tablero unificado; y al final la redundancia integral y la auditoría transversal de decisiones.
+La tabla sigue la misma cadena de los modelos ArchiMate \parencite{archimate2022}. Cada objetivo organizacional se protege con un objetivo de seguridad, este se mide con un resultado esperado y se realiza mediante principios y requerimientos concretos. Los requerimientos, a su vez, se asocian en la vista integrada con los servicios Monitoreo de Flota en Tiempo Real, Notificación de Novedades Operacionales y Notificación de Instrucciones de Regulación, de modo que cada control queda ubicado en el servicio de negocio que protege. El orden de implementación sigue la Fase F del TOGAF ADM \parencite{togaf2022}: primero las fuentes autoritativas, el control de acceso por roles y la trazabilidad básica; después la integración y el tablero unificado; y al final la redundancia integral y la auditoría transversal de decisiones.
 
 % ---------------------------------------------------------------------
 \subsection{Requerimientos de Cumplimiento y Normativa (\textit{Compliance \& Regulatory})}
 
 Este ítem cataloga los marcos legales, regulatorios y estándares que son obligatorios o de referencia para el alcance, indica qué exige cada uno y cómo responde la arquitectura. Permite demostrar ante una auditoría que cada control tiene un soporte normativo.
 
-El CCI procesa datos de geolocalización, video de cámaras a bordo, datos personales de usuarios y conductores e información operativa crítica. Por ese tipo de información y por su condición de entidad pública, le aplican los marcos de las Tablas~\ref{tab:normativa} y~\ref{tab:normativa-2}.
+El CCI procesa datos de geolocalización, video de cámaras a bordo, datos personales de usuarios y conductores e información operativa crítica \parencite{transmilenio2026cci}. Por ese tipo de información y por su condición de entidad pública, le aplican los marcos de las Tablas~\ref{tab:normativa} y~\ref{tab:normativa-2}.
 
 \begin{table}[H]
 	\caption{Marcos legales, regulatorios y estándares aplicables al alcance (parte 1 de 2)}
@@ -83,31 +83,31 @@ El CCI procesa datos de geolocalización, video de cámaras a bordo, datos perso
 		\toprule
 		\textbf{Marco} & \textbf{Carácter} & \textbf{Exigencia aplicable al CCI} & \textbf{Respuesta de la arquitectura} \\
 		\midrule
-		\textbf{Ley Estatutaria 1581 de 2012 (Congreso de Colombia, 2012)}
+		\textbf{Ley Estatutaria 1581 de 2012} \parencite{ley1581de2012}
 		& Ley, obligatoria
 		& Tratar los datos personales de conductores y usuarios (identificación asociada al vehículo, geolocalización e imágenes de cámaras a bordo) según los principios de finalidad, acceso y circulación restringida, seguridad y confidencialidad.
 		& RBAC, cifrado de comunicaciones y datos personales, minimización de datos personales en los tableros y clasificación de la información del ITS.
 		\\
 		\midrule
-		\textbf{Decreto 1074 de 2015 (Ministerio de Comercio, Industria y Turismo, 2015)}
+		\textbf{Decreto 1074 de 2015} \parencite{decreto1074de2015}
 		& Decreto reglamentario, obligatorio
 		& Contar con política de tratamiento, autorización de los titulares, aviso de privacidad, procedimiento de consultas y reclamos, e inscripción de las bases de datos en el Registro Nacional de Bases de Datos.
-		& Política de Tratamiento y Protección de Datos Personales (v6) e identificación, en el inventario de activos, de las bases con datos personales.
+		& Política de Tratamiento y Protección de Datos Personales (v6) \parencite{transmilenio2025politicaDatos} e identificación, en el inventario de activos, de las bases con datos personales.
 		\\
 		\midrule
-		\textbf{Resolución MinTIC 500 de 2021, MSPI (Ministerio de Tecnologías de la Información y las Comunicaciones, 2021)}
+		\textbf{Resolución MinTIC 500 de 2021, MSPI} \parencite{mintic2021}
 		& Resolución, obligatoria para entidades públicas
 		& Adoptar el Modelo de Seguridad y Privacidad de la Información: inventario y clasificación de activos, gestión de riesgos de seguridad de la información, plan de tratamiento y gestión de incidentes.
 		& Inventario de activos (Anexo A), matriz de riesgos y controles (Anexo B), MFA, RBAC y registro de decisiones.
 		\\
 		\midrule
-		\textbf{Decreto 338 de 2022 (Presidencia de la República de Colombia, 2022)}
+		\textbf{Decreto 338 de 2022} \parencite{decreto338de2022}
 		& Decreto, obligatorio
 		& Fortalecer la gobernanza de la seguridad digital, identificar y proteger las infraestructuras críticas cibernéticas y los servicios esenciales, gestionar sus riesgos y responder a los incidentes de seguridad digital.
 		& Tratamiento del CCI como infraestructura crítica de movilidad: arquitectura redundante, plan de contingencia, monitoreo con FortiSIEM y segmentación de red.
 		\\
 		\midrule
-		\textbf{Ley 1712 de 2014 (Congreso de Colombia, 2014a)}
+		\textbf{Ley 1712 de 2014} \parencite{ley1712de2014}
 		& Ley, obligatoria
 		& Determinar qué información es pública, clasificada o reservada, y publicar la información al ciudadano sin exponer la que tiene reserva.
 		& Clasificación de la información del CCI y publicación de novedades al usuario sin datos personales ni detalles de la infraestructura.
@@ -126,31 +126,31 @@ El CCI procesa datos de geolocalización, video de cámaras a bordo, datos perso
 		\toprule
 		\textbf{Marco} & \textbf{Carácter} & \textbf{Exigencia aplicable al CCI} & \textbf{Respuesta de la arquitectura} \\
 		\midrule
-		\textbf{ISO/IEC 27001:2022 (International Organization for Standardization \& International Electrotechnical Commission, 2022a)}
+		\textbf{ISO/IEC 27001:2022} \parencite{iso27001}
 		& Estándar internacional, de referencia
 		& Sistema de gestión de seguridad de la información y controles del Anexo A. El MSPI toma esta norma como referencia.
 		& Base de los controles asociados a cada requerimiento (Tabla~\ref{tab:trazabilidad-normativa}).
 		\\
 		\midrule
-		\textbf{ISO/IEC 27005:2022 (International Organization for Standardization \& International Electrotechnical Commission, 2022b)}
+		\textbf{ISO/IEC 27005:2022} \parencite{iso27005}
 		& Estándar internacional, de referencia
 		& Orientación para identificar, analizar, evaluar y tratar los riesgos de seguridad de la información.
 		& Identificación de R1 a R4 a partir de activos, amenazas y debilidades.
 		\\
 		\midrule
-		\textbf{Guía para la Gestión Integral del Riesgo en Entidades Públicas, v7 (Departamento Administrativo de la Función Pública, 2025)}
+		\textbf{Guía para la Gestión Integral del Riesgo en Entidades Públicas, v7} \parencite{funcionpublica2025}
 		& Guía metodológica para entidades públicas
 		& Escalas de probabilidad e impacto, matriz de calor, diseño de controles, riesgo residual y definición del apetito de riesgo.
 		& Valoración del riesgo inherente y criterios de apetito del numeral 2.3.
 		\\
 		\midrule
-		\textbf{PESI v2 (TRANSMILENIO S.A., 2025a), Políticas de Seguridad y Privacidad de la Información (v7) y Política de Tratamiento y Protección de Datos Personales (v6)}
+		\textbf{PESI v2, Políticas de Seguridad y Privacidad de la Información (v7) y Política de Tratamiento y Protección de Datos Personales (v6)} \parencite{transmilenio2025pesi,transmilenio2026politicas,transmilenio2025politicaDatos}
 		& Políticas internas, obligatorias
 		& Lineamientos institucionales de control de acceso, autenticación, continuidad y protección de datos personales.
 		& MFA, RBAC, arquitectura redundante y cifrado de comunicaciones y datos personales.
 		\\
 		\midrule
-		\textbf{PETI v2 (TRANSMILENIO S.A., 2020)}
+		\textbf{PETI v2} \parencite{transmilenio2020peti}
 		& Plan institucional, obligatorio
 		& Reflejar correctamente las actuaciones de la institución y de sus terceros.
 		& Registro de decisiones en almacenamiento WORM.
@@ -227,7 +227,7 @@ La Tabla~\ref{tab:trazabilidad-normativa} relaciona cada requerimiento de seguri
 	\end{tabularx}
 
 	\vspace{0.4em}
-	\parbox{\textwidth}{\footnotesize \textit{Nota.} Elaboración propia con base en International Organization for Standardization y International Electrotechnical Commission (2022a) y la normativa de las Tablas~\ref{tab:normativa} y~\ref{tab:normativa-2}.}
+	\parbox{\textwidth}{\footnotesize \textit{Nota.} Elaboración propia con base en la norma ISO/IEC 27001:2022 \parencite{iso27001} y la normativa de las Tablas~\ref{tab:normativa} y~\ref{tab:normativa-2}.}
 \end{table}
 
 Las leyes, los decretos, la resolución y las políticas internas son de cumplimiento obligatorio. Las normas ISO/IEC son de referencia y se aplican por medio del MSPI. El resultado esperado ``Cero hallazgos críticos en auditorías de datos personales'' es la medida con la que se verifica este cumplimiento.
@@ -235,9 +235,9 @@ Las leyes, los decretos, la resolución y las políticas internas son de cumplim
 % ---------------------------------------------------------------------
 \subsection{Tolerancia y Apetito de Riesgo (\textit{Risk Appetite})}
 
-El apetito de riesgo es el nivel de riesgo que la organización está dispuesta a aceptar para lograr sus objetivos. La tolerancia es la desviación máxima que admite sobre ese nivel, y la capacidad de riesgo es el nivel máximo que puede soportar sin comprometer sus objetivos (Departamento Administrativo de la Función Pública, 2025). Juntos fijan el umbral que decide qué riesgos se aceptan, cuáles requieren controles y en qué orden se tratan.
+El apetito de riesgo es el nivel de riesgo que la organización está dispuesta a aceptar para lograr sus objetivos. La tolerancia es la desviación máxima que admite sobre ese nivel, y la capacidad de riesgo es el nivel máximo que puede soportar sin comprometer sus objetivos \parencite{funcionpublica2025}. Juntos fijan el umbral que decide qué riesgos se aceptan, cuáles requieren controles y en qué orden se tratan.
 
-La Guía del Departamento Administrativo de la Función Pública indica que cada entidad define estos niveles en su política de administración del riesgo. Los documentos del caso no incluyen el apetito formal de TransMilenio, por lo que este \textit{blueprint} propone los parámetros de la Tabla~\ref{tab:apetito} para el proceso del CCI. Los parámetros usan las zonas de la matriz de calor del riesgo inherente de la Fase 1 y la meta, fijada en esa valoración, de llevar los riesgos a niveles bajos o moderados.
+La Guía del Departamento Administrativo de la Función Pública \parencite{funcionpublica2025} indica que cada entidad define estos niveles en su política de administración del riesgo. Los documentos del caso no incluyen el apetito formal de TransMilenio, por lo que este \textit{blueprint} propone los parámetros de la Tabla~\ref{tab:apetito} para el proceso del CCI. Los parámetros usan las zonas de la matriz de calor del riesgo inherente de la Fase 1 \parencite{fase1cci2026} y la meta, fijada en esa valoración, de llevar los riesgos a niveles bajos o moderados.
 
 \begin{table}[H]
 	\caption{Apetito, tolerancia y capacidad de riesgo propuestos para el CCI}
@@ -276,7 +276,7 @@ La Guía del Departamento Administrativo de la Función Pública indica que cada
 	\end{tabularx}
 
 	\vspace{0.4em}
-	\parbox{\textwidth}{\footnotesize \textit{Nota.} Elaboración propia con base en Departamento Administrativo de la Función Pública (2025).}
+	\parbox{\textwidth}{\footnotesize \textit{Nota.} Elaboración propia con base en la Guía para la Gestión Integral del Riesgo en Entidades Públicas \parencite{funcionpublica2025}.}
 \end{table}
 
 La tolerancia también se expresa por propiedad de seguridad, con los mismos valores de los resultados esperados de la \textit{Goal Realization View} (Tabla~\ref{tab:tolerancia}).
@@ -313,18 +313,18 @@ La tolerancia también se expresa por propiedad de seguridad, con los mismos val
 		\midrule
 		\textbf{Cumplimiento normativo}
 		& Cero hallazgos críticos en auditorías de datos personales y del MSPI.
-		& Un hallazgo crítico expone a la entidad a sanciones de la Superintendencia de Industria y Comercio, autoridad de protección de datos personales.
+		& Un hallazgo crítico expone a la entidad a sanciones de la Superintendencia de Industria y Comercio, autoridad de protección de datos personales \parencite{ley1581de2012}.
 		\\
 		\bottomrule
 	\end{tabularx}
 
 	\vspace{0.4em}
-	\parbox{\textwidth}{\footnotesize \textit{Nota.} Elaboración propia con base en la Goal Realization View del modelo ArchiMate.}
+	\parbox{\textwidth}{\footnotesize \textit{Nota.} Elaboración propia con base en la \textit{Goal Realization View} del modelo ArchiMate \parencite{modeloArchimateCCI2026}.}
 \end{table}
 
 La tolerancia es menor para la integridad y el control de acceso que para la disponibilidad. La manipulación de la telemetría y las órdenes no autorizadas pueden pasar desapercibidas y llevar a decisiones incorrectas, mientras que una caída del despacho se detecta de inmediato y cuenta con un procedimiento de contingencia.
 
-Con estos parámetros, los cuatro riesgos evaluados en la Fase 1 superan la tolerancia, porque todos tienen nivel inherente Alto (Tabla~\ref{tab:apetito-riesgos}).
+Con estos parámetros, los cuatro riesgos evaluados en la Fase 1 \parencite{fase1cci2026} superan la tolerancia, porque todos tienen nivel inherente Alto (Tabla~\ref{tab:apetito-riesgos}).
 
 \begin{table}[H]
 	\caption{Posición de los riesgos inherentes frente al apetito de riesgo}
@@ -367,7 +367,7 @@ Con estos parámetros, los cuatro riesgos evaluados en la Fase 1 superan la tole
 	\end{tabularx}
 
 	\vspace{0.4em}
-	\parbox{\textwidth}{\footnotesize \textit{Nota.} Elaboración propia con base en la valoración del riesgo inherente de la Fase 1.}
+	\parbox{\textwidth}{\footnotesize \textit{Nota.} Elaboración propia con base en la valoración del riesgo inherente de la Fase 1 \parencite{fase1cci2026}.}
 \end{table}
 
 Los controles se priorizan con tres criterios, en este orden: primero, los riesgos cuyo nivel supera la tolerancia; segundo, los de mayor severidad; y tercero, a igual severidad, la propiedad con tolerancia cero (integridad y control de acceso) antes que la disponibilidad. Por eso R1 y R3 tienen prioridad 1, R4 prioridad 2 y R2 prioridad 3. Mientras se implementa la redundancia integral de R4, prevista para la fase 3 de la migración, el plan de contingencia del CCI cubre el periodo intermedio. La prioridad 3 de R2 no impide aplicar antes sus controles de bajo costo, porque el registro automático de decisiones es un \textit{quick win} de la Fase E.

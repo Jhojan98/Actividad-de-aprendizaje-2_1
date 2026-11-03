@@ -1,26 +1,26 @@
 \section{Modelo de Amenazas, Activos y Evaluación de Riesgos}
 
 El modelo de amenazas y riesgos del Centro de Control Integrado (CCI) parte de los activos
-críticos identificados durante la primera fase del proyecto y mantiene la trazabilidad con los
+críticos identificados durante la primera fase del proyecto \parencite{fase1cci2026} y mantiene la trazabilidad con los
 riesgos, políticas de seguridad, mecanismos de protección y capacidades arquitectónicas
-desarrolladas posteriormente mediante SABSA, O-ESA y ArchiMate.
+desarrolladas posteriormente mediante SABSA, O-ESA y ArchiMate, y aplicadas en los ensayos y el modelo del caso \parencite{sabsaCCI2026,oesaCCI2026,modeloArchimateCCI2026}.
 
 El análisis se concentra en los tres activos que soportan directamente el proceso de gestión y
 despacho de flota: la telemetría de flota, la bitácora de decisiones del CCI y el Sistema de
-Despacho. Sobre estos activos se mantienen los cuatro riesgos priorizados desde la primera fase:
+Despacho. Sobre estos activos se mantienen los cuatro riesgos priorizados desde la primera fase \parencite{fase1cci2026}:
 manipulación o suplantación de la telemetría (R1), alteración o eliminación de la bitácora
 operativa (R2), acceso no autorizado al Sistema de Despacho (R3) e indisponibilidad del
 Sistema de Despacho (R4).
 
 En esta sección se consolida la criticidad de los activos, caracteriza la superficie de ataque
-mediante la taxonomía \textit{Data--Method--Channel} utilizada en O-ESA, recupera la
+mediante la taxonomía \textit{Data--Method--Channel} utilizada en O-ESA \parencite{oesa2011}, recupera la
 valoración de riesgo definida previamente y relaciona cada riesgo con los dominios de seguridad
 y capacidades técnicas requeridas para alcanzar el estado objetivo de la arquitectura.
 
 
 \subsection{Inventario y Criticidad de Activos}
 
-La identificación de activos realizada en la primera fase determinó tres elementos de criticidad
+La identificación de activos realizada en la primera fase \parencite{fase1cci2026} determinó tres elementos de criticidad
 alta para la operación del CCI. Su valoración considera las propiedades de confidencialidad,
 integridad y disponibilidad de la información, de acuerdo con el impacto que una afectación de
 cada propiedad tendría sobre la regulación de la flota.
@@ -40,9 +40,9 @@ La Tabla~\ref{tab:activos_criticos_blueprint} resume esta clasificación.
 			>{\raggedright\arraybackslash}p{1.5cm}
 			>{\raggedright\arraybackslash}X
 			>{\centering\arraybackslash}p{2.0cm}
-			>{\centering\arraybackslash}p{1.6cm}
+			>{\centering\arraybackslash}p{1.9cm}
 			>{\centering\arraybackslash}p{2.0cm}
-			>{\centering\arraybackslash}p{1.6cm}}
+			>{\centering\arraybackslash}p{1.9cm}}
 		
 		\toprule
 		
@@ -85,7 +85,7 @@ La Tabla~\ref{tab:activos_criticos_blueprint} resume esta clasificación.
 	\begin{minipage}{0.96\textwidth}
 		\footnotesize
 		\textit{Nota.} Elaboración propia con base en la identificación y valoración de activos
-		realizada en la primera fase del proyecto.
+		realizada en la primera fase del proyecto \parencite{fase1cci2026}.
 	\end{minipage}
 \end{table}
 
@@ -108,7 +108,7 @@ bloqueos u otras novedades de la operación.
 \subsection{Caracterización de la Superficie de Ataque}
 
 Para caracterizar la superficie de ataque se mantiene la estructura empleada en el análisis
-O-ESA, diferenciando tres dimensiones: Data, Method y Channel. La primera corresponde a la información o elementos que pueden verse comprometidos, mientras que por Method, con este se representa el mecanismo o técnica mediante la cual puede materializarse la amenaza, y, por último, Channel identifica el canal físico o lógico a través del cual ocurre la interacción.
+O-ESA \parencite{oesa2011,oesaCCI2026}, diferenciando tres dimensiones: Data, Method y Channel. La primera corresponde a la información o elementos que pueden verse comprometidos, mientras que por Method, con este se representa el mecanismo o técnica mediante la cual puede materializarse la amenaza, y, por último, Channel identifica el canal físico o lógico a través del cual ocurre la interacción.
 
 Esta descomposición permite evitar una visión aislada de cada amenaza y relacionarla con los
 puntos concretos de la arquitectura donde deben implementarse los mecanismos de protección.
@@ -168,7 +168,7 @@ puntos concretos de la arquitectura donde deben implementarse los mecanismos de 
 	\begin{minipage}{0.96\textwidth}
 		\footnotesize
 		\textit{Nota.} Elaboración propia a partir de la matriz de trazabilidad de riesgos,
-		superficie de ataque y servicios de seguridad desarrollada mediante O-ESA.
+		superficie de ataque y servicios de seguridad desarrollada mediante O-ESA \parencite{oesa2011,oesaCCI2026}.
 	\end{minipage}
 \end{table}
 
@@ -201,7 +201,7 @@ afectar la disponibilidad de la operación.
 
 \subsection{Evaluación de Riesgos Residuales}
 
-La valoración desarrollada durante la primera fase permitió establecer el nivel inherente de los
+La valoración desarrollada durante la primera fase \parencite{fase1cci2026} permitió establecer el nivel inherente de los
 riesgos asociados a los activos críticos del CCI. Posteriormente, el Anexo B consolidó los
 controles definidos para su tratamiento y calculó la valoración residual resultante después de
 considerar su efecto sobre la probabilidad o el impacto.
@@ -306,7 +306,7 @@ la estrategia de tratamiento definida para todos ellos continúa siendo Reducir.
 			>{\centering\arraybackslash}p{1.8cm}
 			>{\centering\arraybackslash}p{1.55cm}
 			>{\centering\arraybackslash}p{1.4cm}
-			>{\centering\arraybackslash}p{1.5cm}}
+			>{\centering\arraybackslash}p{2.2cm}}
 		
 		\toprule
 		\textbf{ID} &
@@ -381,7 +381,7 @@ transición y en la hoja de ruta desarrollada posteriormente.
 \subsection{Matriz de Dominios de Seguridad}
 
 A partir de los riesgos priorizados, el análisis de brechas y las capacidades modeladas en
-ArchiMate, se consolidan cuatro dominios principales de intervención. Estos dominios no se
+ArchiMate \parencite{archimate2022,modeloArchimateCCI2026}, se consolidan cuatro dominios principales de intervención. Estos dominios no se
 definen a partir de productos específicos, sino de los requerimientos técnicos y de control que
 debe satisfacer la arquitectura objetivo. Las tecnologías se presentan posteriormente como
 mecanismos de implementación de dichos requerimientos.
@@ -454,7 +454,7 @@ mecanismos de implementación de dichos requerimientos.
 	\begin{minipage}{0.96\textwidth}
 		\footnotesize
 		\textit{Nota.} Elaboración propia a partir del análisis de brechas, las capacidades modeladas
-		en ArchiMate y la arquitectura tecnológica de seguridad definida mediante O-ESA.
+		en ArchiMate \parencite{archimate2022,modeloArchimateCCI2026} y la arquitectura tecnológica de seguridad definida mediante O-ESA \parencite{oesa2011,oesaCCI2026}.
 	\end{minipage}
 \end{table}
 
