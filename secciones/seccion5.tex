@@ -6,7 +6,7 @@ proceso cierra de forma controlada las brechas identificadas en gestión de iden
 integridad de telemetría, trazabilidad de decisiones y continuidad operativa, sin sustituir
 todos los componentes existentes a la vez.
 
-Las vistas de Migration, Project e Implementation and Migration de ArchiMate
+Las vistas de Migration, Project e Implementation and Migration de ArchiMate \parencite{archimate2022}
 permiten relacionar las brechas del estado actual con los paquetes de trabajo, entregables y
 estados intermedios que conducen hacia la arquitectura objetivo. Cada cambio implementado
 queda vinculado con los resultados de seguridad definidos previamente y con los riesgos
@@ -98,7 +98,7 @@ La Tabla~\ref{tab:estados_transicion} resume la evolución propuesta.
 	\begin{minipage}{0.96\textwidth}
 		\footnotesize
 		\textit{Nota.} Elaboración propia a partir de las vistas de Migration, Project e
-		Implementation and Migration desarrolladas en ArchiMate.
+		Implementation and Migration desarrolladas en ArchiMate \parencite{archimate2022,modeloArchimateCCI2026}.
 	\end{minipage}
 \end{table}
 
@@ -112,7 +112,7 @@ desplegarse tempranamente, aunque su implementación completa llegue en fases po
 \subsection{Hoja de Ruta}
 
 La transición se organiza en tres fases de implementación, con los horizontes de 6, 12 y 24
-meses definidos previamente para el despliegue gradual de las políticas y capacidades de
+meses definidos en el análisis TOGAF de la Fase 1 \parencite{fase1cci2026} para el despliegue gradual de las políticas y capacidades de
 seguridad del CCI.
 
 La primera fase prioriza los controles cuya implementación puede generar una reducción
@@ -197,9 +197,9 @@ La Tabla~\ref{tab:roadmap_cci} presenta la hoja de ruta.
 	\begin{minipage}{0.96\textwidth}
 		\footnotesize
 		\textit{Nota.} Los horizontes de 6, 12 y 24 meses corresponden al esquema de transición
-		definido en los análisis previos de SABSA y O-ESA. Los paquetes de trabajo y entregables
+		definido en el análisis TOGAF de la Fase 1 \parencite{fase1cci2026}. Los paquetes de trabajo y entregables
 		se derivan de las vistas de Migration, Project e Implementation and Migration
-		de ArchiMate.
+		de ArchiMate \parencite{archimate2022,modeloArchimateCCI2026}.
 	\end{minipage}
 \end{table}
 
@@ -217,7 +217,7 @@ arquitectura.
 \subsection{Matriz de Seguridad SABSA e Integración con Servicios O-ESA}
 
 La arquitectura de transición mantiene la trazabilidad desde los requerimientos del negocio
-hasta los mecanismos tecnológicos mediante la matriz SABSA. Esta matriz cruza seis niveles
+hasta los mecanismos tecnológicos mediante la matriz SABSA \parencite{sabsa2005,sabsaCCI2026}. Esta matriz cruza seis niveles
 de abstracción (Contextual, Conceptual, Lógico, Físico, Componentes y Gestión del
 Servicio) con las seis preguntas fundamentales de arquitectura: qué, por qué, cómo, quién,
 dónde y cuándo.
@@ -382,7 +382,7 @@ negocio, políticas y servicios de seguridad previamente definidos.
 
 \subsubsection{Servicios O-ESA y aplicación mediante PDP/PEP}
 
-La integración con O-ESA permite traducir las necesidades identificadas por SABSA en
+La integración con O-ESA \parencite{oesa2011,oesaCCI2026} permite traducir las necesidades identificadas por SABSA en
 servicios técnicos de seguridad y mecanismos concretos de aplicación de políticas. En este
 modelo, el \textit{Policy Decision Point} (PDP) evalúa las reglas y condiciones aplicables,
 mientras que los \textit{Policy Enforcement Points} (PEP) ubicados en consolas, aplicaciones,
@@ -459,11 +459,11 @@ decisión y aplicación de políticas.
 	\begin{minipage}{0.96\textwidth}
 		\footnotesize
 		\textit{Nota.} Elaboración propia a partir de la matriz SABSA, las políticas y servicios
-		O-ESA y las capacidades de seguridad definidas para la arquitectura objetivo del CCI.
+		O-ESA \parencite{sabsa2005,sabsaCCI2026,oesa2011,oesaCCI2026} y las capacidades de seguridad definidas para la arquitectura objetivo del CCI.
 	\end{minipage}
 \end{table}
 
-La combinación de SABSA, O-ESA y ArchiMate mantiene una cadena de trazabilidad completa. Las
+La combinación de SABSA, O-ESA y ArchiMate \parencite{sabsaCCI2026,oesaCCI2026,modeloArchimateCCI2026} mantiene una cadena de trazabilidad completa. Las
 necesidades del negocio y los riesgos originan atributos y políticas de seguridad. Esas políticas
 se traducen en servicios y mecanismos técnicos, y los paquetes de trabajo los implementan de
 forma progresiva hasta alcanzar el estado TO-BE de la arquitectura.

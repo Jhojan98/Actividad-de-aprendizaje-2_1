@@ -10,6 +10,9 @@
 *.run.xml
 *.synctex.gz
 *.toc
+main.pdf.viejo*
+
+
 
 # Build
 build/
@@ -17,3 +20,5 @@ build/
 .obsidian/
 recursoss/
 fuentes/
+latexmkrc
+preavance-Blueprint.pdf

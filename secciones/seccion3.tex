@@ -1,7 +1,7 @@
 \section{Evaluación del Estado Actual y Análisis de Brechas}
 \label{sec:evaluacion-brechas}
 
-Los ensayos previos y la entrega del primer corte dejan una línea base de hallazgos técnicos y conceptuales. Sobre esa base, esta sección contrasta la operación real del Centro de Control Integrado (CCI) con el estado objetivo y fija los requerimientos de arquitectura, procesos y seguridad necesarios para cerrar la brecha.
+Los ensayos previos y la entrega del primer corte dejan una línea base de hallazgos técnicos y conceptuales \parencite{fase1cci2026}. Sobre esa base, esta sección contrasta la operación real del Centro de Control Integrado (CCI) con el estado objetivo y fija los requerimientos de arquitectura, procesos y seguridad necesarios para cerrar la brecha.
 
 Siguiendo la metodología de evaluación propuesta por \textcite{moyle2020practical}, este diagnóstico analiza la postura de seguridad bajo tres dimensiones complementarias: efectividad, madurez y eficiencia.
 
@@ -17,7 +17,7 @@ Aunque el sistema tiene inicio de sesión único (SSO) federado mediante Active 
 Las señales GPS/AVL se transmiten en tiempo real mediante canales celulares privados (APN). Sin embargo, al carecer de validación criptográfica en origen (firma o HMAC) y de filtros automáticos de plausibilidad física en la pasarela de ingestión, la capacidad para prevenir la inyección de tramas falsas o manipuladas es reducida. Esto permite que datos anómalos o adulterados puedan ingresar al motor de despacho y distorsionar la analítica operacional.
 
 \paragraph{Disponibilidad y resiliencia (efectividad insuficiente)}%
-En el perímetro local se cuenta con una suite de seguridad consolidada (Fortinet: FortiGate, FortiSIEM y FortiAnalyzer). No obstante, toda la operación lógica y física se encuentra concentrada en una única sede, sin un esquema probado de conmutación automática hacia un centro de contingencia (DRP) ni una redundancia híbrida completa con Google Cloud Platform (GCP). Por tanto, la sede es un Punto Único de Falla (SPOF), limitando severamente la capacidad de respuesta ante caídas de infraestructura.
+En el perímetro local se cuenta con una suite de seguridad consolidada (Fortinet: FortiGate, FortiSIEM y FortiAnalyzer) \parencite{transmilenio2025res439,fase1cci2026}. No obstante, toda la operación lógica y física se encuentra concentrada en una única sede, sin un esquema probado de conmutación automática hacia un centro de contingencia (DRP) ni una redundancia híbrida completa con Google Cloud Platform (GCP). Por tanto, la sede es un Punto Único de Falla (SPOF), limitando severamente la capacidad de respuesta ante caídas de infraestructura.
 
 \subsection{Madurez (Confiabilidad y Repetibilidad de Procesos)}
 \label{sec:madurez}
@@ -58,7 +58,7 @@ El análisis de brechas compara de forma directa la arquitectura actual frente a
 		\textbf{Dominio clave} & \textbf{Estado actual}                                                                                                                                                                                            & \textbf{Estado objetivo} \\
 		\midrule
 		\textbf{1. Control de Acceso y Gobierno de Identidades (IAM)}
-		                       & SSO corporativo (AD + ADFS), con MFA opcional o parcial en las 209 consolas y perfiles RBAC en proceso de consolidación sin segregación estricta entre monitoreo y supervisión.
+		                       & SSO corporativo (AD + ADFS), con MFA opcional o parcial en los 209 puestos de trabajo y perfiles RBAC en proceso de consolidación sin segregación estricta entre monitoreo y supervisión.
 		                       & Autenticación federada ADFS/SSO con MFA obligatorio en el 100\% de las consolas, matriz RBAC de privilegio mínimo y evaluación dinámica de políticas mediante motor PDP/PEP.
 		\\
 		\midrule
@@ -80,7 +80,7 @@ El análisis de brechas compara de forma directa la arquitectura actual frente a
 	\end{tabularx}
 
 	\vspace{0.4em}
-	\parbox{\textwidth}{\footnotesize \textit{Nota.} Elaboración propia con base en el diagnóstico técnico del CCI.}
+	\parbox{\textwidth}{\footnotesize \textit{Nota.} Elaboración propia con base en el diagnóstico técnico del CCI y en las fuentes institucionales consultadas \parencite{fase1cci2026,transmilenio2026cci,transmilenio2025res439}.}
 \end{table}
 
 \subsubsection{Desglose Detallado de Brechas Técnicas y de Proceso}
