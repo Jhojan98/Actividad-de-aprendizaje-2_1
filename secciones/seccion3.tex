@@ -8,7 +8,7 @@ Siguiendo la metodología de evaluación propuesta por \textcite{moyle2020practi
 \subsection{Efectividad (Capacidad de Reducción de Riesgo)}
 \label{sec:efectividad}
 
-La efectividad mide la capacidad real de los controles instalados para mitigar los riesgos inherentes de nivel alto identificados en la operación (R1, R2, R3/R7 y R4/R6). En el estado actual, esta capacidad tiene debilidades operativas y arquitectónicas relevantes.
+La efectividad mide la capacidad real de los controles instalados para mitigar los riesgos inherentes de nivel alto identificados en la operación (R1, R2, R3 y R4). En el estado actual, esta capacidad tiene debilidades operativas y arquitectónicas relevantes.
 
 \paragraph{Control de acceso y autenticación (efectividad limitada)}%
 Aunque el sistema tiene inicio de sesión único (SSO) federado mediante Active Directory y ADFS, la autenticación multifactor (MFA) todavía no se exige de manera obligatoria en la totalidad de las consolas operativas. Adicionalmente, la matriz de roles RBAC se encuentra en proceso de consolidación, lo que mantiene abierta la exposición del Sistema de Despacho ante incidentes de suplantación de credenciales o ejecución indebida de órdenes de regulación.
@@ -17,7 +17,7 @@ Aunque el sistema tiene inicio de sesión único (SSO) federado mediante Active 
 Las señales GPS/AVL se transmiten en tiempo real mediante canales celulares privados (APN). Sin embargo, al carecer de validación criptográfica en origen (firma o HMAC) y de filtros automáticos de plausibilidad física en la pasarela de ingestión, la capacidad para prevenir la inyección de tramas falsas o manipuladas es reducida. Esto permite que datos anómalos o adulterados puedan ingresar al motor de despacho y distorsionar la analítica operacional.
 
 \paragraph{Disponibilidad y resiliencia (efectividad insuficiente)}%
-En el perímetro local se cuenta con una suite de seguridad consolidada (Fortinet: FortiGate, FortiSIEM y FortiAnalyzer). No obstante, toda la operación lógica y física se encuentra concentrada en una única sede (Edificio Elemento), sin un esquema probado de conmutación automática (\textit{failover}) hacia un centro de contingencia (DRP) ni una redundancia híbrida completa con Google Cloud Platform (GCP). Por tanto, la sede es un Punto Único de Falla (SPOF), limitando severamente la capacidad de respuesta ante caídas de infraestructura.
+En el perímetro local se cuenta con una suite de seguridad consolidada (Fortinet: FortiGate, FortiSIEM y FortiAnalyzer). No obstante, toda la operación lógica y física se encuentra concentrada en una única sede, sin un esquema probado de conmutación automática hacia un centro de contingencia (DRP) ni una redundancia híbrida completa con Google Cloud Platform (GCP). Por tanto, la sede es un Punto Único de Falla (SPOF), limitando severamente la capacidad de respuesta ante caídas de infraestructura.
 
 \subsection{Madurez (Confiabilidad y Repetibilidad de Procesos)}
 \label{sec:madurez}

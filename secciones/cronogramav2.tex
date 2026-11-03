@@ -1,0 +1,438 @@
+\subsection{Hoja de Ruta (\textit{Roadmap}): Cronograma, Entregables y Recursos}
+\label{subsec:roadmap_detallada}
+
+La hoja de ruta consolidada de la Tabla~\ref{tab:roadmap_cci} se desagrega en esta subsección en un plan ejecutable.
+Cada fase se descompone en paquetes de trabajo con una duración estimada, se asocia con hitos verificables y con los cuatro
+entregables principales de la arquitectura, y se completa con la asignación de responsables y esfuerzo. El plan se expresa en
+meses relativos al inicio del programa (M1), de modo que pueda calendarizarse cuando se defina la fecha de arranque, y mantiene
+los horizontes de 6, 12 y 24 meses: la Fase~1 se ejecuta entre M1 y M6, la Fase~2 entre M7 y M12 y la Fase~3 entre M13 y M24.
+
+En total, el plan contiene 21 paquetes de trabajo (siete por fase), 14 hitos, cuatro entregables principales y 14 productos de
+trabajo asociados. El detalle completo, junto con las fórmulas de cálculo de fechas y esfuerzos, se encuentra en el libro
+complementario \texttt{Hoja\_de\_Ruta\_CCI.xlsx}.
+
+
+\subsubsection{Cronograma de hitos y estimaciones de tiempo}
+
+La Tabla~\ref{tab:cronograma_wp} presenta los paquetes de trabajo de cada fase con su mes de inicio, mes de finalización,
+duración estimada y dependencias, y la Figura~\ref{fig:gantt_cci} los muestra sobre una línea de tiempo común. Las duraciones
+son estimaciones de planificación propuestas para esta hoja de ruta y deben confirmarse con la Dirección TIC y los equipos
+involucrados antes de comprometer fechas.
+
+\begingroup
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{
+        >{\raggedright\arraybackslash}p{0.08\textwidth}
+        >{\raggedright\arraybackslash}p{0.43\textwidth}
+        >{\centering\arraybackslash}p{0.07\textwidth}
+        >{\centering\arraybackslash}p{0.07\textwidth}
+        >{\centering\arraybackslash}p{0.07\textwidth}
+        >{\raggedright\arraybackslash}p{0.18\textwidth}}
+    \caption{Cronograma de paquetes de trabajo de la hoja de ruta del CCI}
+    \label{tab:cronograma_wp}                                                                                                                              \\
+    \toprule
+    \textbf{ID} & \textbf{Paquete de trabajo}                                   & \textbf{Inicio} & \textbf{Fin} & \textbf{Dur.} & \textbf{Depende de}     \\
+    \midrule
+    \endfirsthead
+    \toprule
+    \textbf{ID} & \textbf{Paquete de trabajo}                                   & \textbf{Inicio} & \textbf{Fin} & \textbf{Dur.} & \textbf{Depende de}     \\
+    \midrule
+    \endhead
+    \midrule
+    \multicolumn{6}{r}{\footnotesize Continúa en la página siguiente}                                                                                      \\
+    \endfoot
+    \bottomrule
+    \endlastfoot
+    \multicolumn{6}{l}{\textbf{Fase~1 · Gobierno de identidades y accesos (M1--M6)}}                                                                       \\
+    \midrule
+    WP1.1       & Inventario de identidades y diseño del modelo RBAC            & M1              & M3           & 3             & —                       \\
+    WP1.2       & Activación progresiva de MFA en las consolas del CCI          & M3              & M6           & 4             & 1.1                     \\
+    WP1.3       & Consolidación de RBAC y segregación de funciones              & M4              & M6           & 3             & 1.1                     \\
+    WP1.4       & Registro automático de decisiones                             & M2              & M5           & 4             & —                       \\
+    WP1.5       & Definición de fuentes autoritativas de datos de flota         & M1              & M4           & 4             & —                       \\
+    WP1.6       & Segmentación y protección perimetral inicial                  & M4              & M6           & 3             & —                       \\
+    WP1.7       & Verificación de entregables y cierre de la Fase 1             & M6              & M6           & 1             & 1.2, 1.3, 1.4, 1.5, 1.6 \\
+    \addlinespace[3pt]
+    \multicolumn{6}{l}{\textbf{Fase~2 · Telemetría confiable y trazabilidad (M7--M12)}}                                                                    \\
+    \midrule
+    WP2.1       & Identidad para dispositivos ITS                               & M7              & M9           & 3             & 1.7                     \\
+    WP2.2       & Autenticación de mensajes GPS/AVL en la pasarela de ingreso   & M9              & M11          & 3             & 2.1                     \\
+    WP2.3       & Validación de plausibilidad y cuarentena de tramas inválidas  & M9              & M11          & 3             & 2.1                     \\
+    WP2.4       & Integración segura del bus de eventos y fuentes geoespaciales & M7              & M11          & 5             & 1.5                     \\
+    WP2.5       & WORM, sellado de tiempo y encadenamiento de hashes            & M7              & M11          & 5             & 1.4                     \\
+    WP2.6       & Correlación en SIEM y monitoreo centralizado                  & M9              & M12          & 4             & 2.2, 2.5                \\
+    WP2.7       & Verificación de entregables y cierre de la Fase 2             & M12             & M12          & 1             & 2.1 a 2.6               \\
+    \addlinespace[3pt]
+    \multicolumn{6}{l}{\textbf{Fase~3 · Continuidad, redundancia híbrida y recuperación (M13--M24)}}                                                       \\
+    \midrule
+    WP3.1       & Diseño de la arquitectura híbrida redundante                  & M13             & M15          & 3             & 2.7                     \\
+    WP3.2       & Replicación de servicios y datos CCI–GCP                      & M16             & M20          & 5             & 3.1                     \\
+    WP3.3       & Balanceo y conmutación automática (failover)                  & M18             & M21          & 4             & 3.1, 3.2                \\
+    WP3.4       & Consolidación del sitio alterno                               & M16             & M21          & 6             & 3.1                     \\
+    WP3.5       & Formulación y aprobación de DRP y BCP                         & M13             & M18          & 6             & 2.7                     \\
+    WP3.6       & Pruebas de recuperación y failover                            & M21             & M23          & 3             & 3.3, 3.4, 3.5           \\
+    WP3.7       & Verificación de entregables y cierre de la Fase 3 (TO-BE)     & M24             & M24          & 1             & 3.2 a 3.6               \\
+\end{longtable}
+\endgroup
+
+{\footnotesize\textit{Nota.} Los meses son relativos al inicio del programa (M1); Dur. es la duración en meses. En la columna «Depende de» se indican los
+    paquetes de trabajo (sin el prefijo WP) cuyos resultados se requieren como insumo; algunas actividades se solapan
+    parcialmente con su predecesora para permitir entregas incrementales. Elaboración propia a partir de las vistas de
+    Project e Implementation and Migration de ArchiMate y de los horizontes de 6, 12 y 24 meses.\par}
+
+
+La Fase~1 (M1--M6) concentra los controles de menor dependencia de transformaciones de infraestructura. El inventario de
+identidades y el diseño del modelo RBAC (WP1.1) abren la fase y habilitan tanto la activación progresiva de MFA (WP1.2) como la
+consolidación de RBAC y de la segregación de funciones (WP1.3). En paralelo se automatiza el registro de decisiones (WP1.4), se
+definen las fuentes autoritativas de datos de flota (WP1.5) y se inicia la segmentación y protección perimetral (WP1.6). La secuencia
+que condiciona el cierre de la fase es WP1.1, WP1.2 y la verificación de WP1.7.
+
+La Fase~2 (M7--M12) protege la telemetría y la trazabilidad. La identidad de los dispositivos ITS (WP2.1) es el primer paso,
+porque la autenticación de mensajes GPS/AVL (WP2.2) y la validación de plausibilidad con cuarentena de tramas inválidas (WP2.3)
+dependen de ella. La integración segura del bus de eventos (WP2.4) y el fortalecimiento de la bitácora con WORM, sellado de tiempo y
+encadenamiento de hashes (WP2.5) avanzan en paralelo desde M7, y la correlación en SIEM (WP2.6) se apoya en los resultados de
+ambos frentes. La secuencia que condiciona el cierre es WP2.1, WP2.2, WP2.6 y WP2.7.
+
+La Fase~3 (M13--M24) consolida la continuidad operativa. El diseño de la arquitectura híbrida redundante (WP3.1) precede a la
+replicación de servicios y datos (WP3.2), al failover automático (WP3.3) y a la consolidación del sitio alterno (WP3.4), mientras que
+el DRP y el BCP se formulan en paralelo (WP3.5). Las pruebas de recuperación y failover (WP3.6) solo pueden iniciar cuando
+conmutación, sitio alterno y planes están disponibles, por lo que la secuencia WP3.1, WP3.2, WP3.3, WP3.6 y WP3.7 determina la fecha de
+llegada al estado TO-BE. Las pruebas son periódicas, por lo que continúan en operación después de M24.
+
+\begin{landscape}
+    \begingroup
+    \definecolor{ganttF1}{HTML}{2E75B6}
+    \definecolor{ganttF2}{HTML}{548235}
+    \definecolor{ganttF3}{HTML}{C55A11}
+    \definecolor{ganttHito}{HTML}{C00000}
+    \begin{figure}[H]
+        \centering
+        \caption{Diagrama de Gantt de la hoja de ruta del CCI (meses relativos al inicio del programa)}
+        \label{fig:gantt_cci}
+        \scriptsize
+        \begin{ganttchart}[
+                canvas/.append style={draw=black!30},
+                hgrid={draw=black!8},
+                vgrid={draw=black!10},
+                x unit=0.58cm,
+                y unit chart=0.52cm,
+                y unit title=0.5cm,
+                title label font=\scriptsize\bfseries,
+                title/.append style={fill=black!4, draw=black!20},
+                bar label font=\scriptsize,
+                milestone label font=\scriptsize,
+                bar height=0.5,
+                milestone/.append style={fill=ganttHito, draw=white, line width=0.4pt},
+                milestone left shift=0.75,
+                milestone right shift=0.25,
+                milestone height=0.56,
+            ]{1}{24}
+            \gantttitle{\textcolor{ganttF1}{Fase~1 (M1--M6)}}{6}
+            \gantttitle{\textcolor{ganttF2}{Fase~2 (M7--M12)}}{6}
+            \gantttitle{\textcolor{ganttF3}{Fase~3 (M13--M24)}}{12} \\
+            \gantttitlelist{1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24}{1} \\
+            \ganttbar[bar/.append style={fill=ganttF1, draw=ganttF1!70!black}]{WP1.1 Inventario de identidades y modelo RBAC [H1.1]}{1}{3} \ganttmilestone{}{3} \\
+            \ganttbar[bar/.append style={fill=ganttF1, draw=ganttF1!70!black}]{WP1.2 Activación progresiva de MFA [H1.4]}{3}{6} \ganttmilestone{}{6} \\
+            \ganttbar[bar/.append style={fill=ganttF1, draw=ganttF1!70!black}]{WP1.3 Consolidación de RBAC y segregación}{4}{6} \\
+            \ganttbar[bar/.append style={fill=ganttF1, draw=ganttF1!70!black}]{WP1.4 Registro automático de decisiones [H1.3]}{2}{5} \ganttmilestone{}{5} \\
+            \ganttbar[bar/.append style={fill=ganttF1, draw=ganttF1!70!black}]{WP1.5 Fuentes autoritativas de datos [H1.2]}{1}{4} \ganttmilestone{}{4} \\
+            \ganttbar[bar/.append style={fill=ganttF1, draw=ganttF1!70!black}]{WP1.6 Segmentación y protección perimetral}{4}{6} \\
+            \ganttbar[bar/.append style={fill=ganttF1, draw=ganttF1!70!black}]{WP1.7 Verificación y cierre de Fase 1 [H1.5]}{6}{6} \ganttmilestone{}{6} \\
+            \ganttbar[bar/.append style={fill=ganttF2, draw=ganttF2!70!black}]{WP2.1 Identidad para dispositivos ITS [H2.1]}{7}{9} \ganttmilestone{}{9} \\
+            \ganttbar[bar/.append style={fill=ganttF2, draw=ganttF2!70!black}]{WP2.2 Autenticación de mensajes GPS/AVL}{9}{11} \\
+            \ganttbar[bar/.append style={fill=ganttF2, draw=ganttF2!70!black}]{WP2.3 Plausibilidad y cuarentena de tramas [H2.2]}{9}{11} \ganttmilestone{}{11} \\
+            \ganttbar[bar/.append style={fill=ganttF2, draw=ganttF2!70!black}]{WP2.4 Integración segura de bus y fuentes}{7}{11} \\
+            \ganttbar[bar/.append style={fill=ganttF2, draw=ganttF2!70!black}]{WP2.5 WORM, sellado de tiempo y hashes [H2.3]}{7}{11} \ganttmilestone{}{11} \\
+            \ganttbar[bar/.append style={fill=ganttF2, draw=ganttF2!70!black}]{WP2.6 Correlación SIEM y monitoreo}{9}{12} \\
+            \ganttbar[bar/.append style={fill=ganttF2, draw=ganttF2!70!black}]{WP2.7 Verificación y cierre de Fase 2 [H2.4]}{12}{12} \ganttmilestone{}{12} \\
+            \ganttbar[bar/.append style={fill=ganttF3, draw=ganttF3!70!black}]{WP3.1 Diseño de arquitectura híbrida [H3.1]}{13}{15} \ganttmilestone{}{15} \\
+            \ganttbar[bar/.append style={fill=ganttF3, draw=ganttF3!70!black}]{WP3.2 Replicación de servicios y datos}{16}{20} \\
+            \ganttbar[bar/.append style={fill=ganttF3, draw=ganttF3!70!black}]{WP3.3 Balanceo y failover automático}{18}{21} \\
+            \ganttbar[bar/.append style={fill=ganttF3, draw=ganttF3!70!black}]{WP3.4 Consolidación del sitio alterno [H3.3]}{16}{21} \ganttmilestone{}{21} \\
+            \ganttbar[bar/.append style={fill=ganttF3, draw=ganttF3!70!black}]{WP3.5 Formulación y aprobación de DRP/BCP [H3.2]}{13}{18} \ganttmilestone{}{18} \\
+            \ganttbar[bar/.append style={fill=ganttF3, draw=ganttF3!70!black}]{WP3.6 Pruebas de recuperación y failover [H3.4]}{21}{23} \ganttmilestone{}{23} \\
+            \ganttmilestone[milestone left shift=0.5, milestone right shift=0]{WP3.7 Verificación y cierre de Fase 3 [H3.5]}{24}
+        \end{ganttchart}
+
+        \vspace{2pt}
+        {\footnotesize
+            \raisebox{0.15ex}{\textcolor{ganttF1}{\rule{0.8em}{0.8em}}}\,Fase~1\qquad
+            \raisebox{0.15ex}{\textcolor{ganttF2}{\rule{0.8em}{0.8em}}}\,Fase~2\qquad
+            \raisebox{0.15ex}{\textcolor{ganttF3}{\rule{0.8em}{0.8em}}}\,Fase~3\qquad
+            \raisebox{0.15ex}{\rotatebox[origin=c]{45}{\textcolor{ganttHito}{\rule{0.55em}{0.55em}}}}\,Hito
+            \par}
+
+        \vspace{2pt}
+        \begin{minipage}{0.95\linewidth}
+            \footnotesize
+            \textit{Nota.} Las barras representan la duración de cada paquete de trabajo; los rombos rojos indican los hitos
+            (identificador entre corchetes, véase la Tabla~\ref{tab:hitos_cci}) ubicados al cierre del paquete vinculado.
+            Elaboración propia a partir del cronograma de la Tabla~\ref{tab:cronograma_wp}.
+        \end{minipage}
+    \end{figure}
+    \endgroup
+\end{landscape}
+
+
+La Tabla~\ref{tab:hitos_cci} lista los 14 hitos del plan. Cada fase cierra con una puerta de verificación (H1.5, H2.4 y H3.5)
+que corresponde al paso de un estado de transición al siguiente. Esta condición es coherente con el criterio establecido para la
+hoja de ruta: una fase no se considera concluida por la instalación de una tecnología, sino cuando sus entregables han sido
+verificados y la capacidad puede usarse de manera repetible, monitoreada y evaluada.
+
+\begingroup
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{
+        >{\raggedright\arraybackslash}p{0.07\textwidth}
+        >{\raggedright\arraybackslash}p{0.23\textwidth}
+        >{\centering\arraybackslash}p{0.06\textwidth}
+        >{\centering\arraybackslash}p{0.11\textwidth}
+        >{\raggedright\arraybackslash}p{0.32\textwidth}
+        >{\raggedright\arraybackslash}p{0.12\textwidth}}
+    \caption{Hitos de la hoja de ruta y criterios de verificación}
+    \label{tab:hitos_cci}                                                                                                                                                                                                                                                                \\
+    \toprule
+    \textbf{ID} & \textbf{Hito}                                     & \textbf{Mes} & \textbf{Entregable} & \textbf{Criterio de verificación}                                                                                                                       & \textbf{Aceptación} \\
+    \midrule
+    \endfirsthead
+    \toprule
+    \textbf{ID} & \textbf{Hito}                                     & \textbf{Mes} & \textbf{Entregable} & \textbf{Criterio de verificación}                                                                                                                       & \textbf{Aceptación} \\
+    \midrule
+    \endhead
+    \midrule
+    \multicolumn{6}{r}{\footnotesize Continúa en la página siguiente}                                                                                                                                                                                                                    \\
+    \endfoot
+    \bottomrule
+    \endlastfoot
+    \multicolumn{6}{l}{\textbf{Fase~1 · Transición 1}}                                                                                                                                                                                                                                   \\
+    \midrule
+    H1.1        & Matriz RBAC aprobada                              & M3           & E1.1                & Matriz de roles y permisos aprobada por la Dirección TIC y la Subgerencia de Operaciones, con mínimo privilegio y segregación de funciones definidos.   & Dirección TIC       \\
+    H1.2        & Fuentes autoritativas de datos de flota definidas & M4           & E3.2                & Catálogo de fuentes autoritativas formalizado, con un responsable de dato asignado por cada fuente.                                                     & Datos               \\
+    H1.3        & Registro automático de decisiones en operación    & M5           & E3.1                & Las decisiones del Sistema de Despacho se registran de forma automática en la bitácora, sin intervención manual.                                        & TIC                 \\
+    H1.4        & MFA obligatorio en todas las consolas del CCI     & M6           & E1.2                & Ninguna consola del CCI permite el acceso sin segundo factor de autenticación.                                                                          & Seguridad           \\
+    H1.5        & Cierre de Fase 1 – Transición 1                   & M6           & E1                  & Entregables E1, E3.1, E3.2 y E4.1 verificados contra sus criterios de aceptación; acta de cierre de fase aprobada.                                      & Dirección TIC       \\
+    \addlinespace[3pt]
+    \multicolumn{6}{l}{\textbf{Fase~2 · Transición 2}}                                                                                                                                                                                                                                   \\
+    \midrule
+    H2.1        & Identidad de dispositivos ITS desplegada          & M9           & E2.1                & Los dispositivos ITS dentro del alcance de la fase cuentan con identidad y certificado válidos, con ciclo de vida de certificados gestionado.           & Seguridad           \\
+    H2.2        & Telemetría autenticada y validada en la pasarela  & M11          & E2.2                & La pasarela de ingreso rechaza o envía a cuarentena las tramas no autenticadas o con posiciones implausibles antes de que lleguen al flujo operacional. & Seguridad           \\
+    H2.3        & Bitácora inmutable operativa                      & M11          & E3.3                & Registros protegidos con WORM, sellado de tiempo y encadenamiento de hashes; los intentos de modificación generan alerta.                               & Seguridad           \\
+    H2.4        & Cierre de Fase 2 – Transición 2                   & M12          & E2                  & Entregables E2 y E3 verificados; el SIEM correlaciona eventos de telemetría y bitácora; acta de cierre de fase aprobada.                                & Dirección TIC       \\
+    \addlinespace[3pt]
+    \multicolumn{6}{l}{\textbf{Fase~3 · TO-BE}}                                                                                                                                                                                                                                          \\
+    \midrule
+    H3.1        & Arquitectura híbrida redundante aprobada          & M15          & E4.2                & Diseño CCI–GCP aprobado, con componentes, flujos de replicación y criterios de conmutación definidos.                                                   & Dirección TIC       \\
+    H3.2        & DRP y BCP aprobados                               & M18          & E4.4                & DRP y BCP formalizados y aprobados, con objetivos de recuperación (RTO/RPO) definidos.                                                                  & Dirección TIC       \\
+    H3.3        & Replicación y sitio alterno operativos            & M21          & E4.3                & Servicios y datos críticos replicados; sitio alterno consolidado y disponible para conmutación.                                                         & TIC                 \\
+    H3.4        & Failover automático validado en pruebas           & M23          & E4.5                & Pruebas de recuperación y conmutación ejecutadas, documentadas y evaluadas contra los objetivos definidos en el DRP.                                    & TIC                 \\
+    H3.5        & Cierre de Fase 3 – Estado TO-BE                   & M24          & E4                  & Entregable E4 verificado; puntos únicos de falla eliminados; estado TO-BE declarado con evidencia.                                                      & Dirección TIC       \\
+\end{longtable}
+\endgroup
+
+{\footnotesize\textit{Nota.} Cada hito se ubica al cierre del paquete de trabajo vinculado (Tabla~\ref{tab:cronograma_wp}).
+    Los hitos H1.5, H2.4 y H3.5 son las puertas de cierre de fase y corresponden a los estados Transición~1, Transición~2 y TO-BE.
+    Los criterios de verificación son propuestas de esta hoja de ruta.\par}
+
+
+
+\subsubsection{Entregables}
+
+Los paquetes de trabajo producen los cuatro entregables principales definidos para la arquitectura de transición: \textit{Control de
+    acceso seguro} (E1), \textit{Telemetría GPS confiable} (E2), \textit{Trazabilidad de los datos} (E3) y \textit{Disponibilidad y
+    recuperación} (E4). Cada uno se descompone en productos de trabajo con un criterio de aceptación y un responsable, como muestra la
+Tabla~\ref{tab:entregables_cci}. Algunos entregables maduran de forma incremental: los registros automáticos de decisiones y las
+fuentes autoritativas (E3.1 y E3.2) y la segmentación perimetral (E4.1) se entregan en la Fase~1, aunque la trazabilidad completa
+solo se consolida en la Fase~2 y la disponibilidad y recuperación en la Fase~3.
+
+\begingroup
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\renewcommand{\arraystretch}{1.15}
+\begin{longtable}{
+        >{\raggedright\arraybackslash}p{0.07\textwidth}
+        >{\raggedright\arraybackslash}p{0.25\textwidth}
+        >{\raggedright\arraybackslash}p{0.07\textwidth}
+        >{\centering\arraybackslash}p{0.05\textwidth}
+        >{\raggedright\arraybackslash}p{0.35\textwidth}
+        >{\raggedright\arraybackslash}p{0.12\textwidth}}
+    \caption{Entregables principales y productos de trabajo de la hoja de ruta}
+    \label{tab:entregables_cci}                                                                                                                                                                                                                                                                 \\
+    \toprule
+    \textbf{ID} & \textbf{Entregable}                                                               & \textbf{Fase} & \textbf{Mes} & \textbf{Criterio de aceptación}                                                                                                     & \textbf{Responsable} \\
+    \midrule
+    \endfirsthead
+    \toprule
+    \textbf{ID} & \textbf{Entregable}                                                               & \textbf{Fase} & \textbf{Mes} & \textbf{Criterio de aceptación}                                                                                                     & \textbf{Responsable} \\
+    \midrule
+    \endhead
+    \midrule
+    \multicolumn{6}{r}{\footnotesize Continúa en la página siguiente}                                                                                                                                                                                                                           \\
+    \endfoot
+    \bottomrule
+    \endlastfoot
+    \textbf{E1} & \textbf{Control de acceso seguro}                                                 & \textbf{F1}   & \textbf{M6}  & \textbf{MFA obligatorio activo en las consolas del CCI y matriz RBAC aprobada y aplicada, con segregación de funciones verificada.} & \textbf{Seguridad}   \\
+    E1.1        & \hspace{0.6em}Matriz RBAC consolidada                                             & F1            & M6           & Roles, permisos y segregación de funciones documentados, aprobados y aplicados en las consolas.                                     & Seguridad            \\
+    E1.2        & \hspace{0.6em}MFA obligatorio en las consolas del CCI                             & F1            & M6           & Segundo factor exigido en todas las consolas; accesos sin MFA bloqueados.                                                           & Seguridad            \\
+    \addlinespace[3pt]
+    \textbf{E2} & \textbf{Telemetría GPS confiable}                                                 & \textbf{F2}   & \textbf{M12} & \textbf{Solo la telemetría autenticada y validada llega al Sistema de Despacho, integrada con fuentes autoritativas.}               & \textbf{Seguridad}   \\
+    E2.1        & \hspace{0.6em}Identidad y certificados de dispositivos ITS                        & F2            & M9           & Cada dispositivo ITS en alcance se identifica con credencial propia y vigente.                                                      & Seguridad            \\
+    E2.2        & \hspace{0.6em}Pasarela de ingreso con autenticación y validación de plausibilidad & F2            & M11          & Tramas inválidas rechazadas o en cuarentena; mensajes válidos con autenticidad e integridad verificadas.                            & Seguridad            \\
+    E2.3        & \hspace{0.6em}Integración segura del bus de eventos y fuentes geoespaciales       & F2            & M11          & Flujos entre telemetría, bus de eventos y fuentes autoritativas integrados con canales y accesos controlados.                       & TIC                  \\
+    \addlinespace[3pt]
+    \textbf{E3} & \textbf{Trazabilidad de los datos}                                                & \textbf{F2}   & \textbf{M12} & \textbf{Cada decisión operacional es rastreable hasta su fuente de datos y su autor, con evidencia protegida contra alteración.}    & \textbf{Seguridad}   \\
+    E3.1        & \hspace{0.6em}Registro automático de decisiones                                   & F1            & M5           & Decisiones registradas de forma automática en la bitácora de operación.                                                             & TIC                  \\
+    E3.2        & \hspace{0.6em}Catálogo de fuentes autoritativas de datos de flota                 & F1            & M4           & Fuentes identificadas y formalizadas, con propietario de dato por fuente.                                                           & Datos                \\
+    E3.3        & \hspace{0.6em}Bitácora inmutable (WORM, sellado de tiempo y hashes)               & F2            & M11          & Registros no modificables, con sello de tiempo y encadenamiento verificable; alertas ante intentos de alteración.                   & Seguridad            \\
+    E3.4        & \hspace{0.6em}Correlación SIEM y monitoreo centralizado                           & F2            & M12          & Eventos de telemetría, accesos y bitácora correlacionados y monitoreados de forma centralizada.                                     & Seguridad            \\
+    \addlinespace[3pt]
+    \textbf{E4} & \textbf{Disponibilidad y recuperación}                                            & \textbf{F3}   & \textbf{M24} & \textbf{Arquitectura híbrida redundante en operación y DRP probado; sin puntos únicos de falla.}                                    & \textbf{TIC}         \\
+    E4.1        & \hspace{0.6em}Segmentación y protección perimetral inicial                        & F1            & M6           & Dominios segmentados y reglas de flujo entre ellos aplicadas en la frontera.                                                        & Seguridad            \\
+    E4.2        & \hspace{0.6em}Arquitectura híbrida redundante con replicación                     & F3            & M20          & Servicios y datos críticos replicados entre infraestructura del CCI y GCP.                                                          & TIC                  \\
+    E4.3        & \hspace{0.6em}Conmutación automática y sitio alterno                              & F3            & M21          & Conmutación automática funcional hacia un sitio alterno consolidado.                                                                & TIC                  \\
+    E4.4        & \hspace{0.6em}DRP y BCP aprobados                                                 & F3            & M18          & Planes formalizados y aprobados, con roles, procedimientos y objetivos de recuperación.                                             & Dirección TIC        \\
+    E4.5        & \hspace{0.6em}Informe de pruebas de recuperación y failover                       & F3            & M23          & Pruebas ejecutadas y documentadas, con resultados evaluados contra los objetivos del DRP.                                           & TIC                  \\
+\end{longtable}
+\endgroup
+
+{\footnotesize\textit{Nota.} El mes de cada entregable principal corresponde al hito de cierre de la fase en que se consolida;
+    el de cada producto de trabajo, al cierre del paquete que lo produce. La trazabilidad de los datos (E3) se consolida en la
+    Fase~2, pero sus primeros productos (E3.1 y E3.2) se entregan en la Fase~1, y la disponibilidad y recuperación (E4)
+    inicia con la segmentación perimetral (E4.1) en la Fase~1. Elaboración propia.\par}
+
+
+
+\subsubsection{Asignación de recursos}
+
+La ejecución involucra siete grupos de recursos humanos: la Dirección TIC, el Equipo de Seguridad, el Equipo TIC, la Subgerencia de
+Operaciones, los responsables de los datos operacionales críticos, los concesionarios de flota y la función de auditoría o control
+interno. El documento identifica un único «Equipo de Seguridad y TIC»; para poder asignar responsabilidades y estimar esfuerzo, esta
+hoja de ruta lo desagrega en dos roles, Seguridad y TIC. La Tabla~\ref{tab:raci_cci} asigna para cada paquete de trabajo un único
+aprobador (A) y define quién ejecuta, quién es consultado y quién debe ser informado.
+
+\begin{table}[H]
+    \centering
+    \caption{Matriz RACI por paquete de trabajo}
+    \label{tab:raci_cci}
+    \scriptsize
+    \setlength{\tabcolsep}{3pt}
+    \renewcommand{\arraystretch}{1.15}
+
+    \begin{tabularx}{\textwidth}{
+            >{\raggedright\arraybackslash}p{1.0cm}
+            >{\raggedright\arraybackslash}X
+                                              *{7}{>{\centering\arraybackslash}p{0.95cm}}}
+        \toprule
+        \textbf{ID} & \textbf{Paquete de trabajo}                                   & \textbf{DTIC} & \textbf{SEG} & \textbf{TIC} & \textbf{OPS} & \textbf{DAT} & \textbf{CON} & \textbf{AUD} \\
+        \midrule
+        \multicolumn{9}{l}{\textbf{Fase~1}}                                                                                                                                                   \\
+        \midrule
+        WP1.1       & Inventario de identidades y diseño del modelo RBAC            & I             & A            & R            & C            &              &              & I            \\
+        WP1.2       & Activación progresiva de MFA en las consolas del CCI          & I             & A            & R            & C            &              &              & I            \\
+        WP1.3       & Consolidación de RBAC y segregación de funciones              & I             & A            & R            & C            &              &              & C            \\
+        WP1.4       & Registro automático de decisiones                             & I             & C            & A/R          & C            & C            &              & I            \\
+        WP1.5       & Definición de fuentes autoritativas de datos de flota         & I             & C            & R            & C            & A/R          & C            & I            \\
+        WP1.6       & Segmentación y protección perimetral inicial                  & I             & A            & R            & I            &              &              &              \\
+        WP1.7       & Verificación de entregables y cierre de la Fase 1             & A             & R            & C            & C            & C            &              & R            \\
+        \addlinespace[3pt]
+        \multicolumn{9}{l}{\textbf{Fase~2}}                                                                                                                                                   \\
+        \midrule
+        WP2.1       & Identidad para dispositivos ITS                               & I             & A            & R            & I            &              & R            &              \\
+        WP2.2       & Autenticación de mensajes GPS/AVL en la pasarela de ingreso   & I             & A            & R            &              & C            & C            &              \\
+        WP2.3       & Validación de plausibilidad y cuarentena de tramas inválidas  &               & A/R          & R            & C            & C            & C            &              \\
+        WP2.4       & Integración segura del bus de eventos y fuentes geoespaciales &               & C            & A/R          & I            & R            & C            &              \\
+        WP2.5       & WORM, sellado de tiempo y encadenamiento de hashes            &               & A            & R            &              & C            &              & C            \\
+        WP2.6       & Correlación en SIEM y monitoreo centralizado                  & I             & A/R          & R            & C            &              &              & I            \\
+        WP2.7       & Verificación de entregables y cierre de la Fase 2             & A             & R            & C            & C            & C            &              & R            \\
+        \addlinespace[3pt]
+        \multicolumn{9}{l}{\textbf{Fase~3}}                                                                                                                                                   \\
+        \midrule
+        WP3.1       & Diseño de la arquitectura híbrida redundante                  & C             & R            & A            & C            & I            &              &              \\
+        WP3.2       & Replicación de servicios y datos CCI–GCP                      & I             & C            & A/R          &              & C            &              &              \\
+        WP3.3       & Balanceo y conmutación automática (failover)                  &               & C            & A/R          & I            &              &              &              \\
+        WP3.4       & Consolidación del sitio alterno                               & I             & C            & A/R          & C            &              &              &              \\
+        WP3.5       & Formulación y aprobación de DRP y BCP                         & A             & R            & R            & R            & C            &              & C            \\
+        WP3.6       & Pruebas de recuperación y failover                            & I             & R            & A            & R            & C            &              & C            \\
+        WP3.7       & Verificación de entregables y cierre de la Fase 3 (TO-BE)     & A             & R            & C            & C            & C            &              & R            \\
+        \bottomrule
+    \end{tabularx}
+
+    \begin{minipage}{0.96\textwidth}
+        \footnotesize
+        \textit{Nota.} R: responsable de ejecutar; A: aprobador que rinde cuentas (uno por paquete); C: consultado; I: informado;
+        A/R: ambos roles. DTIC: Dirección TIC; SEG: Equipo de Seguridad; TIC: Equipo TIC (infraestructura y plataformas);
+        OPS: Subgerencia de Operaciones; DAT: responsables de datos operacionales críticos; CON: concesionarios de flota;
+        AUD: auditoría o control interno. Elaboración propia.
+    \end{minipage}
+\end{table}
+
+
+En la asignación, el Equipo de Seguridad rinde cuentas de 9 de los 21 paquetes, principalmente los de identidad, telemetría y
+trazabilidad; el Equipo TIC, de 7, principalmente los de integración, redundancia y recuperación; y la Dirección TIC, de 4,
+que corresponden a las verificaciones de cierre de fase y a la aprobación de los planes DRP y BCP. Los responsables de datos operacionales críticos
+lideran la definición de las fuentes autoritativas (WP1.5), y los concesionarios participan de forma directa en la identidad de los
+dispositivos ITS (WP2.1), dado que intervienen los equipos instalados a bordo de la flota.
+
+Como soporte tecnológico, la Fase~1 se apoya en Active Directory y ADFS, la plataforma IAM y el servicio MFA, el Sistema de Despacho y su
+bitácora, las plataformas geoespaciales y de gestión de flota (Oracle Spatial/Locator, ArcGIS y SIRCI/FMS) y los firewalls Fortinet.
+La Fase~2 requiere servicios criptográficos y gestor de claves, los equipos ITS a bordo, la pasarela de ingreso con TLS, el bus de eventos
+y las APIs, el almacenamiento WORM con servicio de hora y el SIEM. La Fase~3 se apoya en la infraestructura tecnológica del CCI, Google
+Cloud Platform, los balanceadores de carga y firewalls, y las plataformas de continuidad y respaldo.
+
+La Tabla~\ref{tab:esfuerzo_cci} resume la estimación preliminar de esfuerzo. El esfuerzo total estimado del programa es de 84{,}6 persona-mes: el
+Equipo TIC aporta 43{,}6\,\% del esfuerzo y el Equipo de Seguridad 28{,}7\,\%. La carga del Equipo TIC se concentra en la Fase~3
+    (16{,}7 persona-mes), coherente con el carácter de infraestructura de la redundancia híbrida y la recuperación, mientras que la
+participación de los concesionarios se concentra en la Fase~2, cuando se incorporan identidades a los dispositivos ITS.
+
+\begin{table}[H]
+    \centering
+    \caption{Estimación preliminar de esfuerzo por fase y rol (persona-mes)}
+    \label{tab:esfuerzo_cci}
+    \small
+    \setlength{\tabcolsep}{4pt}
+    \renewcommand{\arraystretch}{1.2}
+
+    \begin{tabularx}{\textwidth}{
+            >{\raggedright\arraybackslash}p{2.0cm}
+                                              *{7}{>{\centering\arraybackslash}X}
+            >{\centering\arraybackslash}p{1.4cm}
+            >{\centering\arraybackslash}p{1.5cm}}
+        \toprule
+        \textbf{Fase}     & \textbf{DTIC}  & \textbf{SEG}    & \textbf{TIC}    & \textbf{OPS}   & \textbf{DAT}   & \textbf{CON}   & \textbf{AUD}   & \textbf{Total}  & \textbf{FTE medio} \\
+        \midrule
+        Fase~1 (M1--M6)   & {,}8           & 8{,}9           & 9{,}0           & 3{,}6          & 2{,}0          & {,}4           & {,}7           & 25{,}4          & 4{,}2              \\
+        Fase~2 (M7--M12)  & {,}2           & 8{,}9           & 11{,}2          & 1{,}5          & 2{,}6          & 3{,}8          & {,}8           & 29{,}0          & 4{,}8              \\
+        Fase~3 (M13--M24) & 1{,}1          & 6{,}5           & 16{,}7          & 3{,}5          & 1{,}3          & {,}0           & 1{,}1          & 30{,}2          & 2{,}5              \\
+        \midrule
+        \textbf{Total}    & \textbf{2{,}1} & \textbf{24{,}3} & \textbf{36{,}9} & \textbf{8{,}6} & \textbf{5{,}9} & \textbf{4{,}2} & \textbf{2{,}6} & \textbf{84{,}6} & \textbf{3{,}5}     \\
+        \bottomrule
+    \end{tabularx}
+
+    \begin{minipage}{0.96\textwidth}
+        \footnotesize
+        \textit{Nota.} Estimación preliminar de planificación, sujeta a validación por la Dirección TIC; no incluye costos de
+        licencias, infraestructura ni contratación externa. El FTE medio resulta de dividir el esfuerzo de la fase entre su
+        duración en meses. Los roles se identifican con las mismas siglas de la Tabla~\ref{tab:raci_cci}. Elaboración propia.
+    \end{minipage}
+\end{table}
+
+
+
+\subsubsection{Dependencias, supuestos y condiciones de cierre}
+
+El plan presenta dependencias entre fases que deben gestionarse de forma explícita. La definición de fuentes autoritativas (WP1.5)
+condiciona la integración del bus de eventos y de las fuentes geoespaciales (WP2.4), y el registro automático de decisiones (WP1.4)
+es la base sobre la cual se construye la bitácora inmutable (WP2.5). La correlación en SIEM (WP2.6) requiere telemetría autenticada
+(WP2.2) y bitácora protegida (WP2.5), y el cierre de la Fase~2 (WP2.7) habilita el inicio del diseño de la arquitectura redundante
+(WP3.1) y de los planes de continuidad (WP3.5). Un retraso en cualquiera de estos paquetes se propaga a las fases siguientes.
+
+Los principales supuestos del plan son los siguientes. Primero, el documento no fija una fecha calendario de inicio, por lo que
+el cronograma se expresa en meses relativos. Segundo, las duraciones y el esfuerzo son estimaciones preliminares y deben validarse
+antes de su adopción. Tercero, el alcance de dispositivos ITS cubierto en cada fase debe acordarse con los concesionarios de flota. Cuarto, la
+activación de MFA y la segmentación perimetral se realizan de forma progresiva para no comprometer la continuidad de la operación
+del CCI.
+
+Finalmente, la hoja de ruta no se limita a un cronograma tecnológico: cada paquete de trabajo se asocia con un entregable, un hito
+verificable y un responsable, de modo que el avance pueda evaluarse contra los resultados esperados de la arquitectura objetivo.

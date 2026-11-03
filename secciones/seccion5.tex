@@ -2,15 +2,15 @@
 
 La transición hacia la arquitectura objetivo del CCI se plantea
 como una evolución progresiva de las capacidades de seguridad actualmente disponibles. El
-propósito no es sustituir al mismo tiempo todos los componentes existentes, sino cerrar
-de forma controlada las brechas identificadas en gestión de identidades, integridad de
-telemetría, trazabilidad de decisiones y continuidad operativa.
+proceso cierra de forma controlada las brechas identificadas en gestión de identidades,
+integridad de telemetría, trazabilidad de decisiones y continuidad operativa, sin sustituir
+todos los componentes existentes a la vez.
 
-Las vistas de migración, proyecto e implementación y migración desarrolladas en ArchiMate
+Las vistas de Migration, Project e Implementation and Migration de ArchiMate
 permiten relacionar las brechas del estado actual con los paquetes de trabajo, entregables y
-estados intermedios que conducen hacia la arquitectura objetivo. De esta manera, cada cambio
-implementado puede vincularse con los resultados de seguridad definidos previamente y con
-los riesgos R1 a R4 tratados en la Sección~4.
+estados intermedios que conducen hacia la arquitectura objetivo. Cada cambio implementado
+queda vinculado con los resultados de seguridad definidos previamente y con los riesgos
+R1 a R4 de la Sección~4.
 
 
 \subsection{Estados de Transición Intermedios}
@@ -25,7 +25,7 @@ seguridad existentes, pero mantiene brechas en autenticación multifactor, segre
 accesos, integridad de la telemetría, trazabilidad de decisiones y redundancia operativa.
 
 La Transición 1 se concentra en el fortalecimiento de la gestión de identidad y acceso.
-En este estado se establece MFA obligatorio para las consolas y se consolida una matriz de
+En este estado se establece MFA obligatorio para las consolas y se formaliza una matriz de
 acceso basada en roles (RBAC), reduciendo la brecha asociada a cuentas con privilegios no
 segregados y mecanismos de autenticación insuficientes.
 
@@ -49,56 +49,56 @@ La Tabla~\ref{tab:estados_transicion} resume la evolución propuesta.
 	\small
 	\setlength{\tabcolsep}{4pt}
 	\renewcommand{\arraystretch}{1.2}
-	
+
 	\begin{tabularx}{\textwidth}{
 			>{\raggedright\arraybackslash}p{2.2cm}
 			>{\raggedright\arraybackslash}X
 			>{\raggedright\arraybackslash}X}
-		
+
 		\toprule
-		\textbf{Estado} &
-		\textbf{Características principales} &
-		\textbf{Brecha que se reduce} \\
+		\textbf{Estado}                                                          &
+		\textbf{Características principales}                                     &
+		\textbf{Brecha que se reduce}                                              \\
 		\midrule
-		
-		AS-IS &
+
+		AS-IS                                                                    &
 		Protección existente de la plataforma, pero con MFA parcial, permisos en proceso de
 		consolidación, telemetría sin validación criptográfica integral, trazabilidad incompleta y
-		operación concentrada en una única sede. &
+		operación concentrada en una única sede.                                 &
 		Brechas de identidad y acceso, integridad de telemetría, evidencia operacional y
-		continuidad. \\
-		
+		continuidad.                                                               \\
+
 		\addlinespace
-		
-		Transición 1 &
-		MFA obligatorio en las consolas del CCI y consolidación de una matriz de acceso basada
+
+		Transición 1                                                             &
+		MFA obligatorio en las consolas del CCI y formalización de una matriz de acceso basada
 		en roles (RBAC), aplicando mínimo privilegio y segregación de funciones. &
 		Accesos no segregados y ausencia de MFA obligatorio en todas las consolas. \\
-		
+
 		\addlinespace
-		
-		Transición 2 &
+
+		Transición 2                                                             &
 		Autenticación de la telemetría GPS/AVL, validación de su integridad e integración con
-		fuentes autoritativas de datos de flota. &
+		fuentes autoritativas de datos de flota.                                 &
 		Telemetría GPS vulnerable a manipulación, suplantación o incorporación de información
-		no confiable. \\
-		
+		no confiable.                                                              \\
+
 		\addlinespace
-		
-		TO-BE &
+
+		TO-BE                                                                    &
 		Ecosistema de gestión de flota confiable y de alta disponibilidad, con accesos
 		controlados, información GPS autenticada, fuentes de datos autoritativas, trazabilidad
-		de decisiones y recuperación ante fallas. &
+		de decisiones y recuperación ante fallas.                                &
 		Cierre de las brechas restantes de trazabilidad, inmutabilidad, redundancia y
-		recuperación operativa. \\
-		
+		recuperación operativa.                                                    \\
+
 		\bottomrule
 	\end{tabularx}
-	
+
 	\begin{minipage}{0.96\textwidth}
 		\footnotesize
-		\textit{Nota.} Elaboración propia a partir de las vistas de Migration e Implementation
-		and Migration desarrolladas en ArchiMate.
+		\textit{Nota.} Elaboración propia a partir de las vistas de Migration, Project e
+		Implementation and Migration desarrolladas en ArchiMate.
 	\end{minipage}
 \end{table}
 
@@ -106,19 +106,19 @@ Los estados de transición no representan proyectos independientes, sino increme
 de la arquitectura. Por esta razón, algunas capacidades comienzan a implementarse desde las
 primeras fases y continúan madurando hasta alcanzar el estado objetivo. Este es el caso de la
 trazabilidad de decisiones y de la continuidad operativa, cuyos mecanismos iniciales pueden
-desplegarse tempranamente, aunque su consolidación completa se produzca en fases posteriores.
+desplegarse tempranamente, aunque su implementación completa llegue en fases posteriores.
 
 
 \subsection{Hoja de Ruta}
 
-La hoja de ruta organiza la transición arquitectónica en tres fases de implementación. Esta
-planificación mantiene los horizontes de 6, 12 y 24 meses definidos previamente para el
-despliegue gradual de las políticas y capacidades de seguridad del CCI.
+La transición se organiza en tres fases de implementación, con los horizontes de 6, 12 y 24
+meses definidos previamente para el despliegue gradual de las políticas y capacidades de
+seguridad del CCI.
 
 La primera fase prioriza los controles cuya implementación puede generar una reducción
 temprana de la exposición, principalmente MFA, RBAC, registro automático de decisiones y
 definición de fuentes autoritativas. La segunda fase profundiza la protección de la telemetría y
-la trazabilidad de la información. Finalmente, la tercera fase consolida las capacidades de
+la trazabilidad de la información. La tercera fase completa las capacidades de
 continuidad, redundancia híbrida y recuperación ante desastres necesarias para alcanzar el
 estado objetivo.
 
@@ -126,7 +126,7 @@ Los paquetes de trabajo se derivan de la vista de proyecto de ArchiMate y produc
 entregables principales: \textit{Control de acceso seguro}, \textit{Telemetría GPS confiable},
 \textit{Trazabilidad de los datos} y \textit{Disponibilidad y recuperación}.
 
-La Tabla~\ref{tab:roadmap_cci} presenta la hoja de ruta consolidada.
+La Tabla~\ref{tab:roadmap_cci} presenta la hoja de ruta.
 
 \begin{table}[H]
 	\centering
@@ -135,110 +135,110 @@ La Tabla~\ref{tab:roadmap_cci} presenta la hoja de ruta consolidada.
 	\scriptsize
 	\setlength{\tabcolsep}{3.5pt}
 	\renewcommand{\arraystretch}{1.2}
-	
+
 	\begin{tabularx}{\textwidth}{
 			>{\raggedright\arraybackslash}p{1.6cm}
 			>{\centering\arraybackslash}p{1.6cm}
 			>{\raggedright\arraybackslash}X
 			>{\raggedright\arraybackslash}X
 			>{\raggedright\arraybackslash}p{2.7cm}}
-		
+
 		\toprule
-		\textbf{Fase} &
-		\textbf{Horizonte} &
-		\textbf{Paquetes de trabajo / actividades principales} &
-		\textbf{Entregables e hitos} &
-		\textbf{Recursos principales} \\
+		\textbf{Fase}                                                                          &
+		\textbf{Horizonte}                                                                     &
+		\textbf{Paquetes de trabajo / actividades principales}                                 &
+		\textbf{Entregables e hitos}                                                           &
+		\textbf{Recursos principales}                                                            \\
 		\midrule
-		
-		Fase 1 &
-		0--6 meses &
+
+		Fase 1                                                                                 &
+		0--6 meses                                                                             &
 		Implementación del gobierno de identidades y accesos mediante la activación progresiva
 		de MFA, junto con la consolidación de RBAC y la segregación de funciones. Además, se
-		fortalece el registro automático de decisiones, se definen las fuentes autoritativas de
-		datos y se inicia la segmentación y protección perimetral. &
+		amplía el registro automático de decisiones, se definen las fuentes autoritativas de
+		datos y se inicia la segmentación y protección perimetral.                             &
 		Control de acceso seguro con MFA obligatorio y matriz RBAC consolidada. También se
 		dispone de registro automático de decisiones y de fuentes autoritativas identificadas. &
 		Equipo de Seguridad y TIC, en coordinación con la Subgerencia de Operaciones y con
-		apoyo de las plataformas IAM y demás herramientas de seguridad. \\
-		
+		apoyo de las plataformas IAM y demás herramientas de seguridad.                          \\
+
 		\addlinespace
-		
-		Fase 2 &
-		6--12 meses &
+
+		Fase 2                                                                                 &
+		6--12 meses                                                                            &
 		Implementación de ciberseguridad sobre la telemetría y la integración geoespacial,
 		incorporando identidad para los dispositivos ITS, autenticación de mensajes y validación
-		de plausibilidad. Asimismo, se integra de forma segura el bus de eventos y se fortalecen
+		de plausibilidad. Asimismo, se integra de forma segura el bus de eventos y se refuerzan
 		los mecanismos WORM, el sellado de tiempo, el encadenamiento de hashes y la
-		correlación mediante SIEM. &
+		correlación mediante SIEM.                                                             &
 		Telemetría GPS confiable y fuentes de datos integradas, acompañadas de trazabilidad de
-		los datos y una bitácora fortalecida con monitoreo centralizado. &
+		los datos y una bitácora protegida con monitoreo centralizado.                       &
 		Equipo de Seguridad y TIC, junto con los responsables de los datos operacionales
 		críticos y los concesionarios de flota, apoyados por plataformas de integración,
-		criptografía y monitoreo. \\
-		
+		criptografía y monitoreo.                                                                \\
+
 		\addlinespace
-		
-		Fase 3 &
-		12--24 meses &
+
+		Fase 3                                                                                 &
+		12--24 meses                                                                           &
 		Implementación de redundancia híbrida y resiliencia operativa mediante la replicación
-		de servicios y datos, junto con mecanismos de conmutación automática y la consolidación
+		de servicios y datos, junto con mecanismos de conmutación automática y la habilitación
 		del sitio alterno. Además, se ejecutan y validan el DRP y el BCP mediante pruebas
-		periódicas de recuperación y failover. &
+		periódicas de recuperación y failover.                                                 &
 		Disponibilidad y recuperación mediante una arquitectura híbrida redundante y un DRP
 		probado. Como resultado, se eliminan los puntos únicos de falla y se consolida el estado
-		TO-BE. &
+		TO-BE.                                                                                 &
 		Infraestructura tecnológica del CCI y Google Cloud Platform, con participación del
-		Equipo de Seguridad y TIC y apoyo de las plataformas de seguridad y continuidad. \\
-		
+		Equipo de Seguridad y TIC y apoyo de las plataformas de seguridad y continuidad.         \\
+
 		\bottomrule
 	\end{tabularx}
-	
+
 	\begin{minipage}{0.96\textwidth}
 		\footnotesize
 		\textit{Nota.} Los horizontes de 6, 12 y 24 meses corresponden al esquema de transición
 		definido en los análisis previos de SABSA y O-ESA. Los paquetes de trabajo y entregables
-		se derivan de las vistas de Project e Implementation and Migration de ArchiMate.
+		se derivan de las vistas de Migration, Project e Implementation and Migration
+		de ArchiMate.
 	\end{minipage}
 \end{table}
 
 La secuencia propuesta permite priorizar inicialmente los cambios con menor dependencia de
 transformaciones de infraestructura y avanzar posteriormente hacia capacidades que requieren
 coordinación entre aplicaciones, dispositivos ITS, concesionarios, infraestructura local y
-servicios en nube.
+servicios en la nube.
 
-El cierre de cada fase debe estar condicionado a la verificación de sus entregables. La transición
-no debe considerarse completada únicamente por la instalación de una tecnología, sino cuando
-la capacidad correspondiente pueda ser utilizada de manera repetible, monitoreada y evaluada
-contra los resultados esperados de la arquitectura.
+El cierre de cada fase depende de la verificación de sus entregables. La transición no se completa
+con la instalación de una tecnología; se completa cuando la capacidad correspondiente puede
+utilizarse de manera repetible, monitorearse y evaluarse contra los resultados esperados de la
+arquitectura.
 
 
 \subsection{Matriz de Seguridad SABSA e Integración con Servicios O-ESA}
 
 La arquitectura de transición mantiene la trazabilidad desde los requerimientos del negocio
 hasta los mecanismos tecnológicos mediante la matriz SABSA. Esta matriz cruza seis niveles
-de abstracción ---Contextual, Conceptual, Lógico, Físico, Componentes y Gestión del
-Servicio--- con las seis preguntas fundamentales de arquitectura: qué, por qué, cómo, quién,
+de abstracción (Contextual, Conceptual, Lógico, Físico, Componentes y Gestión del
+Servicio) con las seis preguntas fundamentales de arquitectura: qué, por qué, cómo, quién,
 dónde y cuándo.
 
 La Tabla~\ref{tab:matriz_sabsa_blueprint} sintetiza las treinta y seis perspectivas aplicadas al
 proceso de gestión y despacho de flota del CCI.
 
 \begin{landscape}
-	
+
 	\begingroup
 	\pagestyle{plain}
-	
+
 	% Compactar exclusivamente esta tabla
 	\scriptsize
 	\setstretch{1}
 	\setlength{\tabcolsep}{2pt}
 	\renewcommand{\arraystretch}{1.05}
 	\setlength{\LTleft}{0pt}
-	\setlength{\LTright}{0pt}
 	\setlength{\LTpre}{0pt}
 	\setlength{\LTpost}{0pt}
-	
+
 	\begin{longtable}{
 			>{\raggedright\arraybackslash}p{1.7cm}
 			>{\raggedright\arraybackslash}p{2.9cm}
@@ -248,132 +248,131 @@ proceso de gestión y despacho de flota del CCI.
 			>{\raggedright\arraybackslash}p{2.9cm}
 			>{\raggedright\arraybackslash}p{2.9cm}
 		}
-		
-		\caption{Matriz SABSA consolidada para el Blueprint del CCI}
-		\label{tab:matriz_sabsa_blueprint}\\
-		
+
+		\caption{Matriz SABSA para el Blueprint del CCI}
+		\label{tab:matriz_sabsa_blueprint}                                                              \\
+
 		\toprule
-		\textbf{Capa SABSA} &
-		\textbf{Activos (qué)} &
-		\textbf{Motivación (por qué)} &
-		\textbf{Proceso (cómo)} &
-		\textbf{Personas (quién)} &
-		\textbf{Ubicación (dónde)} &
-		\textbf{Tiempo (cuándo)} \\
+		\textbf{Capa SABSA}                                                                       &
+		\textbf{Activos (qué)}                                                                    &
+		\textbf{Motivación (por qué)}                                                             &
+		\textbf{Proceso (cómo)}                                                                   &
+		\textbf{Personas (quién)}                                                                 &
+		\textbf{Ubicación (dónde)}                                                                &
+		\textbf{Tiempo (cuándo)}                                                                        \\
 		\midrule
 		\endfirsthead
-		
+
 		\toprule
-		\textbf{Capa SABSA} &
-		\textbf{Activos (qué)} &
-		\textbf{Motivación (por qué)} &
-		\textbf{Proceso (cómo)} &
-		\textbf{Personas (quién)} &
-		\textbf{Ubicación (dónde)} &
-		\textbf{Tiempo (cuándo)} \\
+		\textbf{Capa SABSA}                                                                       &
+		\textbf{Activos (qué)}                                                                    &
+		\textbf{Motivación (por qué)}                                                             &
+		\textbf{Proceso (cómo)}                                                                   &
+		\textbf{Personas (quién)}                                                                 &
+		\textbf{Ubicación (dónde)}                                                                &
+		\textbf{Tiempo (cuándo)}                                                                        \\
 		\midrule
 		\endhead
-		
+
 		\midrule
-		\multicolumn{7}{r}{\footnotesize Continúa en la página siguiente} \\
+		\multicolumn{7}{r}{\footnotesize Continúa en la página siguiente}                               \\
 		\endfoot
-		
+
 		\bottomrule
 		\endlastfoot
-		
-		
-		Contextual &
+
+
+		Contextual                                                                                &
 		Telemetría de flota, bitácora de decisiones y Sistema de Despacho; continuidad del servicio y
-		objetivos de movilidad. &
-		R1--R4, cumplimiento normativo y necesidad de operar el CCI de forma confiable y segura. &
+		objetivos de movilidad.                                                                   &
+		R1--R4, cumplimiento normativo y necesidad de operar el CCI de forma confiable y segura.  &
 		Gestión y despacho de flota: recolección, análisis, decisión y ejecución; interacción con
-		novedades operacionales. &
+		novedades operacionales.                                                                  &
 		Gerencia General, Subgerencia de Operaciones, Dirección TIC, operadores, supervisores,
-		concesionarios y conductores. &
-		CCI en Bogotá, flota Troncal, TransMiZonal y TransMiCable, centro de datos y GCP. &
+		concesionarios y conductores.                                                             &
+		CCI en Bogotá, flota Troncal, TransMiZonal y TransMiCable, centro de datos y GCP.         &
 		Operación 24/7, decisiones en tiempo real, más de 40 millones de registros diarios y picos de
-		demanda. \\
-		
+		demanda.                                                                                        \\
+
 		\addlinespace[2pt]
-		
-		Conceptual &
+
+		Conceptual                                                                                &
 		Atributos de negocio: integridad, exactitud, autorización, trazabilidad, auditabilidad,
-		disponibilidad, recuperabilidad y confidencialidad. &
+		disponibilidad, recuperabilidad y confidencialidad.                                       &
 		Mantener los riesgos dentro del apetito definido y aplicar políticas alineadas con PESI, MSPI
-		y demás requerimientos regulatorios. &
+		y demás requerimientos regulatorios.                                                      &
 		Seguridad desde el diseño, dato único y autoritativo, integración segura, RBAC, MFA y
-		continuidad sin punto único de falla. &
+		continuidad sin punto único de falla.                                                     &
 		Propietarios de activos, custodios TIC, usuarios operacionales y proveedores externos, con
-		responsabilidades diferenciadas. &
+		responsabilidades diferenciadas.                                                          &
 		Dominios de seguridad del CCI, analítica, nube, enlaces externos y comunicaciones
-		vehículo--CCI. &
+		vehículo--CCI.                                                                            &
 		Revisión periódica de la arquitectura, seguimiento continuo de KPI/KRI y ventanas de
-		mantenimiento controladas. \\
-		
+		mantenimiento controladas.                                                                      \\
+
 		\addlinespace[2pt]
-		
-		Lógica &
+
+		Lógica                                                                                    &
 		Posiciones GPS/AVL, programación operacional, novedades, instrucciones de regulación,
-		bitácora y metadatos asociados. &
+		bitácora y metadatos asociados.                                                           &
 		Políticas de control de acceso, integridad de datos, registro de decisiones, retención y gestión
-		de cambios. &
+		de cambios.                                                                               &
 		Autenticación del origen, validación de plausibilidad, autorización por rol, registro no
-		repudiable, detección de eventos y conmutación. &
+		repudiable, detección de eventos y conmutación.                                           &
 		Operador de monitoreo, supervisor de despacho, soporte TIC y auditor, respaldados por
-		identidades corporativas. &
+		identidades corporativas.                                                                 &
 		Zonas lógicas segmentadas para operación crítica, analítica y acceso externo, con reglas de
-		flujo entre ellas. &
+		flujo entre ellas.                                                                        &
 		Duración de sesión, rotación de credenciales, revisiones periódicas de permisos, retención y
-		ventanas de respaldo. \\
-		
+		ventanas de respaldo.                                                                           \\
+
 		\addlinespace[2pt]
-		
-		Física &
+
+		Física                                                                                    &
 		Tablas geoespaciales, mensajes de telemetría autenticados y registros de bitácora protegidos
-		mediante hash y sellos de tiempo. &
+		mediante hash y sellos de tiempo.                                                         &
 		Reglas de rechazo de posiciones imposibles, aprobación para cambios críticos, bloqueo ante
-		intentos fallidos y procedimientos de contingencia. &
+		intentos fallidos y procedimientos de contingencia.                                       &
 		Validación criptográfica GPS/AVL, TLS, RBAC, MFA, almacenamiento WORM, balanceo,
-		conmutación y SIEM. &
+		conmutación y SIEM.                                                                       &
 		Consolas del CCI con SSO/MFA, perfiles diferenciados y controles adicionales para operaciones
-		críticas. &
+		críticas.                                                                                 &
 		Red vehículo--CCI, infraestructura local redundante, nube híbrida, firewalls, balanceadores y
-		segmentación de red. &
+		segmentación de red.                                                                      &
 		Sincronización horaria, sellos de tiempo, secuencia detección--decisión--ejecución y
-		temporización de sesiones. \\
-		
+		temporización de sesiones.                                                                      \\
+
 		\addlinespace[2pt]
-		
-		Componentes &
+
+		Componentes                                                                               &
 		Oracle Spatial/Locator, ArcGIS, almacenamiento WORM, plataforma de eventos, SIRCI/FMS
-		y equipos ITS a bordo. &
+		y equipos ITS a bordo.                                                                    &
 		Registro de riesgos R1--R4, matriz de controles, tableros KPI/KRI y plataformas de
-		monitoreo y análisis. &
+		monitoreo y análisis.                                                                     &
 		Bus de eventos y APIs, firewalls Fortinet, balanceadores, GCP, servicios criptográficos,
-		gestores de claves y herramientas de seguridad. &
+		gestores de claves y herramientas de seguridad.                                           &
 		Active Directory, ADFS, MFA, listas de acceso, perfiles de cargo, matriz RBAC y mecanismos
-		de autorización. &
-		Nodos locales y GCP, VLAN, rangos IP, interfaces, identificadores de bus y consolas. &
+		de autorización.                                                                          &
+		Nodos locales y GCP, VLAN, rangos IP, interfaces, identificadores de bus y consolas.      &
 		Servicio de hora, planificación de respaldos, vigencia de certificados y alertas de expiración. \\
-		
+
 		\addlinespace[2pt]
-		
-		Gestión del servicio &
+
+		Gestión del servicio                                                                      &
 		Gestión del ciclo de vida de los activos y aseguramiento de la continuidad de los servicios
-		de despacho. &
+		de despacho.                                                                              &
 		Evaluación periódica de R1--R4, monitoreo de KRI y seguimiento de los riesgos residuales. &
 		Operación del SIEM, respaldos, gestión de incidentes, gestión de cambios, DRP y pruebas de
-		recuperación. &
+		recuperación.                                                                             &
 		Aprovisionamiento y retiro de cuentas, capacitación, concientización y soporte a los usuarios
-		del CCI. &
-		Gestión de la sala del CCI, plataformas, redes, controles físicos y sitio alterno. &
+		del CCI.                                                                                  &
+		Gestión de la sala del CCI, plataformas, redes, controles físicos y sitio alterno.        &
 		Revisiones semestrales, auditorías, pruebas de conmutación y plan de transición a 6, 12 y
-		24 meses. \\
-		
+		24 meses.                                                                                       \\
 	\end{longtable}
-	
+
 	\endgroup
-	
+
 \end{landscape}
 
 La matriz permite comprobar que las tecnologías utilizadas en las capas física y de componentes
@@ -400,63 +399,63 @@ decisión y aplicación de políticas.
 	\scriptsize
 	\setlength{\tabcolsep}{3pt}
 	\renewcommand{\arraystretch}{1.2}
-	
+
 	\begin{tabularx}{\textwidth}{
 			>{\raggedright\arraybackslash}p{2.2cm}
 			>{\raggedright\arraybackslash}p{2.6cm}
 			>{\raggedright\arraybackslash}X
 			>{\raggedright\arraybackslash}X}
-		
+
 		\toprule
-		\textbf{Dominio} &
-		\textbf{Servicios O-ESA} &
-		\textbf{Contramedidas principales} &
-		\textbf{Aplicación PDP/PEP} \\
+		\textbf{Dominio}                                                                   &
+		\textbf{Servicios O-ESA}                                                           &
+		\textbf{Contramedidas principales}                                                 &
+		\textbf{Aplicación PDP/PEP}                                                          \\
 		\midrule
-		
-		Gestión de identidad y acceso &
-		Gestión de identidad, autenticación y control de acceso. &
+
+		Gestión de identidad y acceso                                                      &
+		Gestión de identidad, autenticación y control de acceso.                           &
 		La protección se basa en identidad individual, SSO, MFA y RBAC, complementados con
-		mínimo privilegio, segregación de funciones y monitoreo continuo de los accesos. &
+		mínimo privilegio, segregación de funciones y monitoreo continuo de los accesos.   &
 		El PDP evalúa la identidad, el rol y el contexto de la solicitud. A partir de esta decisión,
 		los PEP ubicados en las consolas, aplicaciones e interfaces permiten o bloquean la ejecución
-		de las acciones solicitadas. \\
-		
+		de las acciones solicitadas.                                                         \\
+
 		\addlinespace
-		
-		Integridad de telemetría &
-		Servicios criptográficos, detección y aplicación de políticas. &
+
+		Integridad de telemetría                                                           &
+		Servicios criptográficos, detección y aplicación de políticas.                     &
 		Se utilizan identidades para los dispositivos ITS junto con autenticación mutua y
 		protección criptográfica de las comunicaciones. Estos mecanismos se complementan con
 		validaciones de plausibilidad y cuarentena para las tramas consideradas inválidas. &
 		La pasarela de ingreso actúa como PEP y evita que los mensajes que no cumplen las
-		validaciones de autenticidad e integridad sean incorporados al flujo operacional. \\
-		
+		validaciones de autenticidad e integridad sean incorporados al flujo operacional.    \\
+
 		\addlinespace
-		
-		Trazabilidad y auditoría &
-		Servicios de auditoría, servicios criptográficos y control de acceso. &
+
+		Trazabilidad y auditoría                                                           &
+		Servicios de auditoría, servicios criptográficos y control de acceso.              &
 		Las decisiones se registran de forma automática y se protegen mediante almacenamiento
 		WORM, sellado de tiempo y encadenamiento de hashes. Además, se aplican segregación
-		de funciones y mecanismos de alertamiento ante intentos de modificación. &
+		de funciones y mecanismos de alertamiento ante intentos de modificación.           &
 		Las políticas determinan qué actores pueden consultar o administrar los registros. Los
 		puntos de aplicación ubicados en la bitácora y en el almacenamiento impiden cambios
-		no autorizados sobre la evidencia operacional. \\
-		
+		no autorizados sobre la evidencia operacional.                                       \\
+
 		\addlinespace
-		
-		Disponibilidad y continuidad &
-		Protección de frontera, detección y mecanismos de aplicación de políticas. &
+
+		Disponibilidad y continuidad                                                       &
+		Protección de frontera, detección y mecanismos de aplicación de políticas.         &
 		La continuidad se soporta mediante segmentación de red, firewalls y balanceadores de
 		carga, junto con redundancia, monitoreo y replicación de servicios. Estos mecanismos se
-		complementan con failover automatizado, DRP y BCP. &
+		complementan con failover automatizado, DRP y BCP.                                 &
 		Los controles perimetrales y de segmentación funcionan como puntos de enforcement.
 		De esta forma, aplican las políticas de comunicación entre los distintos dominios y
-		bloquean aquellos flujos que no se encuentren autorizados. \\
-		
+		bloquean aquellos flujos que no se encuentren autorizados.                           \\
+
 		\bottomrule
 	\end{tabularx}
-	
+
 	\begin{minipage}{0.96\textwidth}
 		\footnotesize
 		\textit{Nota.} Elaboración propia a partir de la matriz SABSA, las políticas y servicios
@@ -464,10 +463,12 @@ decisión y aplicación de políticas.
 	\end{minipage}
 \end{table}
 
-La combinación de SABSA, O-ESA y ArchiMate permite mantener una cadena de trazabilidad
-completa: las necesidades del negocio y los riesgos originan atributos y políticas de seguridad, luego, con
-estas políticas se traducen en servicios y mecanismos técnicos, para que después con los paquetes de trabajo se puedan implementar esos mecanismos de forma progresiva hasta alcanzar el estado TO-BE de la arquitectura.
+La combinación de SABSA, O-ESA y ArchiMate mantiene una cadena de trazabilidad completa. Las
+necesidades del negocio y los riesgos originan atributos y políticas de seguridad. Esas políticas
+se traducen en servicios y mecanismos técnicos, y los paquetes de trabajo los implementan de
+forma progresiva hasta alcanzar el estado TO-BE de la arquitectura.
 
-Esta estructura permite que la hoja de ruta no se limite a un cronograma tecnológico, sino que
-cada iniciativa pueda justificarse a partir del riesgo que trata, el requerimiento que satisface,
-el servicio de seguridad que implementa y el resultado arquitectónico que debe producir.
+En la hoja de ruta, cada iniciativa se justifica por el riesgo que trata, el requerimiento que
+satisface, el servicio de seguridad que implementa y el resultado arquitectónico que produce.
+
+\input{secciones/cronogramav2.tex}
