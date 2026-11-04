@@ -1,0 +1,71 @@
+% Sin número: se conserva la numeración de las secciones del documento.
+\section*{Componentes de la plantilla de Blueprint}
+\addcontentsline{toc}{section}{Componentes de la plantilla de Blueprint}
+
+El concepto de Blueprint describe qué es y para qué sirve; la plantilla lo traduce en un conjunto de
+bloques que se desarrollan en un orden determinado. Cada bloque responde a una pregunta distinta y
+alimenta al siguiente: qué se quiere lograr y hasta dónde llega el diseño, qué contexto y obligaciones
+lo condicionan, de dónde se parte y qué falta, qué amenazas y activos justifican los controles, cómo se
+pasa al estado objetivo y cómo se comprueba el avance. La Tabla~\ref{tab:plantilla_blueprint} resume
+los seis bloques de la plantilla.
+
+\begin{table}[H]
+	\caption{Componentes de la plantilla de Blueprint}
+	\label{tab:plantilla_blueprint}
+	\centering
+	\footnotesize
+	\renewcommand{\arraystretch}{1.15}
+	\begin{tabularx}{\textwidth}{@{}>{\raggedright\arraybackslash}p{0.22\textwidth} Y >{\centering\arraybackslash}p{0.06\textwidth}@{}}
+		\toprule
+		\textbf{Bloque} & \textbf{Qué define} & \textbf{Sec.} \\
+		\midrule
+		\textbf{Visión, principios y alcance}
+		& Fija la razón de ser del Blueprint, las fronteras del diseño, las reglas no negociables y los interesados que deben validarlo.
+		& 1
+		\\
+		\midrule
+		\textbf{Contexto de negocio, objetivos y cumplimiento}
+		& Relaciona las decisiones de seguridad con los objetivos del negocio, la normativa aplicable y el nivel de riesgo que la entidad acepta.
+		& 2
+		\\
+		\midrule
+		\textbf{Evaluación del estado actual y análisis de brechas}
+		& Describe la arquitectura base, la evalúa en efectividad, madurez y eficiencia, y compara el estado actual con el objetivo.
+		& 3
+		\\
+		\midrule
+		\textbf{Modelo de amenazas, activos y evaluación de riesgos}
+		& Identifica los activos críticos, caracteriza la superficie de ataque y valora el riesgo inherente y residual.
+		& 4
+		\\
+		\midrule
+		\textbf{Arquitectura de transición y hoja de ruta}
+		& Define los estados intermedios, el cronograma, los entregables y los recursos para pasar del estado actual al objetivo.
+		& 5
+		\\
+		\midrule
+		\textbf{Métricas}
+		& Establece los indicadores de desempeño y de riesgo, con metas y umbrales, para verificar el cumplimiento de los objetivos.
+		& 6
+		\\
+		\bottomrule
+	\end{tabularx}
+
+	\vspace{0.4em}
+	\parbox{\textwidth}{\footnotesize \textit{Nota.} Elaboración propia.}
+\end{table}
+
+La plantilla incluye dos componentes complementarios que se integran en los bloques anteriores: las
+políticas de seguridad de O-ESA y el perfil de atributos de negocio de SABSA. Las políticas se reflejan
+en la matriz SABSA y en el esquema PDP/PEP de la Sección~5; los atributos de negocio se concretan en
+los KPI y KRI de la Sección~6.
+
+Los bloques se encadenan: la visión y el alcance definen el perímetro; el contexto y el cumplimiento
+fijan los criterios; el diagnóstico y las brechas establecen el punto de partida; el modelo de
+amenazas y riesgos justifica los controles; la transición y la hoja de ruta ordenan la implementación;
+y las métricas permiten comprobar si el estado objetivo se alcanzó. Cada bloque conserva la referencia
+al anterior, de modo que una decisión de diseño pueda rastrearse hasta el objetivo, el riesgo o la
+obligación que la origina.
+
+Las secciones siguientes desarrollan estos bloques en ese mismo orden, comenzando por la visión, los
+principios y el alcance de la arquitectura.
