@@ -1,8 +1,10 @@
 \section{Modelo de Amenazas, Activos y Evaluación de Riesgos}
 
-El modelo de amenazas y riesgos del Centro de Control Integrado (CCI) parte de los activos
+Un modelo de amenazas describe qué protege la arquitectura, frente a qué amenazas y por qué medios. Parte del inventario de activos, caracteriza la superficie de ataque y valora el riesgo para decidir qué controles se necesitan y en qué orden. El modelo se apoya en la trazabilidad: cada control debe poder explicarse por un riesgo y cada riesgo por un activo del proceso.
+
+En el Centro de Control Integrado (CCI), el modelo de amenazas y riesgos parte de los activos
 críticos identificados durante la primera fase del proyecto \parencite{fase1cci2026} y mantiene la trazabilidad con los
-riesgos, políticas de seguridad, mecanismos de protección y capacidades arquitectónicas
+riesgos, las políticas de seguridad, los mecanismos de protección y las capacidades arquitectónicas
 desarrolladas posteriormente mediante SABSA, O-ESA y ArchiMate, y aplicadas en los ensayos y el modelo del caso \parencite{sabsaCCI2026,oesaCCI2026,modeloArchimateCCI2026}.
 
 El análisis se concentra en los tres activos que soportan directamente el proceso de gestión y
@@ -12,18 +14,19 @@ manipulación o suplantación de la telemetría (R1), alteración o eliminación
 operativa (R2), acceso no autorizado al Sistema de Despacho (R3) e indisponibilidad del
 Sistema de Despacho (R4).
 
-En esta sección se consolida la criticidad de los activos, caracteriza la superficie de ataque
-mediante la taxonomía \textit{Data--Method--Channel} utilizada en O-ESA \parencite{oesa2011}, recupera la
+Esta sección consolida la criticidad de los activos, caracteriza la superficie de ataque
+mediante la taxonomía \textit{Data}, \textit{Method} y \textit{Channel} utilizada en O-ESA \parencite{oesa2011}, recupera la
 valoración de riesgo definida previamente y relaciona cada riesgo con los dominios de seguridad
-y capacidades técnicas requeridas para alcanzar el estado objetivo de la arquitectura.
+y las capacidades técnicas requeridas para alcanzar el estado objetivo de la arquitectura.
 
 
 \subsection{Inventario y Criticidad de Activos}
 
-La identificación de activos realizada en la primera fase \parencite{fase1cci2026} determinó tres elementos de criticidad
-alta para la operación del CCI. Su valoración considera las propiedades de confidencialidad,
-integridad y disponibilidad de la información, de acuerdo con el impacto que una afectación de
-cada propiedad tendría sobre la regulación de la flota.
+El inventario de activos es el registro de la información, el software y la infraestructura que sostienen un proceso, junto con el valor que tienen para la organización. La criticidad se asigna por el efecto que tendría perder confidencialidad, integridad o disponibilidad en cada activo.
+
+En el CCI, la identificación realizada en la primera fase \parencite{fase1cci2026} determinó tres elementos de criticidad
+alta para la operación. La valoración de cada uno considera el impacto que tendría una afectación de
+confidencialidad, integridad o disponibilidad sobre la regulación de la flota.
 
 La Tabla~\ref{tab:activos_criticos_blueprint} resume esta clasificación.
 
@@ -89,9 +92,9 @@ La Tabla~\ref{tab:activos_criticos_blueprint} resume esta clasificación.
 	\end{minipage}
 \end{table}
 
-La telemetría de flota constituye la fuente de información utilizada para conocer la
+La telemetría de flota es la fuente de información utilizada para conocer la
 posición, velocidad y estado operacional de los vehículos. Su integridad y disponibilidad son
-especialmente relevantes debido a que los datos GPS/AVL alimentan el análisis operacional y
+críticas porque los datos GPS/AVL alimentan el análisis operacional y
 las decisiones posteriores de regulación.
 
 La bitácora de decisiones del CCI conserva la evidencia de las acciones realizadas
@@ -99,19 +102,14 @@ durante la operación, incluyendo responsables, marcas de tiempo, instrucciones 
 resultados. Su principal necesidad de protección se concentra en la integridad, ya que una
 alteración o eliminación de registros afectaría la trazabilidad y la capacidad de auditoría.
 
-Por su parte, el Sistema de Despacho es el principal activo de software mediante el cual se ejecutan las decisiones de regulación, de tal forma que tanto su integridad como su disponibilidad son
-críticas, donde una modificación no autorizada puede alterar las instrucciones operacionales, mientras
-que su indisponibilidad puede impedir la aplicación de medidas ante retrasos, congestiones,
-bloqueos u otras novedades de la operación.
+El Sistema de Despacho es el principal activo de software mediante el cual se ejecutan las decisiones de regulación. Su integridad y su disponibilidad son críticas: una modificación no autorizada puede alterar las instrucciones operacionales, y una indisponibilidad puede impedir la aplicación de medidas ante retrasos, congestiones, bloqueos u otras novedades de la operación.
 
 
 \subsection{Caracterización de la Superficie de Ataque}
 
-Para caracterizar la superficie de ataque se mantiene la estructura empleada en el análisis
-O-ESA \parencite{oesa2011,oesaCCI2026}, diferenciando tres dimensiones: Data, Method y Channel. La primera corresponde a la información o elementos que pueden verse comprometidos, mientras que por Method, con este se representa el mecanismo o técnica mediante la cual puede materializarse la amenaza, y, por último, Channel identifica el canal físico o lógico a través del cual ocurre la interacción.
+La superficie de ataque es el conjunto de puntos por donde una amenaza puede entrar en contacto con un activo. Se descompone en los datos que pueden verse comprometidos, los métodos con que se materializa la amenaza y los canales físicos o lógicos por donde ocurre la interacción. Esa lectura evita tratar cada amenaza como un hecho aislado y permite ubicar el control en el punto de la arquitectura donde corresponde.
 
-Esta descomposición permite evitar una visión aislada de cada amenaza y relacionarla con los
-puntos concretos de la arquitectura donde deben implementarse los mecanismos de protección.
+En el CCI, la caracterización sigue las tres dimensiones del análisis O-ESA \parencite{oesa2011,oesaCCI2026}: \textit{Data}, \textit{Method} y \textit{Channel}. \textit{Data} corresponde a la información o los elementos que pueden verse comprometidos; \textit{Method}, al mecanismo o técnica mediante la cual puede materializarse la amenaza; y \textit{Channel}, al canal físico o lógico a través del cual ocurre la interacción. Aplicada a los cuatro riesgos priorizados, esta descomposición muestra dónde se concentra la exposición de cada uno y qué tipo de control la reduce.
 
 \begin{table}[H]
 	\centering
@@ -176,42 +174,30 @@ En R1, la superficie de ataque se encuentra principalmente en la frontera entre 
 entorno móvil no confiable y los sistemas internos del CCI. La información se origina en las
 unidades ITS instaladas en los vehículos y posteriormente atraviesa las redes móviles y la
 pasarela de ingestión antes de incorporarse a los sistemas que soportan la regulación de flota.
-Por esto es que la arquitectura objetivo requiere validar tanto la identidad del dispositivo como
+Por eso, la arquitectura objetivo requiere validar tanto la identidad del dispositivo como
 la autenticidad, integridad y coherencia física de cada mensaje antes de incorporarlo a la fuente
 autoritativa de datos.
 
-Para R2, la superficie de ataque se concentra en los mecanismos mediante los cuales se
-generan, almacenan y administran los registros operacionales. El riesgo no depende solamente
-de un ataque externo, sino también del abuso de privilegios o de modificaciones posteriores
-sobre los registros. En consecuencia, la protección debe garantizar que la evidencia sea
-capturada automáticamente, que no dependa de la voluntad del operador y que pueda
-demostrarse cualquier alteración posterior.
+Para R2, la superficie de ataque se concentra en los mecanismos mediante los cuales se generan, almacenan y administran los registros operacionales. El riesgo incluye ataques externos, abuso de privilegios y modificaciones posteriores sobre los registros. En consecuencia, la protección debe garantizar que la evidencia se capture automáticamente, que no dependa de la voluntad del operador y que cualquier alteración posterior pueda demostrarse.
 
-En R3, los principales puntos de exposición corresponden a las identidades,
-credenciales, roles y permisos utilizados para interactuar con las consolas y con el Sistema de Despacho, y, el riesgo se materializa cuando una identidad no autorizada logra ejecutar acciones
-de regulación o cuando un usuario legítimo dispone de privilegios superiores a los necesarios
-para su función.
+En R3, los principales puntos de exposición son las identidades, credenciales, roles y permisos utilizados para interactuar con las consolas y con el Sistema de Despacho. El riesgo se materializa cuando una identidad no autorizada logra ejecutar acciones de regulación o cuando un usuario legítimo dispone de privilegios superiores a los necesarios para su función.
 
-Finalmente, R4 presenta una superficie de ataque distribuida entre la infraestructura
-local, las comunicaciones y los servicios tecnológicos de los cuales depende el despacho.
-Además de ataques de denegación de servicio, deben contemplarse fallas de infraestructura,
-saturación y pérdida de componentes críticos, debido a que cualquiera de estos eventos puede
-afectar la disponibilidad de la operación.
+R4 presenta una superficie de ataque distribuida entre la infraestructura local, las comunicaciones y los servicios tecnológicos de los cuales depende el despacho. Además de ataques de denegación de servicio, deben contemplarse fallas de infraestructura, saturación y pérdida de componentes críticos, porque cualquiera de estos eventos puede afectar la disponibilidad de la operación.
 
 
 \subsection{Evaluación de Riesgos Residuales}
 
-La valoración desarrollada durante la primera fase \parencite{fase1cci2026} permitió establecer el nivel inherente de los
-riesgos asociados a los activos críticos del CCI. Posteriormente, el Anexo B consolidó los
-controles definidos para su tratamiento y calculó la valoración residual resultante después de
-considerar su efecto sobre la probabilidad o el impacto.
+El riesgo inherente es el nivel de exposición de un activo antes de aplicar controles; el riesgo residual es el que permanece después de tratarlo. La diferencia entre ambos mide el efecto real de los controles y permite decidir si el riesgo resultante cabe dentro del apetito de la organización o exige tratamiento adicional.
+
+En el CCI, la valoración de la primera fase \parencite{fase1cci2026} estableció el nivel inherente de los
+riesgos asociados a los activos críticos. El Anexo B consolidó los controles definidos para su tratamiento y calculó la valoración residual después de considerar su efecto sobre la probabilidad o el impacto.
 
 Para mantener la trazabilidad con el resto del Blueprint, en esta sección se conserva la
 numeración de riesgos utilizada a lo largo del proyecto: R1 para la manipulación de telemetría,
 R2 para la alteración de la bitácora de decisiones, R3 para el acceso no autorizado al Sistema
 de Despacho y R4 para la indisponibilidad del Sistema de Despacho.
 
-Debe señalarse que la matriz del Anexo B utiliza una numeración diferente. En ella, la
+La matriz del Anexo B utiliza una numeración diferente. En ella, la
 indisponibilidad aparece como R1, la manipulación de telemetría como R2, el riesgo sobre la
 integridad y no repudio de la bitácora como R3 y el acceso no autorizado al Sistema de
 Despacho como R4. Por esta razón, los valores residuales se trasladan al Blueprint según la
@@ -367,10 +353,7 @@ probabilidad de materialización de los riesgos asociados a telemetría, trazabi
 de acceso. Sin embargo, ninguno de los cuatro riesgos desciende todavía a una zona inferior a
 Alta.
 
-Particularmente, R4 conserva una probabilidad Muy Alta debido a que la exposición del Sistema
-de Despacho y de la infraestructura del CCI es permanente. En este caso, la estrategia de
-continuidad no elimina la posibilidad de que ocurra una falla, sino que busca limitar sus
-consecuencias mediante mecanismos de redundancia, contingencia y recuperación.
+R4 conserva una probabilidad Muy Alta porque la exposición del Sistema de Despacho y de la infraestructura del CCI es permanente. La estrategia de continuidad acepta que una falla puede ocurrir y busca limitar sus consecuencias mediante redundancia, contingencia y recuperación.
 
 En consecuencia, los cuatro riesgos requieren mantener una estrategia de reducción y
 seguimiento continuo. La permanencia del nivel residual Alto también justifica las capacidades
@@ -380,11 +363,9 @@ transición y en la hoja de ruta desarrollada posteriormente.
 
 \subsection{Matriz de Dominios de Seguridad}
 
-A partir de los riesgos priorizados, el análisis de brechas y las capacidades modeladas en
-ArchiMate \parencite{archimate2022,modeloArchimateCCI2026}, se consolidan cuatro dominios principales de intervención. Estos dominios no se
-definen a partir de productos específicos, sino de los requerimientos técnicos y de control que
-debe satisfacer la arquitectura objetivo. Las tecnologías se presentan posteriormente como
-mecanismos de implementación de dichos requerimientos.
+La matriz de dominios de seguridad agrupa los requerimientos de la arquitectura objetivo en áreas de capacidad. Cada dominio reúne los controles que comparten un mismo riesgo y una misma forma de verificarse, de modo que la implementación pueda planificarse y evaluarse por separado.
+
+En el CCI, los riesgos priorizados, el análisis de brechas y las capacidades modeladas en ArchiMate \parencite{archimate2022,modeloArchimateCCI2026} dan lugar a cuatro dominios de intervención. Los dominios se definen por los requerimientos técnicos y de control que debe satisfacer la arquitectura objetivo. Las tecnologías se presentan después como mecanismos de implementación de esos requerimientos.
 
 \begin{table}[H]
 	\centering
@@ -458,13 +439,10 @@ mecanismos de implementación de dichos requerimientos.
 	\end{minipage}
 \end{table}
 
-La matriz permite mantener una relación directa entre los riesgos identificados y las capacidades
-que deben incorporarse a la arquitectura objetivo. En este sentido, los componentes tecnológicos
-no constituyen por sí mismos la arquitectura de seguridad; son los mecanismos mediante los
-cuales se implementan requerimientos previamente derivados del riesgo y de las necesidades
-operacionales del CCI.
+La matriz mantiene una relación directa entre los riesgos identificados y las capacidades
+que deben incorporarse a la arquitectura objetivo. Los componentes tecnológicos implementan
+requerimientos derivados del riesgo y de las necesidades operacionales del CCI.
 
-Esta trazabilidad también facilita la transición hacia la siguiente sección del Blueprint. Los
-dominios de identidad y acceso, seguridad de telemetría, trazabilidad de decisiones y continuidad
-operativa corresponden a las principales capacidades que deben evolucionar desde el estado
-actual hacia los estados de transición definidos en la arquitectura de migración.
+Estos cuatro dominios son la base de la arquitectura de transición de la Sección~5. Las
+capacidades de identidad y acceso, seguridad de telemetría, trazabilidad de decisiones y continuidad
+operativa deben evolucionar desde el estado actual hacia los estados de transición que allí se describen.

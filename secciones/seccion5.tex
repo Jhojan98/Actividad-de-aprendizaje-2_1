@@ -1,10 +1,8 @@
 \section{Arquitectura de Transición y Hoja de Ruta}
 
-La transición hacia la arquitectura objetivo del CCI se plantea
-como una evolución progresiva de las capacidades de seguridad actualmente disponibles. El
-proceso cierra de forma controlada las brechas identificadas en gestión de identidades,
-integridad de telemetría, trazabilidad de decisiones y continuidad operativa, sin sustituir
-todos los componentes existentes a la vez.
+La arquitectura de transición describe cómo pasar de la arquitectura base a la objetivo mediante estados intermedios que pueden operarse y verificarse. Esos estados se suceden en un orden planificado para que cada paso deje la operación en una condición estable antes de iniciar el siguiente.
+
+En el CCI, la transición se plantea como una evolución progresiva de las capacidades de seguridad disponibles. El proceso cierra de forma controlada las brechas en gestión de identidades, integridad de telemetría, trazabilidad de decisiones y continuidad operativa, sin sustituir todos los componentes existentes a la vez.
 
 Las vistas de Migration, Project e Implementation and Migration de ArchiMate \parencite{archimate2022}
 permiten relacionar las brechas del estado actual con los paquetes de trabajo, entregables y
@@ -15,13 +13,12 @@ R1 a R4 de la Sección~4.
 
 \subsection{Estados de Transición Intermedios}
 
-La arquitectura de migración establece una secuencia entre el estado actual
-(\textit{AS-IS}), dos estados de transición y el estado objetivo (\textit{TO-BE}). Cada estado
-representa una configuración relativamente estable de la arquitectura y permite implementar
-los controles de manera progresiva sin comprometer la continuidad de la operación del CCI.
+Un estado de transición es una configuración relativamente estable de la arquitectura que entrega una parte de las capacidades objetivo y puede operarse mientras se prepara la siguiente. Se apoya en la plataforma existente y añade los controles propios de esa etapa, de modo que el conjunto sea coherente y verificable.
 
-El estado AS-IS corresponde a una plataforma que dispone de capacidades de
-seguridad existentes, pero mantiene brechas en autenticación multifactor, segregación de
+En el CCI, la arquitectura de migración establece una secuencia entre el estado actual (\textit{AS-IS}), dos estados de transición y el estado objetivo (\textit{TO-BE}). Cada estado permite implementar los controles de manera progresiva sin comprometer la continuidad de la operación.
+
+El estado AS-IS es una plataforma con capacidades de
+seguridad ya desplegadas, pero con brechas en autenticación multifactor, segregación de
 accesos, integridad de la telemetría, trazabilidad de decisiones y redundancia operativa.
 
 La Transición 1 se concentra en el fortalecimiento de la gestión de identidad y acceso.
@@ -34,11 +31,11 @@ con fuentes autoritativas de información de flota. Este estado busca garantizar
 información utilizada por el Sistema de Despacho pueda ser asociada con una fuente válida y
 verificada antes de utilizarse para la toma de decisiones operacionales.
 
-Finalmente, el estado TO-BE representa un ecosistema de gestión de flota confiable y
+El estado TO-BE es una arquitectura de gestión de flota confiable y
 de alta disponibilidad, con accesos controlados, telemetría autenticada, fuentes de datos
 autoritativas, trazabilidad de las decisiones y mecanismos de recuperación ante fallas. Para
-alcanzar este estado también deben cerrarse las brechas relacionadas con la inmutabilidad de
-la evidencia operacional y la resiliencia de la infraestructura.
+alcanzar este estado también deben cerrarse las brechas de inmutabilidad de la evidencia
+operacional y de resiliencia de la infraestructura.
 
 La Tabla~\ref{tab:estados_transicion} resume la evolución propuesta.
 
@@ -86,7 +83,7 @@ La Tabla~\ref{tab:estados_transicion} resume la evolución propuesta.
 		\addlinespace
 
 		TO-BE                                                                    &
-		Ecosistema de gestión de flota confiable y de alta disponibilidad, con accesos
+		Arquitectura de gestión de flota confiable y de alta disponibilidad, con accesos
 		controlados, información GPS autenticada, fuentes de datos autoritativas, trazabilidad
 		de decisiones y recuperación ante fallas.                                &
 		Cierre de las brechas restantes de trazabilidad, inmutabilidad, redundancia y
@@ -102,18 +99,20 @@ La Tabla~\ref{tab:estados_transicion} resume la evolución propuesta.
 	\end{minipage}
 \end{table}
 
-Los estados de transición no representan proyectos independientes, sino incrementos sucesivos
-de la arquitectura. Por esta razón, algunas capacidades comienzan a implementarse desde las
-primeras fases y continúan madurando hasta alcanzar el estado objetivo. Este es el caso de la
+Los estados de transición son incrementos sucesivos
+de la arquitectura, aunque se ejecuten mediante proyectos. Por esta razón, algunas capacidades comienzan a implementarse desde las
+primeras fases y continúan madurando hasta alcanzar el estado objetivo. Es el caso de la
 trazabilidad de decisiones y de la continuidad operativa, cuyos mecanismos iniciales pueden
 desplegarse tempranamente, aunque su implementación completa llegue en fases posteriores.
 
 
 \subsection{Hoja de Ruta}
 
-La transición se organiza en tres fases de implementación, con los horizontes de 6, 12 y 24
-meses definidos en el análisis TOGAF de la Fase 1 \parencite{fase1cci2026} para el despliegue gradual de las políticas y capacidades de
-seguridad del CCI.
+La hoja de ruta es el plan que convierte la arquitectura de transición en trabajo ejecutable: fija fases, paquetes de trabajo, entregables, hitos, recursos y dependencias. La secuencia importa porque un control puede ser correcto y, aun así, fallar si se implementa antes de la capacidad de la que depende.
+
+En el CCI, la transición se organiza en tres fases con horizontes de 6, 12 y 24
+meses, definidos en el análisis TOGAF de la Fase 1 \parencite{fase1cci2026} para el despliegue gradual de las políticas y capacidades de
+seguridad.
 
 La primera fase prioriza los controles cuya implementación puede generar una reducción
 temprana de la exposición, principalmente MFA, RBAC, registro automático de decisiones y
@@ -208,16 +207,17 @@ transformaciones de infraestructura y avanzar posteriormente hacia capacidades q
 coordinación entre aplicaciones, dispositivos ITS, concesionarios, infraestructura local y
 servicios en la nube.
 
-El cierre de cada fase depende de la verificación de sus entregables. La transición no se completa
-con la instalación de una tecnología; se completa cuando la capacidad correspondiente puede
+El cierre de cada fase depende de la verificación de sus entregables. La transición se completa cuando la capacidad correspondiente puede
 utilizarse de manera repetible, monitorearse y evaluarse contra los resultados esperados de la
-arquitectura.
+arquitectura. La instalación de la tecnología es el primer paso de esa verificación.
 
 
 \subsection{Matriz de Seguridad SABSA e Integración con Servicios O-ESA}
 
-La arquitectura de transición mantiene la trazabilidad desde los requerimientos del negocio
-hasta los mecanismos tecnológicos mediante la matriz SABSA \parencite{sabsa2005,sabsaCCI2026}. Esta matriz cruza seis niveles
+La matriz SABSA es un instrumento de trazabilidad que cruza los niveles de abstracción de la arquitectura con las preguntas que debe responder cada nivel. Cada celda cruza una capa con una pregunta y registra la respuesta: qué activo se protege, por qué, cómo, quién, dónde o cuándo. De ese modo, una decisión técnica queda conectada con la necesidad de negocio que la justifica.
+
+En el CCI, la arquitectura de transición mantiene la trazabilidad desde los requerimientos del negocio
+hasta los mecanismos tecnológicos mediante la matriz SABSA \parencite{sabsa2005,sabsaCCI2026}. La matriz cruza seis niveles
 de abstracción (Contextual, Conceptual, Lógico, Físico, Componentes y Gestión del
 Servicio) con las seis preguntas fundamentales de arquitectura: qué, por qué, cómo, quién,
 dónde y cuándo.
@@ -375,18 +375,15 @@ proceso de gestión y despacho de flota del CCI.
 
 \end{landscape}
 
-La matriz permite comprobar que las tecnologías utilizadas en las capas física y de componentes
-no se incorporan de manera aislada, sino como mecanismos derivados de requerimientos de
-negocio, políticas y servicios de seguridad previamente definidos.
+La matriz muestra que las tecnologías de las capas física y de componentes implementan
+requerimientos de negocio, políticas y servicios de seguridad definidos antes que ellas.
 
 
 \subsubsection{Servicios O-ESA y aplicación mediante PDP/PEP}
 
-La integración con O-ESA \parencite{oesa2011,oesaCCI2026} permite traducir las necesidades identificadas por SABSA en
-servicios técnicos de seguridad y mecanismos concretos de aplicación de políticas. En este
-modelo, el \textit{Policy Decision Point} (PDP) evalúa las reglas y condiciones aplicables,
-mientras que los \textit{Policy Enforcement Points} (PEP) ubicados en consolas, aplicaciones,
-interfaces y fronteras tecnológicas hacen cumplir la decisión correspondiente.
+Un servicio de seguridad es una capacidad técnica que aplica una política de forma consistente sobre uno o varios activos. En el modelo O-ESA, el \textit{Policy Decision Point} (PDP) evalúa las reglas y el contexto de cada solicitud, y los \textit{Policy Enforcement Points} (PEP) ubicados en consolas, aplicaciones, interfaces y fronteras tecnológicas hacen cumplir la decisión.
+
+En el CCI, la integración con O-ESA \parencite{oesa2011,oesaCCI2026} permite traducir las necesidades identificadas por SABSA en servicios técnicos y mecanismos de aplicación de políticas.
 
 La Tabla~\ref{tab:oesa_pdp_pep} relaciona los cuatro dominios priorizados con los servicios
 O-ESA, sus principales mecanismos de implementación y el papel que cumplen los puntos de

@@ -1,39 +1,47 @@
 \section{Evaluación del Estado Actual y Análisis de Brechas}
 \label{sec:evaluacion-brechas}
 
-Los ensayos previos y la entrega del primer corte dejan una línea base de hallazgos técnicos y conceptuales \parencite{fase1cci2026}. Sobre esa base, esta sección contrasta la operación real del Centro de Control Integrado (CCI) con el estado objetivo y fija los requerimientos de arquitectura, procesos y seguridad necesarios para cerrar la brecha.
+La evaluación del estado actual es el diagnóstico que compara la arquitectura base con la arquitectura necesaria para cumplir los objetivos de la organización. El análisis de brechas convierte esa diferencia en un conjunto de intervenciones: identifica qué falta y en qué orden debe resolverse. Sin ese contraste, un plan de seguridad puede invertir en controles que no responden a los riesgos del proceso.
 
-Siguiendo la metodología de evaluación propuesta por \textcite{moyle2020practical}, este diagnóstico analiza la postura de seguridad bajo tres dimensiones complementarias: efectividad, madurez y eficiencia.
+En el Centro de Control Integrado (CCI), los ensayos previos y la entrega del primer corte dejan una línea base de hallazgos técnicos y conceptuales \parencite{fase1cci2026}. Sobre esa base, esta sección contrasta la operación real con el estado objetivo y fija los requerimientos de arquitectura, procesos y seguridad necesarios para cerrar la brecha.
+
+Siguiendo la metodología de evaluación propuesta por \textcite{moyle2020practical}, el diagnóstico analiza la postura de seguridad del CCI bajo tres dimensiones complementarias: efectividad, madurez y eficiencia.
 
 \subsection{Efectividad (Capacidad de Reducción de Riesgo)}
 \label{sec:efectividad}
 
-La efectividad mide la capacidad real de los controles instalados para mitigar los riesgos inherentes de nivel alto identificados en la operación (R1, R2, R3 y R4). En el estado actual, esta capacidad tiene debilidades operativas y arquitectónicas relevantes.
+La efectividad es la capacidad de un control para reducir el riesgo al que se dirige. Se mide contra el riesgo inherente del proceso y por la reducción de exposición que produce. Un control puede estar instalado y, aun así, dejar abierta la exposición que debía cerrar.
+
+En el CCI, la efectividad se evalúa sobre los cuatro riesgos priorizados, todos de nivel inherente alto. El diagnóstico encuentra debilidades operativas y arquitectónicas en los controles que los tratan.
 
 \paragraph{Control de acceso y autenticación (efectividad limitada)}%
-Aunque el sistema tiene inicio de sesión único (SSO) federado mediante Active Directory y ADFS, la autenticación multifactor (MFA) todavía no se exige de manera obligatoria en la totalidad de las consolas operativas. Adicionalmente, la matriz de roles RBAC se encuentra en proceso de consolidación, lo que mantiene abierta la exposición del Sistema de Despacho ante incidentes de suplantación de credenciales o ejecución indebida de órdenes de regulación.
+Aunque el sistema tiene inicio de sesión único (SSO) federado mediante Active Directory y ADFS, la autenticación multifactor (MFA) todavía no se exige de manera obligatoria en la totalidad de las consolas operativas. Además, la matriz de roles RBAC se encuentra en proceso de consolidación, lo que mantiene abierta la exposición del Sistema de Despacho ante incidentes de suplantación de credenciales o ejecución indebida de órdenes de regulación.
 
 \paragraph{Integridad de telemetría (efectividad baja)}%
-Las señales GPS/AVL se transmiten en tiempo real mediante canales celulares privados (APN). Sin embargo, al carecer de validación criptográfica en origen (firma o HMAC) y de filtros automáticos de plausibilidad física en la pasarela de ingestión, la capacidad para prevenir la inyección de tramas falsas o manipuladas es reducida. Esto permite que datos anómalos o adulterados puedan ingresar al motor de despacho y distorsionar la analítica operacional.
+Las señales GPS/AVL se transmiten en tiempo real mediante canales celulares privados (APN). Sin embargo, al carecer de validación criptográfica en origen (firma o HMAC) y de filtros automáticos de plausibilidad física en la pasarela de ingestión, la capacidad para prevenir la inyección de tramas falsas o manipuladas es reducida. Con ello, datos anómalos o adulterados ingresan al motor de despacho y distorsionan la analítica operacional.
 
 \paragraph{Disponibilidad y resiliencia (efectividad insuficiente)}%
-En el perímetro local se cuenta con una suite de seguridad consolidada (Fortinet: FortiGate, FortiSIEM y FortiAnalyzer) \parencite{transmilenio2025res439,fase1cci2026}. No obstante, toda la operación lógica y física se encuentra concentrada en una única sede, sin un esquema probado de conmutación automática hacia un centro de contingencia (DRP) ni una redundancia híbrida completa con Google Cloud Platform (GCP). Por tanto, la sede es un Punto Único de Falla (SPOF), limitando severamente la capacidad de respuesta ante caídas de infraestructura.
+En el perímetro local se cuenta con una suite de seguridad consolidada (Fortinet: FortiGate, FortiSIEM y FortiAnalyzer) \parencite{transmilenio2025res439,fase1cci2026}. No obstante, toda la operación lógica y física se encuentra concentrada en una única sede, sin un esquema probado de conmutación automática hacia un centro de contingencia (DRP) ni una redundancia híbrida completa con Google Cloud Platform (GCP). Por tanto, la sede es un Punto Único de Falla (SPOF): si cae su infraestructura, el CCI pierde capacidad de respuesta.
 
 \subsection{Madurez (Confiabilidad y Repetibilidad de Procesos)}
 \label{sec:madurez}
 
-La madurez evalúa la formalización, documentación y repetibilidad de los procesos que soportan cada medida de seguridad:
+La madurez es el grado en que un proceso está formalizado, documentado y puede repetirse sin depender de las personas que lo ejecutan. Un control maduro produce el mismo resultado en cada ciclo y deja evidencia de cómo se aplicó. La efectividad mide si el control reduce el riesgo; la madurez, si lo hace de forma sostenible.
+
+En el CCI, la madurez se evalúa en los procesos que sostienen las medidas de seguridad. El diagnóstico encuentra tres niveles distintos:
 
 \begin{itemize}
-	\item \textbf{Dominio de Gobierno de Identidades (IAM):} tiene una madurez en proceso de consolidación. El aprovisionamiento de cuentas opera de forma automatizada, pero los procesos de revisión trimestral de privilegios, auditoría de cuentas inactivas y segregación de funciones dependen de intervenciones manuales.
-	\item \textbf{Dominio Criptográfico y Gestión de Dispositivos:} está en un nivel inicial de madurez. El proceso de gestión del ciclo de vida de certificados e identidades de los computadores de a bordo (unidades ITS) carece de procedimientos estandarizados y automatizados entre TransMilenio y los concesionarios de flota.
-	\item \textbf{Dominio de Auditoría e Inmutabilidad:} tiene una madurez intermedia. Se realiza captura automática de eventos de despacho, pero la inmutabilidad de la bitácora mediante políticas WORM (\textit{Write Once, Read Many}) en base de datos Oracle y la correlación en tiempo real en el SIEM se encuentran en fase de implementación procedimental.
+	\item \textbf{Dominio de Gobierno de Identidades (IAM):} su madurez está en consolidación. El aprovisionamiento de cuentas opera de forma automatizada, pero los procesos de revisión trimestral de privilegios, auditoría de cuentas inactivas y segregación de funciones dependen de intervenciones manuales.
+	\item \textbf{Dominio Criptográfico y Gestión de Dispositivos:} su madurez es inicial. El proceso de gestión del ciclo de vida de certificados e identidades de los computadores de a bordo (unidades ITS) carece de procedimientos estandarizados y automatizados entre TransMilenio y los concesionarios de flota.
+	\item \textbf{Dominio de Auditoría e Inmutabilidad:} su madurez es intermedia. Se realiza captura automática de eventos de despacho, pero la inmutabilidad de la bitácora mediante políticas WORM (\textit{Write Once, Read Many}) en base de datos Oracle y la correlación en tiempo real en el SIEM están en implementación.
 \end{itemize}
 
 \subsection{Eficiencia (Relación Costo/Beneficio)}
 \label{sec:eficiencia}
 
-La centralización de la operación de los componentes Troncal, TransMiZonal y TransMiCable en la sala del CCI permite aprovechar mejor los recursos tecnológicos y humanos, al reducir la necesidad de mantener salas de control y consolas independientes. Esta integración es una ventaja operativa, siempre que esté acompañada de controles adecuados y mecanismos de continuidad.
+La eficiencia relaciona el costo de un control con el beneficio que produce. Incluye el gasto en infraestructura y licencias, y también la carga operativa que el control impone a quien lo ejecuta. Un control eficiente protege el proceso con el menor esfuerzo razonable y libera capacidad para atender otros riesgos.
+
+En el CCI, la operación de los componentes Troncal, TransMiZonal y TransMiCable se concentra en una sola sala, lo que permite aprovechar mejor los recursos tecnológicos y humanos y reducir la necesidad de mantener salas de control y consolas independientes. Esta integración es una ventaja operativa, siempre que esté acompañada de controles adecuados y mecanismos de continuidad.
 
 Sin embargo, la falta de controles preventivos automatizados, como la validación criptográfica de la telemetría y la exigencia de MFA en todas las consolas, incrementa la carga de trabajo de los equipos de monitoreo y TIC. En consecuencia, algunas actividades que podrían resolverse mediante controles automáticos requieren verificaciones manuales y análisis adicionales ante posibles anomalías.
 
@@ -42,10 +50,14 @@ Por último, la ausencia de un esquema de redundancia y recuperación debidament
 \subsection{Análisis de Brechas (Gap Analysis)}
 \label{sec:gap-analysis}
 
-El análisis de brechas compara de forma directa la arquitectura actual frente a la arquitectura objetivo. Su propósito es catalogar con claridad las deficiencias técnicas de infraestructura, software y criptografía, junto con las falencias de gobernanza y procedimientos que deben resolverse para llevar al CCI a un esquema de alta resiliencia y disponibilidad.
+El análisis de brechas compara la arquitectura base con la arquitectura objetivo y expresa la diferencia como un conjunto de deficiencias que deben resolverse. Incluye deficiencias técnicas de infraestructura, software y criptografía, y también falencias de gobernanza y de procedimiento, porque una capacidad puede existir en la infraestructura y fallar en su uso.
+
+En el CCI, el análisis busca llevar la operación a un esquema de alta resiliencia y disponibilidad.
 
 \subsubsection{Matriz Comparativa: Estado Actual vs. Estado Objetivo}
 \label{sec:matriz-brechas}
+
+La matriz comparativa pone en paralelo el estado actual y el estado objetivo de cada dominio para mostrar la distancia que debe cerrarse. En el CCI, cubre los cuatro dominios que sostienen el proceso de despacho.
 
 \begin{table}[H]
 	\caption{Matriz comparativa entre el estado actual y el estado objetivo del CCI}
@@ -86,7 +98,9 @@ El análisis de brechas compara de forma directa la arquitectura actual frente a
 \subsubsection{Desglose Detallado de Brechas Técnicas y de Proceso}
 \label{sec:desglose-brechas}
 
-A partir de la comparación anterior, se establecen las intervenciones prioritarias divididas entre adaptaciones de ingeniería y formalización operativa:
+El desglose de brechas traduce cada diferencia de la matriz en una intervención concreta. Distingue lo que exige ingeniería de lo que exige formalización operativa, porque ambas cosas se planifican, se financian y se verifican de manera distinta.
+
+En el CCI, a partir de la comparación anterior se establecen las intervenciones prioritarias para cada dominio:
 
 \paragraph{Dominio de control de acceso y gobierno de identidades (IAM)}%
 En lo técnico, se requiere implementar el enrolamiento obligatorio y la validación del token MFA en el acceso al Sistema de Despacho (SIRCI/FMS). También es necesario ajustar los permisos RBAC para impedir que los usuarios con perfiles de monitoreo o consulta ejecuten comandos de regulación que no corresponden a sus funciones.

@@ -1,15 +1,16 @@
 \section{Métricas}
 
-La medición de la arquitectura de seguridad permite verificar que los controles y capacidades
-definidos en las secciones anteriores produzcan los resultados esperados sobre la operación del CCI. Para ello se retoma el perfil de atributos de negocio
-desarrollado mediante SABSA \parencite{sabsa2005,sabsaCCI2026}, en el cual cada requerimiento de seguridad se encuentra asociado
-con indicadores de desempeño (\textit{Key Performance Indicators}, KPI) e indicadores de
-riesgo (\textit{Key Risk Indicators}, KRI).
+Medir una arquitectura de seguridad consiste en comprobar si los controles producen el efecto previsto sobre el riesgo y sobre la operación. Una métrica útil tiene una meta, una fuente de datos y una frecuencia de revisión; sin esos elementos, el indicador no permite decidir.
 
 Los KPI representan las metas de desempeño que debe alcanzar la arquitectura y permiten
 evaluar la efectividad de los controles implementados. Los KRI funcionan como mecanismos de
-alerta temprana y establecen umbrales amarillo y rojo que facilitan identificar desviaciones antes
+alerta temprana y establecen umbrales amarillo y rojo que permiten identificar desviaciones antes
 de que estas generen un nivel de exposición no aceptable.
+
+En el CCI, la medición retoma el perfil de atributos de negocio
+desarrollado mediante SABSA \parencite{sabsa2005,sabsaCCI2026}, en el cual cada requerimiento de seguridad se asocia
+con indicadores de desempeño (\textit{Key Performance Indicators}, KPI) e indicadores de
+riesgo (\textit{Key Risk Indicators}, KRI).
 
 Esta estructura permite relacionar directamente las métricas con los riesgos R1 a R4, así como
 con los dominios de seguridad, servicios O-ESA \parencite{oesa2011,oesaCCI2026} y capacidades arquitectónicas implementadas
@@ -18,7 +19,9 @@ durante las diferentes fases de la hoja de ruta.
 
 \subsection{Indicadores y Métricas de Desempeño (KPI / KRI)}
 
-La Tabla~\ref{tab:kpi_kri_1} y la Tabla~\ref{tab:kpi_kri_2} consolidan los indicadores
+Los indicadores se organizan por atributo de negocio y por riesgo. Cada fila relaciona el atributo que se protege, el riesgo que se vigila, la meta de desempeño y los umbrales de alerta. Esa estructura permite pasar de una cifra aislada a una decisión de tratamiento.
+
+En el CCI, las Tablas~\ref{tab:kpi_kri_1} y~\ref{tab:kpi_kri_2} consolidan los indicadores
 definidos para evaluar la integridad y oportunidad de la telemetría, el control de acceso,
 la trazabilidad de las decisiones, la disponibilidad y recuperación del servicio, el monitoreo
 de seguridad, la protección de datos personales y el cumplimiento normativo.
@@ -199,7 +202,7 @@ generar una revisión preventiva del control asociado, mientras que un umbral ro
 escalamiento y tratamiento prioritario por parte de los responsables de seguridad y operación.
 
 Finalmente, las métricas deben utilizarse como insumo para revisar periódicamente el riesgo
-residual de R1 a R4. De esta forma, la arquitectura no se considera efectiva únicamente por la
-implementación de los mecanismos técnicos definidos en la hoja de ruta, sino por su capacidad
-demostrable para mantener la integridad de los datos, limitar accesos no autorizados, preservar
-la trazabilidad y sostener la disponibilidad de los servicios críticos del CCI.
+residual de R1 a R4. La efectividad de la arquitectura se mide por su capacidad
+demostrable para mantener la integridad de los datos, limitar los accesos no autorizados, preservar
+la trazabilidad y sostener la disponibilidad de los servicios críticos del CCI. La implementación
+de los mecanismos de la hoja de ruta es el medio para alcanzarla.
