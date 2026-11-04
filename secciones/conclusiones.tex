@@ -1,1 +1,37 @@
 \section{Conclusiones}
+
+El documento identifica los principales elementos de un Blueprint de Arquitectura de Seguridad,
+explica para qué sirve y muestra cómo se articulan para responder a las necesidades de seguridad de una
+organización. El caso del Centro de Control Integrado (CCI) de TransMilenio~S.A. permite recorrer esos
+elementos en una aplicación práctica, desde la visión, los principios y el alcance de la arquitectura
+hasta el análisis de la situación actual, la identificación de brechas, el diseño de la arquitectura
+objetivo y la planificación de su implementación.
+
+El análisis del CCI mostró que la seguridad es crítica en un entorno que centraliza procesos de
+supervisión y regulación de la flota. Se identificaron riesgos relacionados con la manipulación de la
+telemetría, los accesos no autorizados, la trazabilidad de las decisiones operativas y la
+disponibilidad de los servicios. Aunque existen controles como la autenticación, las herramientas de
+seguridad perimetral y el almacenamiento inmutable WORM, su integración, cobertura y efectividad aún
+pueden mejorar.
+
+La arquitectura objetivo (TO-BE) se organiza en cuatro dominios principales: gobierno de identidades
+y control de acceso, integridad de la telemetría, auditoría y trazabilidad de las decisiones, y
+continuidad operativa. Los dominios organizan los controles según los riesgos identificados y
+resumen las capacidades que necesita el CCI para operar de forma confiable, controlada y resiliente.
+
+Las arquitecturas de transición y la hoja de ruta llevan esa visión a una implementación progresiva,
+organizada en horizontes de tiempo. Esa secuencia permite priorizar las acciones: primero el
+fortalecimiento de los mecanismos de acceso, después la validación e integridad de la información, y
+al final las capacidades de alta disponibilidad y recuperación ante incidentes.
+
+SABSA y O-ESA, junto con los modelos y las vistas de ArchiMate, permiten relacionar las necesidades
+del negocio con los riesgos, los controles, los servicios y los componentes tecnológicos de la
+arquitectura. Los indicadores y las métricas, por su parte, sirven para evaluar el cumplimiento de
+los objetivos de seguridad y hacer seguimiento a la efectividad de las iniciativas propuestas.
+
+El caso del CCI muestra que un Blueprint de Arquitectura de Seguridad es una guía que conecta las
+necesidades de la organización con los riesgos, las capacidades de seguridad y las acciones
+necesarias para alcanzar un estado objetivo. Los controles y las tecnologías se eligen dentro de esa
+guía, después de definir los riesgos y las capacidades. Su elaboración exige considerar en conjunto
+los aspectos estratégicos, organizacionales, tecnológicos y operativos, y traducir el diseño en
+decisiones y procesos de implementación.
